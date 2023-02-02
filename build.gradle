@@ -14,6 +14,10 @@ configurations {
     }
 }
 
+bootJar {
+    archiveFileName = 'project-poi.jar'
+}
+
 repositories {
     mavenCentral()
 }
