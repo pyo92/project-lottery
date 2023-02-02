@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  project-poi-redis:
+    container_name: project-poi-redis
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: pyo92/project-poi-redis
+    ports:
+      - "6379:6379"
+  project-poi-database:
+    container_name: project-poi-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: pyo92/project-poi-database
+    environment:
+      - MARIADB_DATABASE=project-poi
+      - MARIADB_ROOT_PASSWORD=${LOCAL_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
