@@ -27,7 +27,7 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/project-poi
+    url: jdbc:mariadb://localhost:3306/lottery
     username: ${LOCAL_DATASOURCE_USERNAME}
     password: ${LOCAL_DATASOURCE_PASSWORD}
   data:
@@ -36,7 +36,7 @@ spring:
       port: 6379
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     show-sql: true
 
 ---

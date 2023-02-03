@@ -1,6 +1,6 @@
-package com.example.projectpoi.api.service
+package com.example.projectlottery.api.service
 
-import com.example.projectpoi.IntegrationContainerBaseTest
+import com.example.projectlottery.IntegrationContainerBaseTest
 import org.springframework.beans.factory.annotation.Autowired
 
 class KakaoSearchAddressServiceTest extends IntegrationContainerBaseTest {
