@@ -16,7 +16,7 @@ configurations {
 }
 
 bootJar {
-    archiveFileName = 'project-poi.jar'
+    archiveFileName = 'project-lottery.jar'
 }
 
 repositories {

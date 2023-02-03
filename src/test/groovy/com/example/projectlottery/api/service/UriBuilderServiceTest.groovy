@@ -1,4 +1,4 @@
-package com.example.projectpoi.api.service
+package com.example.projectlottery.api.service
 
 
 import org.springframework.boot.test.context.SpringBootTest

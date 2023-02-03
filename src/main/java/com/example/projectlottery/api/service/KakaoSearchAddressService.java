@@ -1,6 +1,6 @@
-package com.example.projectpoi.api.service;
+package com.example.projectlottery.api.service;
 
-import com.example.projectpoi.api.dto.KakaoSearchAddressResponse;
+import com.example.projectlottery.api.dto.KakaoSearchAddressResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

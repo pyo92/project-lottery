@@ -1,4 +1,4 @@
-package com.example.projectpoi.config;
+package com.example.projectlottery.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

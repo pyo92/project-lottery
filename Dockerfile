@@ -1,5 +1,5 @@
 FROM openjdk:17
-ARG JAR_FILE=build/libs/project-poi.jar
-COPY ${JAR_FILE} ./project-poi.jar
+ARG JAR_FILE=build/libs/project-lottery.jar
+COPY ${JAR_FILE} ./project-lottery.jar
 ENV TZ=Asia/Seoul
-ENTRYPOINT ["java", "-jar", "./project-poi.jar"]
+ENTRYPOINT ["java", "-jar", "./project-lottery.jar"]

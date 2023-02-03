@@ -1,4 +1,4 @@
-package com.example.projectpoi.api.dto;
+package com.example.projectlottery.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

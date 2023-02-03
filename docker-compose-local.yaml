@@ -1,21 +1,21 @@
 version: "3.8"
 services:
-  project-poi-redis:
-    container_name: project-poi-redis
+  project-lottery-redis:
+    container_name: project-lottery-redis
     build:
       dockerfile: Dockerfile
       context: ./redis
-    image: pyo92/project-poi-redis
+    image: pyo92/project-lottery-redis
     ports:
       - "6379:6379"
-  project-poi-database:
-    container_name: project-poi-database
+  project-lottery-database:
+    container_name: project-lottery-database
     build:
       dockerfile: Dockerfile
       context: ./database
-    image: pyo92/project-poi-database
+    image: pyo92/project-lottery-database
     environment:
-      - MARIADB_DATABASE=project-poi
+      - MARIADB_DATABASE=lottery
       - MARIADB_ROOT_PASSWORD=${LOCAL_DATASOURCE_PASSWORD}
     volumes:
       - ./database/config:/etc/mysql/conf.d

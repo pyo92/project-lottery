@@ -1,4 +1,4 @@
-package com.example.projectpoi.domain;
+package com.example.projectlottery.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,19 +14,28 @@ import java.util.Objects;
 @AllArgsConstructor
 @Table(
         indexes = {
-                @Index(columnList = "poiType")
+                @Index(columnList = "sido"),
+                @Index(columnList = "sigungu"),
+                @Index(columnList = "name"),
+                @Index(columnList = "longitude"),
+                @Index(columnList = "latitude")
         }
 )
 @Entity
-public class Poi {
+public class Shop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    @Enumerated(EnumType.STRING) //ORDINAL 옵션은 순서가 바뀔 경우 문제가 발생하므로, STRING 옵션 적용
-    private PoiType poiType;
+    private String sido;
+
+    @Column
+    private String sigungu;
+
+    @Column
+    private String roadAddress;
 
     @Column
     private String address;
@@ -35,16 +44,16 @@ public class Poi {
     private String name;
 
     @Column
-    private Double longitude;
+    private Double longitude; //x
 
     @Column
-    private Double latitude;
+    private Double latitude; //y
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Poi poi)) return false;
-        return id.equals(poi.id);
+        if (!(o instanceof Shop shop)) return false;
+        return id != null && id.equals(shop.id);
     }
 
     @Override
