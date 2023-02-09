@@ -4,6 +4,7 @@ import com.example.projectlottery.domain.type.SidoType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,6 +22,7 @@ public class DhLotteryCrawlingService {
 
     private static final String URL_WIN_INFO_645 = "https://www.dhlottery.co.kr/gameResult.do?method=byWin";
     private static final String URL_SELLER_INFO_645 = "https://www.dhlottery.co.kr/store.do?method=sellerInfo645";
+    private static final String URL_WINNER_SELLER_INFO_645 = "https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645";
 
     private WebDriver webDriver;
 
@@ -194,5 +196,91 @@ public class DhLotteryCrawlingService {
         } else {
             return Integer.parseInt(pageNoList.get(pageNoList.size() - 1));
         }
+    }
+
+    public void getWinningShop(int start, int end) throws InterruptedException {
+        setWebDriver();
+
+        webDriver.get(URL_WINNER_SELLER_INFO_645); //url 이동
+        Thread.sleep(500); //로딩될때까지 잠시 대기 (로딩 전 element 접근 시, 오류 발생)
+
+        for (int i = start; i <= end; i++) {
+            //동행복권 사이트에서 최근 50회만 선택할 수 있으므로, 강제로 selected value 를 변경해 과거 정보를 가져온다.
+            if (i < 1002) {
+                WebElement element = webDriver.findElement(By.cssSelector("#drwNo > option:nth-child(1)"));
+                JavascriptExecutor j = (JavascriptExecutor) webDriver;
+                j.executeScript("arguments[0].value='" + i + "';", element);
+            } else {
+                //정상 제공되는 회차는 selected value 를 바꿔서 가져온다.
+                Select select = new Select(webDriver.findElement(By.id("drwNo")));
+                select.selectByValue(String.valueOf(i));
+            }
+
+            webDriver.findElement(By.id("searchBtn")).click();
+            Thread.sleep(500);
+
+            System.out.println("회차 = " + i);
+
+            //1등 당첨 판매점
+            get1stWinningLotteryShop(i);
+            //2등 당첨 판매점
+            get2ndWinningLotteryShop(i);
+        }
+
+        closeWebDriver();
+    }
+
+    /**
+     * 로또 6/45 1등 당첨 판매점 정보
+     * @param drawNo 추첨 회차
+     * @throws InterruptedException
+     */
+    public void get1stWinningLotteryShop(int drawNo) throws InterruptedException {
+        System.out.println("1등 당첨 판매점");
+
+        List<WebElement> elements = webDriver.findElements(By.cssSelector("#article > div:nth-child(2) > div > div:nth-child(4) > table > tbody > tr"));
+
+        for (int i = 1; i <= elements.size(); i++) {
+            List<WebElement> elements1 = webDriver.findElements(By.cssSelector("#article > div:nth-child(2) > div > div:nth-child(4) > table > tbody > tr:nth-child(" + i + ") > td"));
+
+            for (WebElement webElement : elements1) {
+                System.out.print(webElement.getText() + " / ");
+            }
+
+            System.out.println();
+        }
+
+        System.out.println("----------------------------------------");
+    }
+
+    /**
+     * 로또 6/45 2등 당첨 판매점 정보
+     * @param drawNo 추첨 회차
+     * @throws InterruptedException
+     */
+    public void get2ndWinningLotteryShop(int drawNo) throws InterruptedException {
+        System.out.println("2등 당첨 판매점");
+
+        int pageCount = webDriver.findElements(By.cssSelector("#page_box > a")).size();
+
+        for (int i = 1; i <= pageCount; i++) {
+            WebElement page = webDriver.findElement(By.cssSelector("#page_box > a:nth-child(" + i + ")"));
+            page.click();
+            Thread.sleep(500);
+
+            int trCount = webDriver.findElements(By.cssSelector("#article > div:nth-child(2) > div > div:nth-child(5) > table > tbody > tr")).size();
+
+            for (int j = 1; j <= trCount; j++) {
+                List<WebElement> tdList = webDriver.findElements(By.cssSelector("#article > div:nth-child(2) > div > div:nth-child(5) > table > tbody > tr:nth-child(" + j + ") > td"));
+
+                for (WebElement td : tdList) {
+                    System.out.print(td.getText() + " / ");
+                }
+
+                System.out.println();
+            }
+        }
+
+        System.out.println("----------------------------------------");
     }
 }
