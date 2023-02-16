@@ -1,63 +1,59 @@
 package com.example.projectlottery.domain;
 
+import com.example.projectlottery.domain.embedded.ShopRegion;
+import com.example.projectlottery.domain.embedded.ShopItem;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+@ToString(callSuper = true)
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(
-        indexes = {
-                @Index(columnList = "sido"),
-                @Index(columnList = "sigungu"),
-                @Index(columnList = "name"),
-                @Index(columnList = "longitude"),
-                @Index(columnList = "latitude")
-        }
-)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Shop {
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     @Column
-    private String sido;
+    private String address; //주소
+    @Column
+    private String name; //상호명
+    @Column
+    private String tel; //전화번호
 
     @Column
-    private String sigungu;
+    private double longitude; //x좌표
+    @Column
+    private double latitude; //y좌표
 
     @Column
-    private String roadAddress;
+    private boolean useYN; //사용 여부
 
-    @Column
-    private String address;
+    @Embedded
+    private ShopRegion shopRegion;
+    @Embedded
+    private ShopItem shopItem;
 
-    @Column
-    private String name;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "shop")
+    private final Set<LottoWinShop> lottoWinShops = new LinkedHashSet<>(); //1등, 2등 당첨 회차 목록
 
-    @Column
-    private Double longitude; //x
-
-    @Column
-    private Double latitude; //y
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Shop shop)) return false;
-        return id != null && id.equals(shop.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public static Shop of(Long id, String address, String name, String tel, double longitude, double latitude, boolean useYN, String state1, String state2, String state3, boolean l645YN, boolean l720YN, boolean spYN) {
+        return new Shop(
+                id,
+                address,
+                name,
+                tel,
+                longitude,
+                latitude,
+                useYN,
+                ShopRegion.of(state1, state2, state3),
+                ShopItem.of(l645YN, l720YN, spYN)
+        );
     }
 }
