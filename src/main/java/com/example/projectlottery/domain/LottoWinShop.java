@@ -15,20 +15,23 @@ public class LottoWinShop {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Id
-    private Lotto lotto;
+    private Lotto lotto; //회차
     @Id
-    private Long rank;
+    private Integer rank; //등위
     @Id
-    private Long no;
+    private Integer no; //순번
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Shop shop;
+    private Shop shop; //판매점
 
     @Enumerated(EnumType.STRING)
     @Column
-    private LottoPurchaseType lottoPurchaseType;
+    private LottoPurchaseType lottoPurchaseType; //구매방식
 
-    public static LottoWinShop of(Lotto lotto, Long rank, Long no, Shop shop, LottoPurchaseType lottoPurchaseType) {
-        return new LottoWinShop(lotto, rank, no, shop, lottoPurchaseType);
+    @Column
+    private String displayAddress; //추첨 당시 가게 주소를 그대로 표시 (동행복권과 동일하게)
+
+    public static LottoWinShop of(Lotto lotto, Integer rank, Integer no, Shop shop, LottoPurchaseType lottoPurchaseType, String displayAddress) {
+        return new LottoWinShop(lotto, rank, no, shop, lottoPurchaseType, displayAddress);
     }
 }

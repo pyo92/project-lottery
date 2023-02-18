@@ -9,6 +9,6 @@ import java.io.Serializable;
 public class LottoWinShopId implements Serializable {
 
     private Lotto lotto;
-    private Long rank;
-    private Long no;
+    private Integer rank;
+    private Integer no;
 }
