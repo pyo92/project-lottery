@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MetaDto {
+public class GeoCoordinateToRegionMetaDto {
 
     @JsonProperty("total_count")
     private Integer totalCount;
