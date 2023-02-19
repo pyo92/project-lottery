@@ -8,14 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentsDto {
-
-    @JsonProperty("address_name")
-    private String addressName;
+public class SearchAddressDocsDto {
 
     @JsonProperty("x")
     private Double longitude;
-
     @JsonProperty("y")
     private Double latitude;
 }

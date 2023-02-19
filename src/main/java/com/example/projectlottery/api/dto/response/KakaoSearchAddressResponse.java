@@ -1,5 +1,7 @@
-package com.example.projectlottery.api.dto;
+package com.example.projectlottery.api.dto.response;
 
+import com.example.projectlottery.api.dto.SearchAddressDocsDto;
+import com.example.projectlottery.api.dto.SearchAddressMetaDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +15,8 @@ import java.util.List;
 public class KakaoSearchAddressResponse {
 
     @JsonProperty("meta")
-    private MetaDto metaDto;
+    private SearchAddressMetaDto meta;
 
     @JsonProperty("documents")
-    private List<DocumentsDto> documentList;
+    private List<SearchAddressDocsDto> docs;
 }
