@@ -1,0 +1,136 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#shop-name" th:text="${shopResponse.name}"/>
+    <attr sel="#shop-address" th:text="${shopResponse.address}"/>
+    <attr sel="#shop-tel" th:text="${shopResponse.tel == '' ?  '-' : shopResponse.tel}"/>
+
+    <attr sel="#l645-yn" th:text="${shopResponse.l645YN ? 'O' : 'X'}"/>
+
+    <attr sel="#count-1st-win" th:text="${shopResponse.count1stWin}"/>
+    <attr sel="#count-1st-win-auto" th:text="${shopResponse.count1stWinAuto}"/>
+    <attr sel="#count-1st-win-manual" th:text="${shopResponse.count1stWinManual}"/>
+    <attr sel="#count-1st-win-mix" th:text="${shopResponse.count1stWinMix}"/>
+    <attr sel="#count-2nd-win" th:text="${shopResponse.count2ndWin}"/>
+
+    <attr sel="body" th:onload="|javascript:openMap(${shopResponse.longitude}, ${shopResponse.latitude})|"/>
+
+    <attr sel="#lotto-1st-win-table">
+        <attr sel="tbody" th:remove="all-but-first">
+            <attr sel="tr[0]" th:each="lotto1st : ${shopResponse.lotto1stWin}" th:onclick="|location.href='@{/L645(drawNo=${lotto1st.drawNo})}'|">
+                <attr sel="td.draw-no" th:text="${lotto1st.drawNo}"/>
+                <attr sel="td.draw-dt" th:text="${lotto1st.drawDt}"/>
+                <attr sel="td.draw-numbers">
+                    <attr sel="div">
+                        <attr sel="span[0]" th:text="${lotto1st.number1}"
+                              th:classappend="${lotto1st.number1 < 10 ? 'ball-0' :
+                                  (lotto1st.number1 == 10 ? 'ball-10' :
+                                  (lotto1st.number1 <= 20 ? 'ball-1' :
+                                  (lotto1st.number1 <= 30 ? 'ball-2' :
+                                  (lotto1st.number1 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[1]" th:text="${lotto1st.number2}"
+                              th:classappend="${lotto1st.number2 < 10 ? 'ball-0' :
+                                  (lotto1st.number2 == 10 ? 'ball-10' :
+                                  (lotto1st.number2 <= 20 ? 'ball-1' :
+                                  (lotto1st.number2 <= 30 ? 'ball-2' :
+                                  (lotto1st.number2 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[2]" th:text="${lotto1st.number3}"
+                              th:classappend="${lotto1st.number3 < 10 ? 'ball-0' :
+                                  (lotto1st.number3 == 10 ? 'ball-10' :
+                                  (lotto1st.number3 <= 20 ? 'ball-1' :
+                                  (lotto1st.number3 <= 30 ? 'ball-2' :
+                                  (lotto1st.number3 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[3]" th:text="${lotto1st.number4}"
+                              th:classappend="${lotto1st.number4 < 10 ? 'ball-0' :
+                                  (lotto1st.number4 == 10 ? 'ball-10' :
+                                  (lotto1st.number4 <= 20 ? 'ball-1' :
+                                  (lotto1st.number4 <= 30 ? 'ball-2' :
+                                  (lotto1st.number4 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[4]" th:text="${lotto1st.number5}"
+                              th:classappend="${lotto1st.number5 < 10 ? 'ball-0' :
+                                  (lotto1st.number5 == 10 ? 'ball-10' :
+                                  (lotto1st.number5 <= 20 ? 'ball-1' :
+                                  (lotto1st.number5 <= 30 ? 'ball-2' :
+                                  (lotto1st.number5 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[5]" th:text="${lotto1st.number6}"
+                              th:classappend="${lotto1st.number6 < 10 ? 'ball-0' :
+                                  (lotto1st.number6 == 10 ? 'ball-10' :
+                                  (lotto1st.number6 <= 20 ? 'ball-1' :
+                                  (lotto1st.number6 <= 30 ? 'ball-2' :
+                                  (lotto1st.number6 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[7]" th:text="${lotto1st.bonus}"
+                              th:classappend="${lotto1st.bonus < 10 ? 'ball-0' :
+                                  (lotto1st.bonus == 10 ? 'ball-10' :
+                                  (lotto1st.bonus <= 20 ? 'ball-1' :
+                                  (lotto1st.bonus <= 30 ? 'ball-2' :
+                                  (lotto1st.bonus <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                    </attr>
+                </attr>
+                <attr sel="td.purchase" th:text="${lotto1st.lottoPurchaseType}"/>
+                <attr sel="td.win-amount-per-game">
+                    <attr sel="span" th:text="${#numbers.formatInteger(lotto1st.winAmountPerGame, 0, 'COMMA')}"/>
+                </attr>
+            </attr>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-2nd-win-table">
+        <attr sel="tbody" th:remove="all-but-first">
+            <attr sel="tr[0]" th:each="lotto2nd : ${shopResponse.lotto2ndWin}" th:onclick="|location.href='@{/L645(drawNo=${lotto2nd.drawNo})}'|">
+                <attr sel="td.draw-no" th:text="${lotto2nd.drawNo}"/>
+                <attr sel="td.draw-dt" th:text="${lotto2nd.drawDt}"/>
+                <attr sel="td.draw-numbers">
+                    <attr sel="div">
+                        <attr sel="span[0]" th:text="${lotto2nd.number1}"
+                              th:classappend="${lotto2nd.number1 < 10 ? 'ball-0' :
+                                  (lotto2nd.number1 == 10 ? 'ball-10' :
+                                  (lotto2nd.number1 <= 20 ? 'ball-1' :
+                                  (lotto2nd.number1 <= 30 ? 'ball-2' :
+                                  (lotto2nd.number1 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[1]" th:text="${lotto2nd.number2}"
+                              th:classappend="${lotto2nd.number2 < 10 ? 'ball-0' :
+                                  (lotto2nd.number2 == 10 ? 'ball-10' :
+                                  (lotto2nd.number2 <= 20 ? 'ball-1' :
+                                  (lotto2nd.number2 <= 30 ? 'ball-2' :
+                                  (lotto2nd.number2 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[2]" th:text="${lotto2nd.number3}"
+                              th:classappend="${lotto2nd.number3 < 10 ? 'ball-0' :
+                                  (lotto2nd.number3 == 10 ? 'ball-10' :
+                                  (lotto2nd.number3 <= 20 ? 'ball-1' :
+                                  (lotto2nd.number3 <= 30 ? 'ball-2' :
+                                  (lotto2nd.number3 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[3]" th:text="${lotto2nd.number4}"
+                              th:classappend="${lotto2nd.number4 < 10 ? 'ball-0' :
+                                  (lotto2nd.number4 == 10 ? 'ball-10' :
+                                  (lotto2nd.number4 <= 20 ? 'ball-1' :
+                                  (lotto2nd.number4 <= 30 ? 'ball-2' :
+                                  (lotto2nd.number4 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[4]" th:text="${lotto2nd.number5}"
+                              th:classappend="${lotto2nd.number5 < 10 ? 'ball-0' :
+                                  (lotto2nd.number5 == 10 ? 'ball-10' :
+                                  (lotto2nd.number5 <= 20 ? 'ball-1' :
+                                  (lotto2nd.number5 <= 30 ? 'ball-2' :
+                                  (lotto2nd.number5 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[5]" th:text="${lotto2nd.number6}"
+                              th:classappend="${lotto2nd.number6 < 10 ? 'ball-0' :
+                                  (lotto2nd.number6 == 10 ? 'ball-10' :
+                                  (lotto2nd.number6 <= 20 ? 'ball-1' :
+                                  (lotto2nd.number6 <= 30 ? 'ball-2' :
+                                  (lotto2nd.number6 <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                        <attr sel="span[7]" th:text="${lotto2nd.bonus}"
+                              th:classappend="${lotto2nd.bonus < 10 ? 'ball-0' :
+                                  (lotto2nd.bonus == 10 ? 'ball-10' :
+                                  (lotto2nd.bonus <= 20 ? 'ball-1' :
+                                  (lotto2nd.bonus <= 30 ? 'ball-2' :
+                                  (lotto2nd.bonus <= 40 ? 'ball-3' : 'ball-4'))))}"/>
+                    </attr>
+                </attr>
+                <attr sel="td.purchase" th:text="${lotto2nd.lottoPurchaseType}"/>
+                <attr sel="td.win-amount-per-game">
+                    <attr sel="span" th:text="${#numbers.formatInteger(lotto2nd.winAmountPerGame, 0, 'COMMA')}"/>
+                </attr>
+            </attr>
+        </attr>
+    </attr>
+
+    <attr sel="#js-kakao-map" th:src="|//dapi.kakao.com/v2/maps/sdk.js?appkey=| + ${@environment.getProperty('kakao.js.key')}"/>
+</thlogic>
