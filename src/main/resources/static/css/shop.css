@@ -1,0 +1,81 @@
+#map {
+    width:400px;
+    height:400px;
+}
+
+.table thead {
+    background: #eeeeee;
+    font-size: 17px;
+}
+
+.thead-center {
+    text-align: center;
+}
+
+.col-center {
+    text-align: center;
+}
+
+.col-right {
+    text-align: right;
+}
+
+.ball-0 {
+    padding: 6px 11px;
+    background: #fbc400;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.ball-10 {
+    padding: 6px 7px;
+    background: #fbc400;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.ball-1 {
+    padding: 6px 7px;
+    background: #69c8f2;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.ball-2 {
+    padding: 6px 7px;
+    background: #ff7272;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.ball-3 {
+    padding: 6px 7px;
+    background: #aaaaaa;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.ball-4 {
+    padding: 6px 7px;
+    background: #b0d840;
+    color: #ffffff;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.ball-p {
+    padding: 6px 7px;
+    background: #ffffff;
+    color: #666666;
+    text-align: center;
+    font: 15px Arial, sans-serif;
+}
+
+.table-hover tr:hover {
+    cursor: pointer;
+}
