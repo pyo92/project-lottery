@@ -1,6 +1,6 @@
 package com.example.projectlottery.controller;
 
-import com.example.projectlottery.dto.response.LottoResponse;
+import com.example.projectlottery.dto.response.lotto.LottoResponse;
 import com.example.projectlottery.service.LottoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
 package com.example.projectlottery.service;
 
 import com.example.projectlottery.dto.LottoDto;
-import com.example.projectlottery.dto.response.LottoResponse;
+import com.example.projectlottery.dto.response.lotto.LottoResponse;
 import com.example.projectlottery.repository.LottoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
