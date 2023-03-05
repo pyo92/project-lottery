@@ -1,4 +1,4 @@
-package com.example.projectlottery.dto.response;
+package com.example.projectlottery.dto.response.lotto;
 
 import com.example.projectlottery.domain.LottoPrize;
 
