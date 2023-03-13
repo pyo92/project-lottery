@@ -6,6 +6,8 @@ import com.example.projectlottery.repository.ShopRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +40,13 @@ public class ShopService {
     public ShopResponse getShopResponse(Long id) {
         return shopRepository.findById(id)
                 .map(ShopResponse::from)
-                .orElseThrow(() -> new EntityNotFoundException("해당 회차가 없습니다. (id: " + id + ")"));
+                .orElseThrow(() -> new EntityNotFoundException("해당 판매점 없습니다. (id: " + id + ")"));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ShopResponse> getShopListResponse(String state1, String state2, Pageable pageable) {
+        return shopRepository.findByStates(state1, state2, pageable)
+                .map(ShopResponse::from);
     }
 
 
