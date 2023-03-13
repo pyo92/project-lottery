@@ -27,13 +27,21 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.8.1'
+    implementation 'org.seleniumhq.selenium:selenium-java'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //Querydsl 의존성 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+
+    //java.lang.NoClassDefFoundError 대응을 위해 추가
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 
     //spock
     testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
@@ -49,4 +57,22 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+//Querydsl Q Class 생성 위치
+def generated = 'src/main/generated'
+
+//Querydsl Q Class 생성 위치 지정
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+//java source set 에 Querydsl Q Class 위치 추가
+sourceSets {
+    main.java.srcDirs += [ generated ]
+}
+
+//gradle clean 시, Q Class 디렉토리까지 삭제하도록 설정
+clean {
+    delete file(generated)
 }
