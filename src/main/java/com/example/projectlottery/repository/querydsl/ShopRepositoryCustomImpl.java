@@ -1,5 +1,6 @@
 package com.example.projectlottery.repository.querydsl;
 
+import com.example.projectlottery.domain.QLottoWinShop;
 import com.example.projectlottery.domain.QShop;
 import com.example.projectlottery.domain.Shop;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -15,10 +16,13 @@ import java.util.List;
 public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implements ShopRepositoryCustom {
 
     private QShop shop;
+    private QLottoWinShop lottoWinShop;
 
     public ShopRepositoryCustomImpl() {
         super(Shop.class);
+
         this.shop = QShop.shop;
+        this.lottoWinShop = QLottoWinShop.lottoWinShop;
     }
 
     @Override
@@ -39,5 +43,18 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
         return StringUtils.isNullOrEmpty(state2) ? null : shop.state2.eq(state2);
     }
 
+    @Override
+    public List<Shop> findByWins() {
+        List<Long> shopIdWin1st = from(lottoWinShop)
+                .where(lottoWinShop.shop.l645YN.eq(true), lottoWinShop.rank.eq(1)) //판매중지 아닌 판매점 중에서 1등 배출 판매점
+                .groupBy(lottoWinShop.shop.id) //group by
+                .select(lottoWinShop.shop.id)
+                .orderBy(lottoWinShop.count().desc()) //1등 배출 횟수 내림차순
+                .limit(100) //상위 100건
+                .fetch();
 
+        return from(shop)
+                .where(shop.id.in(shopIdWin1st))
+                .fetch();
+    }
 }

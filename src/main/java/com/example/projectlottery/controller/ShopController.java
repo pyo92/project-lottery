@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.TreeSet;
 
 
 @RequiredArgsConstructor
@@ -54,5 +55,15 @@ public class ShopController {
         map.addAttribute("state2List", state2List);
 
         return "/shop/list";
+    }
+
+
+    @GetMapping("/ranking")
+    public String ranking(ModelMap map) {
+        TreeSet<ShopResponse> ranking = shopService.getShopRankingResponse();
+
+        map.addAttribute("ranking", ranking);
+
+        return "/shop/ranking";
     }
 }
