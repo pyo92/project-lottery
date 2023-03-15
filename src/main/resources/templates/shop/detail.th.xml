@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
     <attr sel="#shop-name" th:text="${shopResponse.name}"/>
     <attr sel="#shop-address" th:text="${shopResponse.address}"/>
     <attr sel="#shop-tel" th:text="${shopResponse.tel == '' ?  '-' : shopResponse.tel}"/>

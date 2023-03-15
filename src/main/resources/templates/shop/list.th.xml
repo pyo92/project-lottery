@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
     <attr sel="#state1">
         <attr sel="a[0]"
               th:href="@{/shop/list(
