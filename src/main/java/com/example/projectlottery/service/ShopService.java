@@ -1,5 +1,6 @@
 package com.example.projectlottery.service;
 
+import com.example.projectlottery.domain.Shop;
 import com.example.projectlottery.dto.ShopDto;
 import com.example.projectlottery.dto.response.shop.ShopResponse;
 import com.example.projectlottery.repository.ShopRepository;
@@ -12,8 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,6 +49,18 @@ public class ShopService {
                 .map(ShopResponse::from);
     }
 
+    @Transactional(readOnly = true)
+    public TreeSet<ShopResponse> getShopRankingResponse() {
+        List<Shop> byWins = shopRepository.findByWins();
+
+        return byWins.stream().map(ShopResponse::from)
+                .collect(Collectors.toCollection(() ->
+                        new TreeSet<>(Comparator.comparing(ShopResponse::count1stWin) //1등 배출횟수
+                                .thenComparing(ShopResponse::count1stWinAuto) //자동 1등 배출횟수
+                                .thenComparing(ShopResponse::count2ndWin) //2등 배출횟수
+                                .reversed() //앞의 조건까지 내림차순 처리
+                                .thenComparing(ShopResponse::id))));
+    }
 
     public void save(ShopDto dto) {
         shopRepository.save(dto.toEntity());
