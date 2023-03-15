@@ -70,7 +70,7 @@
                 </attr>
                 <attr sel="td.purchase" th:text="${lotto1st.lottoPurchaseType}"/>
                 <attr sel="td.win-amount-per-game">
-                    <attr sel="span" th:text="${#numbers.formatInteger(lotto1st.winAmountPerGame, 0, 'COMMA')}"/>
+                    <attr sel="span" th:text="${#numbers.formatInteger(lotto1st.winAmountPerGame1st, 0, 'COMMA')}"/>
                 </attr>
             </attr>
         </attr>
@@ -127,9 +127,8 @@
                                   (lotto2nd.bonus <= 40 ? 'ball-3' : 'ball-4'))))}"/>
                     </attr>
                 </attr>
-                <attr sel="td.purchase" th:text="${lotto2nd.lottoPurchaseType}"/>
                 <attr sel="td.win-amount-per-game">
-                    <attr sel="span" th:text="${#numbers.formatInteger(lotto2nd.winAmountPerGame, 0, 'COMMA')}"/>
+                    <attr sel="span" th:text="${#numbers.formatInteger(lotto2nd.winAmountPerGame2nd, 0, 'COMMA')}"/>
                 </attr>
             </attr>
         </attr>

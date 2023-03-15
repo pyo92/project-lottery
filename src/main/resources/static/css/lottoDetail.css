@@ -30,8 +30,22 @@
     bottom: 5px;
 }
 
+.title {
+    position :relative;
+}
+
+.title h6 {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+}
+
 .text-red {
     color: #dc1f1f;
+}
+
+.text-white {
+    color: white;
 }
 
 .table thead {
