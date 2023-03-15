@@ -45,6 +45,23 @@
     margin-left: 5px;
 }
 
+.table thead {
+    background: #eeeeee;
+    font-size: 17px;
+}
+
+.thead-center {
+    text-align: center;
+}
+
+.col-center {
+    text-align: center;
+}
+
+.text-white {
+    color: white;
+}
+
 .table-hover tr:hover {
     cursor: pointer;
 }
