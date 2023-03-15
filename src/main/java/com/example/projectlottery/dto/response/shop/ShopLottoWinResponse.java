@@ -13,12 +13,13 @@ public record ShopLottoWinResponse(
         int number5,
         int number6,
         int bonus,
-        long winAmountPerGame,
+        long winAmountPerGame1st,
+        long winAmountPerGame2nd,
         String lottoPurchaseType
 ) {
 
-    public static ShopLottoWinResponse of(Long drawNo, Integer no, String drawDt, int number1, int number2, int number3, int number4, int number5, int number6, int bonus, long winAmountPerGame, String lottoPurchaseType) {
-        return new ShopLottoWinResponse(drawNo, no, drawDt, number1, number2, number3, number4, number5, number6, bonus, winAmountPerGame, lottoPurchaseType);
+    public static ShopLottoWinResponse of(Long drawNo, Integer no, String drawDt, int number1, int number2, int number3, int number4, int number5, int number6, int bonus, long winAmountPerGame1st, long winAmountPerGame2nd, String lottoPurchaseType) {
+        return new ShopLottoWinResponse(drawNo, no, drawDt, number1, number2, number3, number4, number5, number6, bonus, winAmountPerGame1st, winAmountPerGame2nd, lottoPurchaseType);
     }
 
     public static ShopLottoWinResponse from(LottoWinShop entity) {
@@ -35,6 +36,11 @@ public record ShopLottoWinResponse(
                 entity.getLotto().getLottoWinNumber().getNumberB(),
                 entity.getLotto().getLottoPrizes().stream()
                         .filter(lottoPrize -> lottoPrize.getRank() == 1)
+                        .findFirst()
+                        .get()
+                        .getWinAmountPerGame(),
+                entity.getLotto().getLottoPrizes().stream()
+                        .filter(lottoPrize -> lottoPrize.getRank() == 2)
                         .findFirst()
                         .get()
                         .getWinAmountPerGame(),
