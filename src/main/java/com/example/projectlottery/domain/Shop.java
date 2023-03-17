@@ -1,5 +1,6 @@
 package com.example.projectlottery.domain;
 
+import com.example.projectlottery.domain.auditing.AuditingFields;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Shop {
+public class Shop extends AuditingFields {
 
     @Id
     private Long id; //판매점 id
