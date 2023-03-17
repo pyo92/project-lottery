@@ -1,5 +1,6 @@
 package com.example.projectlottery.domain;
 
+import com.example.projectlottery.domain.auditing.AuditingFields;
 import com.example.projectlottery.domain.embedded.LottoWinNumber;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Lotto {
+public class Lotto extends AuditingFields {
 
     @Id
     private Long drawNo; //회차
