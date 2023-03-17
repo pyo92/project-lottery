@@ -1,5 +1,6 @@
 package com.example.projectlottery.domain;
 
+import com.example.projectlottery.domain.auditing.AuditingFields;
 import com.example.projectlottery.domain.id.LottoWinShopId;
 import com.example.projectlottery.domain.type.LottoPurchaseType;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @IdClass(LottoWinShopId.class)
 @Entity
-public class LottoWinShop {
+public class LottoWinShop extends AuditingFields {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Id

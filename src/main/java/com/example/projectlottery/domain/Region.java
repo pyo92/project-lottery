@@ -1,10 +1,12 @@
 package com.example.projectlottery.domain;
 
+import com.example.projectlottery.domain.auditing.AuditingFields;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @ToString
@@ -17,7 +19,7 @@ import java.util.Objects;
         @Index(columnList = "parentReg"),
 })
 @Entity
-public class Region {
+public class Region extends AuditingFields {
 
     @Column(length = 5)
     @Id
