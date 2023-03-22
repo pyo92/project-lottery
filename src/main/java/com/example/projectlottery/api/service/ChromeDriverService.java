@@ -30,6 +30,8 @@ public class ChromeDriverService {
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.addArguments("--window-size=1920,1080");
         chromeOptions.addArguments("--disable-gpu");
+        //selenium web socket 에러 방지
+        chromeOptions.addArguments("--remote-allow-origins=*");
 
         webDriver = new ChromeDriver(chromeOptions);
     }
