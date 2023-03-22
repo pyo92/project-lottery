@@ -1,6 +1,5 @@
 package com.example.projectlottery.service;
 
-import com.example.projectlottery.domain.Shop;
 import com.example.projectlottery.dto.ShopDto;
 import com.example.projectlottery.dto.response.shop.ShopResponse;
 import com.example.projectlottery.repository.ShopRepository;
@@ -24,6 +23,8 @@ public class ShopService {
 
     private final ShopRepository shopRepository;
 
+    private final RedisTemplateService redisTemplateService;
+
     @Transactional(readOnly = true)
     public Optional<ShopDto> getShopById(Long id) {
         return shopRepository.findById(id).map(ShopDto::from);
@@ -38,9 +39,17 @@ public class ShopService {
 
     @Transactional(readOnly = true)
     public ShopResponse getShopResponse(Long id) {
-        return shopRepository.findById(id)
-                .map(ShopResponse::from)
-                .orElseThrow(() -> new EntityNotFoundException("해당 판매점 없습니다. (id: " + id + ")"));
+        ShopResponse shopResponse = redisTemplateService.getShopDetail(id);
+
+        if (Objects.isNull(shopResponse)) { //redis 조회 실패 시, redis 갱신
+            shopResponse = shopRepository.findById(id)
+                    .map(ShopResponse::from)
+                    .orElseThrow(() -> new EntityNotFoundException("해당 판매점 없습니다. (id: " + id + ")"));
+
+            redisTemplateService.saveShopDetail(shopResponse);
+        }
+
+        return shopResponse;
     }
 
     @Transactional(readOnly = true)
@@ -50,16 +59,22 @@ public class ShopService {
     }
 
     @Transactional(readOnly = true)
-    public TreeSet<ShopResponse> getShopRankingResponse() {
-        List<Shop> byWins = shopRepository.findByWins();
+    public Set<ShopResponse> getShopRankingResponse() {
+        Set<ShopResponse> shopResponses = redisTemplateService.getAllShopRanking(); //redis cache
 
-        return byWins.stream().map(ShopResponse::from)
-                .collect(Collectors.toCollection(() ->
-                        new TreeSet<>(Comparator.comparing(ShopResponse::count1stWin) //1등 배출횟수
-                                .thenComparing(ShopResponse::count1stWinAuto) //자동 1등 배출횟수
-                                .thenComparing(ShopResponse::count2ndWin) //2등 배출횟수
-                                .reversed() //앞의 조건까지 내림차순 처리
-                                .thenComparing(ShopResponse::id))));
+        if (shopResponses.isEmpty()) { //redis 조회 실패 시, redis 갱신
+            shopResponses = shopRepository.findByWins().stream().map(ShopResponse::from)
+                    .collect(Collectors.toCollection(() ->
+                            new TreeSet<>(Comparator.comparing(ShopResponse::count1stWin) //1등 배출횟수
+                                    .thenComparing(ShopResponse::count1stWinAuto) //자동 1등 배출횟수
+                                    .thenComparing(ShopResponse::count2ndWin) //2등 배출횟수
+                                    .reversed() //앞의 조건까지 내림차순 처리
+                                    .thenComparing(ShopResponse::id))));
+
+            redisTemplateService.saveShopRanking(shopResponses); //redis cache
+        }
+
+        return shopResponses;
     }
 
     public void save(ShopDto dto) {
