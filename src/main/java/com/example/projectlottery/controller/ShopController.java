@@ -32,7 +32,7 @@ public class ShopController {
         ShopResponse shopResponse = shopService.getShopResponse(Long.parseLong(shopId));
         map.addAttribute("shopResponse", shopResponse);
 
-        return "/shop/detail";
+        return "shop/detail";
     }
 
     @GetMapping("/list")
@@ -53,7 +53,7 @@ public class ShopController {
         map.addAttribute("state1List", state1List);
         map.addAttribute("state2List", state2List);
 
-        return "/shop/list";
+        return "shop/list";
     }
 
 
@@ -63,6 +63,6 @@ public class ShopController {
 
         map.addAttribute("ranking", ranking);
 
-        return "/shop/ranking";
+        return "shop/ranking";
     }
 }
