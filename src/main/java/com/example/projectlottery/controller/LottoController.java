@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.stream.LongStream;
 
 @RequiredArgsConstructor
 @RequestMapping("/L645")
@@ -23,18 +23,16 @@ public class LottoController {
     @GetMapping
     public String lotto(@RequestParam(required = false) Long drawNo, ModelMap map) {
         Long latestDrawNo = lottoService.getLatestDrawNo();
-        if (drawNo == null) {
+        if (drawNo == null || drawNo > latestDrawNo || drawNo < 1) {
             return "redirect:/L645?drawNo=" + latestDrawNo;
         }
 
-        Set<Long> drawNos = new TreeSet<>(Comparator.reverseOrder());
-        for (long i = 1; i <= latestDrawNo; i++) {
-            drawNos.add(i);
-        }
+        List<Long> drawNos = LongStream.range(1, latestDrawNo + 1)
+                .boxed()
+                .sorted(Comparator.reverseOrder()).toList();
+        map.addAttribute("drawNos", drawNos);
 
         LottoResponse lottoResponse = lottoService.getLottoResponse(drawNo);
-
-        map.addAttribute("drawNos", drawNos);
         map.addAttribute("lottoResponse", lottoResponse);
 
         return "/lotto/detail";
