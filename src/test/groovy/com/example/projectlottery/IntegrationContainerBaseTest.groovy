@@ -3,6 +3,8 @@ package com.example.projectlottery
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.MariaDBContainer
+import org.testcontainers.spock.Testcontainers
 import spock.lang.Specification
 
 @ContextConfiguration //autowired
@@ -13,7 +15,7 @@ abstract class IntegrationContainerBaseTest extends Specification {
 
     static {
         REDIS_CONTAINER = new GenericContainer<>("redis:7")
-            .withExposedPorts(6379)
+                .withExposedPorts(6379)
 
         REDIS_CONTAINER.start()
 
