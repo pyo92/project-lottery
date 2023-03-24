@@ -37,7 +37,7 @@ out/
 .vscode/
 
 ### Environments ###
-.env
+*.env
 
 ### Querydsl
 /src/main/generated
