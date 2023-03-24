@@ -7,11 +7,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,6 +49,15 @@ public class RedisTemplateService {
 
         valueOperations.set(CACHE_LATEST_DRAW_NO_KEY,  String.valueOf(latestDrawNo));
         log.info("[RedisTemplateService saveLatestDrawNo() success] drawNo: {}", latestDrawNo);
+    }
+
+    public void deleteLatestDrawNo() {
+        try {
+            redisTemplate.delete(CACHE_LATEST_DRAW_NO_KEY);
+            log.info("[RedisTemplateService deleteLatestDrawNo() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deleteLatestDrawNo() failed]: {}", e.getMessage());
+        }
     }
 
     public Long getLatestDrawNo() {
@@ -113,8 +126,7 @@ public class RedisTemplateService {
         }
     }
 
-    public void saveShopRanking(Set<ShopResponse> shopResponses) {
-        int rank = 0;
+    public void saveShopRanking(List<ShopResponse> shopResponses) {
         for (ShopResponse dto : shopResponses) {
             if (Objects.isNull(dto) || Objects.isNull(dto.id())) {
                 log.error("Required values must not be null");
@@ -122,9 +134,11 @@ public class RedisTemplateService {
             }
 
             try {
-                //dto serialized 값을 value, treeSet 정렬 순서를 score 로 사용
-                zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), rank++);
-                log.info("[RedisTemplateService saveShopRanking() success] rank: {}, shopId: {}", rank, dto.id());
+                //dto serialized 값을 value 로 사용
+                //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용
+                double score = dto.count1stWin() * 100000000 + dto.count2ndWin() + ((100000000 - dto.id()) / 100000000D);
+                zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), score);
+                log.info("[RedisTemplateService saveShopRanking() success] shopId: {}, score: {}", dto.id(), score);
             } catch (Exception e) {
                 log.error("[RedisTemplateService saveShopRanking() failed]: {}", e.getMessage());
             }
@@ -140,22 +154,18 @@ public class RedisTemplateService {
         }
     }
 
-    public Set<ShopResponse> getAllShopRanking() {
+    public List<ShopResponse> getAllShopRanking() {
         try {
-            return zSetOperations.range(CACHE_SHOP_RANKING_KEY, 0, 99).stream().map(o -> {
+            return zSetOperations.reverseRange(CACHE_SHOP_RANKING_KEY, 0, 99).stream().map((o -> {
                 try {
                     return deserializeResponseDto(o.toString(), ShopResponse.class);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
-            }).collect(Collectors.toCollection(() ->
-                    new TreeSet<>(Comparator.comparing(ShopResponse::count1stWin)
-                            .thenComparing(ShopResponse::count1stWinAuto)
-                            .thenComparing(ShopResponse::count2ndWin).reversed()
-                            .thenComparing(ShopResponse::id))));
+            })).toList();
         } catch (Exception e) {
             log.info("[RedisTemplateService getAllShopRanking() failed]");
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
     }
 
