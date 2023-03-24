@@ -35,6 +35,6 @@ public class LottoController {
         LottoResponse lottoResponse = lottoService.getLottoResponse(drawNo);
         map.addAttribute("lottoResponse", lottoResponse);
 
-        return "/lotto/detail";
+        return "lotto/detail";
     }
 }
