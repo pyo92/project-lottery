@@ -19,12 +19,14 @@ public class RegionService {
 
     private final RegionRepository regionRepository;
 
+    @Transactional(readOnly = true)
     public List<String> getAllState1() {
         return regionRepository.findAllByParentRegIsNull().stream()
                 .map(Region::getState1)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<String> getAllState2(String state1) {
         if (!StringUtils.hasText(state1))
             return List.of();

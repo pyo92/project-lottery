@@ -59,17 +59,16 @@ public class ShopService {
     }
 
     @Transactional(readOnly = true)
-    public Set<ShopResponse> getShopRankingResponse() {
-        Set<ShopResponse> shopResponses = redisTemplateService.getAllShopRanking(); //redis cache
+    public List<ShopResponse> getShopRankingResponse() {
+        List<ShopResponse> shopResponses = redisTemplateService.getAllShopRanking(); //redis cache
 
         if (shopResponses.isEmpty()) { //redis 조회 실패 시, redis 갱신
             shopResponses = shopRepository.findByWins().stream().map(ShopResponse::from)
-                    .collect(Collectors.toCollection(() ->
-                            new TreeSet<>(Comparator.comparing(ShopResponse::count1stWin) //1등 배출횟수
-                                    .thenComparing(ShopResponse::count1stWinAuto) //자동 1등 배출횟수
-                                    .thenComparing(ShopResponse::count2ndWin) //2등 배출횟수
-                                    .reversed() //앞의 조건까지 내림차순 처리
-                                    .thenComparing(ShopResponse::id))));
+                    .sorted(Comparator.comparing(ShopResponse::count1stWin) //1등 배출횟수
+                            .thenComparing(ShopResponse::count2ndWin) //2등 배출횟수
+                            .reversed() //앞의 조건까지 내림차순 처리
+                            .thenComparing(ShopResponse::id))
+                    .toList();
 
             redisTemplateService.saveShopRanking(shopResponses); //redis cache
         }

@@ -34,7 +34,7 @@ public class ScrapLotteryShopService {
      *
      * @param state 시.도
      */
-    public void scrapShopL645(String state) {
+    public void getShopL645(String state) {
         chromeDriverService.openWebDriver();
         chromeDriverService.openUrl(URL_SHOP_LOTTO, 200);
 
@@ -173,7 +173,10 @@ public class ScrapLotteryShopService {
     private void setShopWithdrawL645() {
         //스크랩핑 일자가 과거면서 l645YN = true 인 목록은 판매 중단 처리
         Set<ShopDto> shopDtos = shopService.getShopByL645YNAndScrapedDt(true, LocalDate.now());
+
         for (ShopDto shopDto : shopDtos) {
+            if (shopDto.id() == 51100000) continue; //동행복권 사이트는 scrap 목록에 포함되지 않기에 제외
+
             shopService.save(ShopDto.of(
                     shopDto.id(),
                     shopDto.address(),

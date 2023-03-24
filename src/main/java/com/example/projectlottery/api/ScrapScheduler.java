@@ -52,6 +52,7 @@ public class ScrapScheduler {
         } catch (Exception e) {
             log.error("=== Failed scrapWinL645() : {}", LocalDateTime.now());
         } finally {
+            redisTemplateService.deleteLatestDrawNo(); //redis cache 삭제 -> 신규 회차는 일주일마다 발생하므로
             redisTemplateService.deleteALlShopRanking(); //redis cache 삭제 -> 랭킹은 일주일마다 변동되므로
         }
 

@@ -4,8 +4,6 @@ import com.example.projectlottery.domain.Lotto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.Optional;
-
 public interface LottoRepository extends JpaRepository<Lotto, Long> {
 
     @Query("select max(l.drawNo) from Lotto l")

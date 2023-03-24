@@ -2,15 +2,13 @@ package com.example.projectlottery.domain;
 
 import com.example.projectlottery.domain.auditing.AuditingFields;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Objects;
 
 @ToString
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
         @Index(columnList = "reg"),
@@ -33,6 +31,10 @@ public class Region extends AuditingFields {
 
     @Column(updatable = false, length = 5)
     private String parentReg;
+
+    public static Region of(String reg, String state1, String state2, String parentReg) {
+        return new Region(reg, state1, state2, parentReg);
+    }
 
     @Override
     public boolean equals(Object o) {
