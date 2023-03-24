@@ -36,3 +36,11 @@
 .table-hover tr:hover {
     cursor: pointer;
 }
+
+.table-responsive {
+    max-height: 700px;
+}
+
+#ranking-table {
+    overflow-y: scroll;
+}
