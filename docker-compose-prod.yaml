@@ -1,0 +1,40 @@
+version: "3.8"                                             # 파일 규격 버전
+services:                                                  # 실행하려는 컨테이너들을 정의
+  project-lottery-redis:                                   # 서비스명
+    container_name: project-lottery-redis                  # 컨테이너 명
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: pyo92/project-lottery-redis
+    ports:                                                 # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+      - "6379:6379"
+  project-lottery-database:
+    container_name: project-lottery-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: pyo92/project-lottery-database
+    environment:
+      - MARIADB_DATABASE=lottery
+      - MARIADB_ROOT_PASSWORD=${DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  project-lottery-app:
+    container_name: project-lottery-app
+    build: .
+    depends_on:                                            # DB, REDIS 컨테이너가 실행된 다음 해당 컨테이너 실행되도록 설정
+      - project-lottery-database
+      - project-lottery-redis
+    image: pro92/project-lottery-app
+    environment:                                           # env 파일에서 환경변수 주입
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
+      - DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
+      - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
+      - KAKAO_JAVA_SCRIPT_KEY=${KAKAO_JAVA_SCRIPT_KEY}
+    ports:
+      - "80:8080"
+    restart: always                                        # 컨테이너 실행 실패하는 경우 재시작할 수 있도록 설정
