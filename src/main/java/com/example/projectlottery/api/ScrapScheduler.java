@@ -19,8 +19,6 @@ public class ScrapScheduler {
 
     private final LottoService lottoService;
 
-    private final RedisTemplateService redisTemplateService;
-
     private final ScrapLotteryShopService scrapLotteryShopService;
     private final ScrapLotteryWinService scrapLotteryWinService;
     private final ScrapLotteryWinShopService scrapLotteryWinShopService;
@@ -34,8 +32,6 @@ public class ScrapScheduler {
             scrapLotteryShopService.getShopL645(scrapState);
         } catch (Exception e) {
             log.error("=== Failed scrapShopL645() : {}", LocalDateTime.now());
-        } finally {
-            redisTemplateService.deleteAllShopDetail(); //redis cache 삭제 -> 신규 또는 판매중지 판매점 변동되므로
         }
 
         log.info("=== Success scrapShopL645() : {}", LocalDateTime.now());
@@ -51,9 +47,6 @@ public class ScrapScheduler {
             scrapLotteryWinShopService.getWinShopL645(drawNo, drawNo);
         } catch (Exception e) {
             log.error("=== Failed scrapWinL645() : {}", LocalDateTime.now());
-        } finally {
-            redisTemplateService.deleteLatestDrawNo(); //redis cache 삭제 -> 신규 회차는 일주일마다 발생하므로
-            redisTemplateService.deleteALlShopRanking(); //redis cache 삭제 -> 랭킹은 일주일마다 변동되므로
         }
 
         log.info("=== Success scrapWinL645() : {}", LocalDateTime.now());

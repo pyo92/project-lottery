@@ -6,44 +6,44 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class ChromeDriverService {
+    @Value("${selenium.hub.url}")
+    private String SELENIUM_HUB_URL;
 
     private static WebDriver webDriver;
 
     public void openWebDriver() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        options.addArguments("--window-size=1920,1080");
 
-        ChromeOptions chromeOptions = new ChromeOptions();
-
-        //브라우저 숨김 처리
-        chromeOptions.addArguments("headless");
-        //headless 에러 방지
-        chromeOptions.addArguments("--start-maximized");
-        chromeOptions.addArguments("--window-size=1920,1080");
-        chromeOptions.addArguments("--disable-gpu");
-        //selenium web socket 에러 방지
-        chromeOptions.addArguments("--remote-allow-origins=*");
-
-        webDriver = new ChromeDriver(chromeOptions);
+        try {
+            webDriver = new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void closeWebDriver() {
-        webDriver.close();
         webDriver.quit();
     }
 
     public void openUrl(String url, long sleepTime) {
         try {
-            webDriver.get(url); //url 이동
+            webDriver.manage().window().maximize();
+            procJavaScript("location.href = \"" + url + "\"", 500); //url 이동
 
             //main 창 외 모든 창 닫기
             String main = webDriver.getWindowHandle();

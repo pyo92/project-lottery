@@ -5,6 +5,7 @@ import com.example.projectlottery.api.dto.response.KakaoGeoCoordinateToRegionRes
 import com.example.projectlottery.api.dto.response.KakaoSearchAddressResponse;
 import com.example.projectlottery.domain.type.ScrapStateType;
 import com.example.projectlottery.dto.ShopDto;
+import com.example.projectlottery.service.RedisTemplateService;
 import com.example.projectlottery.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +24,13 @@ import java.util.Set;
 @Service
 public class ScrapLotteryShopService {
 
-    private static final String URL_SHOP_LOTTO = "https://www.dhlottery.co.kr/store.do?method=sellerInfo645";
+    private static final String URL_SHOP_LOTTO = "https://dhlottery.co.kr/store.do?method=sellerInfo645";
 
     private final ChromeDriverService chromeDriverService;
     private final ShopService shopService;
     private final KakaoLocalApiService kakaoLocalApiService;
+
+    private final RedisTemplateService redisTemplateService;
 
     /**
      * 로또 6/45 판매점 정보 스크랩핑
@@ -51,6 +54,9 @@ public class ScrapLotteryShopService {
 
         //스크랩핑 완료 후, 판매 중단 대상 판매점 처리 (스크랩핑 일자가 과거면서 l645YN = true)
         setShopWithdrawL645();
+
+        //스크랩핑을 통해 판매점에 대한 정보가 변경되었기에 cache clear
+        redisTemplateService.deleteAllShopDetail();
 
         chromeDriverService.closeWebDriver();
     }

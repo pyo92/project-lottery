@@ -4,6 +4,7 @@ import com.example.projectlottery.dto.LottoDto;
 import com.example.projectlottery.dto.LottoPrizeDto;
 import com.example.projectlottery.service.LottoService;
 import com.example.projectlottery.service.LottoPrizeService;
+import com.example.projectlottery.service.RedisTemplateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
@@ -19,11 +20,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class ScrapLotteryWinService {
-    private static final String URL_RESULT_LOTTO = "https://www.dhlottery.co.kr/gameResult.do?method=byWin";
+    private static final String URL_RESULT_LOTTO = "https://dhlottery.co.kr/gameResult.do?method=byWin";
 
     private final ChromeDriverService chromeDriverService;
     private final LottoService lottoService;
     private final LottoPrizeService lottoPrizeService;
+
+    private final RedisTemplateService redisTemplateService;
 
     //TODO: 신규 회차만 가져오는 메서드를 만들고 이를 잡에서 사용해 매주 새로운 추첨 회자 정보를 스크랩핑할 수 있도록 한다.
 
@@ -41,6 +44,9 @@ public class ScrapLotteryWinService {
             getNumbersL645(i);
             getPrizesL645(i);
         }
+
+        //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
+        redisTemplateService.deleteLatestDrawNo();
 
         chromeDriverService.closeWebDriver();
     }

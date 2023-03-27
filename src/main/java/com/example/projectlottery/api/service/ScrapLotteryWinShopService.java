@@ -6,6 +6,7 @@ import com.example.projectlottery.dto.LottoWinShopDto;
 import com.example.projectlottery.dto.ShopDto;
 import com.example.projectlottery.service.LottoService;
 import com.example.projectlottery.service.LottoWinShopService;
+import com.example.projectlottery.service.RedisTemplateService;
 import com.example.projectlottery.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,15 @@ import java.util.List;
 @Service
 public class ScrapLotteryWinShopService {
 
-    private static final String URL_SHOP_WINNING_LOTTO = "https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645";
+    private static final String URL_SHOP_WINNING_LOTTO = "https://dhlottery.co.kr/store.do?method=topStore&pageGubun=L645";
 
     private final ChromeDriverService chromeDriverService;
     private final LottoService lottoService;
     private final ShopService shopService;
     private final LottoWinShopService lottoWinShopService;
     private final ScrapLotteryShopService scrapLotteryShopService;
+
+    private final RedisTemplateService redisTemplateService;
 
 
     /**
@@ -45,6 +48,9 @@ public class ScrapLotteryWinShopService {
             getWinShopL645_1st(i);
             getWinShopL645_2nd(i);
         }
+
+        //스크랩핑을 통해 최신 회차 정보가 반영되었기에 cache clear
+        redisTemplateService.deleteALlShopRanking();
 
         chromeDriverService.closeWebDriver();
     }
