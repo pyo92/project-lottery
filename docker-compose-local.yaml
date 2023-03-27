@@ -27,6 +27,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./selenium
+    image: pyo92/project-lottery-selenium
     volumes:
       - /dev/shm:/dev/shm
     shm_size: 2g
