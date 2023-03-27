@@ -28,6 +28,10 @@ public class ChromeDriverService {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("--window-size=1920,1080");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--disable-dev-shm-usage");
 
         try {
             webDriver = new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
