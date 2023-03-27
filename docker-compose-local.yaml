@@ -22,3 +22,18 @@ services:
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
+  project-lottery-selenium:
+    container_name: project-lottery-selenium
+    build:
+      dockerfile: Dockerfile
+      context: ./selenium
+    volumes:
+      - /dev/shm:/dev/shm
+    shm_size: 2g
+    environment:
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=768
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+      - "7900:7900"

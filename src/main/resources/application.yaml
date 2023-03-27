@@ -25,6 +25,10 @@ kakao:
     api:
       key: ${KAKAO_REST_API_KEY}
 
+selenium:
+  hub:
+    url: ${SELENIUM_HUB_URL}
+
 ---
 
 spring:
