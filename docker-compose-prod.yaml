@@ -27,9 +27,10 @@ services:                                                  # 실행하려는 컨
     build:
       dockerfile: Dockerfile
       context: ./selenium
+    image: pyo92/project-lottery-selenium
     volumes:
       - /dev/shm:/dev/shm
-    shm_size: 2g
+    shm_size: 256mb
     environment:
       - SE_SCREEN_WIDTH=1920
       - SE_SCREEN_HEIGHT=768
