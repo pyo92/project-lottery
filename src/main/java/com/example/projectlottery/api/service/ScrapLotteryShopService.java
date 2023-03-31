@@ -48,12 +48,18 @@ public class ScrapLotteryShopService {
                     .filter(scrapStateType -> scrapStateType.ordinal() > 0)
                     .toList()
                     .forEach(this::scrapShopL645ByState);
+
+            //스크랩핑 완료 후, 판매 중단 대상 판매점 처리
+            //전국(ALL) 으로 스크랩핑 한 경우, 나머지 모든 ScrapStateType 대해 처리한다.
+            Arrays.stream(ScrapStateType.values())
+                    .filter(scrapStateType -> scrapStateType.ordinal() > 0)
+                    .toList()
+                    .forEach(this::setShopWithdrawL645);
+
         } else {
             scrapShopL645ByState(shopScrapStateType);
+            setShopWithdrawL645(shopScrapStateType);
         }
-
-        //스크랩핑 완료 후, 판매 중단 대상 판매점 처리 (스크랩핑 일자가 과거면서 l645YN = true)
-        setShopWithdrawL645();
 
         //스크랩핑을 통해 판매점에 대한 정보가 변경되었기에 cache clear
         redisTemplateService.deleteAllShopDetail();
@@ -176,9 +182,9 @@ public class ScrapLotteryShopService {
     /**
      * 로또 판매 중단 판매점 처리
      */
-    private void setShopWithdrawL645() {
+    private void setShopWithdrawL645(ScrapStateType scrapStateType) {
         //스크랩핑 일자가 과거면서 l645YN = true 인 목록은 판매 중단 처리
-        Set<ShopDto> shopDtos = shopService.getShopByL645YNAndScrapedDt(true, LocalDate.now());
+        Set<ShopDto> shopDtos = shopService.getShopByL645YNAndScrapedDt(scrapStateType, true, LocalDate.now());
 
         for (ShopDto shopDto : shopDtos) {
             if (shopDto.id() == 51100000) continue; //동행복권 사이트는 scrap 목록에 포함되지 않기에 제외

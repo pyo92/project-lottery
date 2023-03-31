@@ -1,5 +1,6 @@
 package com.example.projectlottery.service;
 
+import com.example.projectlottery.domain.type.ScrapStateType;
 import com.example.projectlottery.dto.ShopDto;
 import com.example.projectlottery.dto.response.shop.ShopResponse;
 import com.example.projectlottery.repository.ShopRepository;
@@ -31,8 +32,8 @@ public class ShopService {
     }
 
     @Transactional(readOnly = true)
-    public Set<ShopDto> getShopByL645YNAndScrapedDt(boolean l645YN, LocalDate scrapedDt) {
-        return shopRepository.findByL645YNAndScrapedDtBefore(l645YN, scrapedDt).stream()
+    public Set<ShopDto> getShopByL645YNAndScrapedDt(ScrapStateType scrapStateType, boolean l645YN, LocalDate scrapedDt) {
+        return shopRepository.findByState1EqualsAndL645YNAndScrapedDtBefore(scrapStateType.getDescription(), l645YN, scrapedDt).stream()
                 .map(ShopDto::from)
                 .collect(Collectors.toUnmodifiableSet()); //순서가 중요하지 않으므로 set 반환
     }

@@ -18,7 +18,7 @@ public interface ShopRepository extends
         QuerydslPredicateExecutor<Shop>,
         QuerydslBinderCustomizer<QShop> {
 
-    Set<Shop> findByL645YNAndScrapedDtBefore(boolean l645YN, LocalDate scrapedDt);
+    Set<Shop> findByState1EqualsAndL645YNAndScrapedDtBefore(String state1, boolean l645YN, LocalDate scrapedDt);
 
     @Override
     default void customize(QuerydslBindings bindings, QShop root) {
