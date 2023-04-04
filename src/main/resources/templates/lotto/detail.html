@@ -6,10 +6,10 @@
     <meta name="description" content="">
     <meta name="author" charset="PARK GI-PYO">
     <title>project-lottery</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/lottoDetail.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/footer.css" rel="stylesheet">
+    <link href="/css/lotto/detail.css" rel="stylesheet">
 </head>
 <body>
 <header id="header">
@@ -18,181 +18,103 @@
 </header>
 
 <main class="container">
-    <div class="row">
-        <form action="/L645" method="get">
-            <div class="row search-group">
-                <h2>회차</h2>
+    <div class="move-button">
+        <button class="prev-button">
+            <i class="fas fa-arrow-alt-circle-left"></i>&nbsp;PREV
+        </button>
+        <button class="next-button">
+            NEXT&nbsp;<i class="fas fa-arrow-alt-circle-right"></i>
+        </button>
+    </div>
+
+    <div class="content-group">
+        <div class="search-group">
+            <form action="/L645" method="get">
+                <span class="label-sub-title">회차</span>
                 <select id="draw-no" name="drawNo" class="form-control">
-                    <option>1056</option>
-                    <option>1055</option>
-                    <option>1054</option>
+                    <option>1060</option>
+                    <option>1059</option>
+                    <option>1058</option>
                 </select>
                 <button class="btn btn-primary" type="submit">
                     <i class="fa fa-search"></i>
                 </button>
+            </form>
+        </div>
+
+        <!-- BEGIN 당첨 번호 -->
+        <span class="label-title">추첨 결과</span>
+        <div class="win-result">
+            <span class="draw-no">1060회</span>
+            <div class="draw-numbers">
+                <span class="ball">13</span>
+                <span class="ball">20</span>
+                <span class="ball">24</span>
+                <span class="ball">32</span>
+                <span class="ball">36</span>
+                <span class="ball">45</span>
+                <span class="split-token">+</span>
+                <span class="ball">29</span>
             </div>
-        </form>
+            <span class="label-sub-title">추첨일</span> <span class="label-text draw-dt"></span>
+        </div>
+        <!-- END 당첨 번호 -->
 
-        <div class="draw-info">
-            <h2><span class="text-red" id="draw-info-no">1056회</span> 당첨결과</h2>
-            <span class="draw-dt"><b class="text-red" id="draw-info-dt">2023-02-25</b> 추첨</span>
+        <!-- BEGIN 등위별 당첨 금액 -->
+        <div class="grid" id="lotto-win-prizes">
+            <div>&nbsp;</div>
+            <div><img class="ico"><span class="label-text">1등</span></div>
+            <div><span class="label-text"></span></div>
+            <div><span class="label-text"></span></div>
+            <div>&nbsp;</div>
+            <div><span class="label-text"></span></div>
+            <div><span class="label-text"></span></div>
+            <div>&nbsp;</div>
         </div>
 
-        <!-- BEGIN TABLE RESULT -->
-        <div class="table-responsive">
-            <table class="table" id="lotto-win-number-table">
-                <thead class="thead-center">
-                <tr>
-                    <th class="col" colspan="6">당첨번호</th>
-                    <th class="col"></th>
-                    <th class="col">보너스</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="win-nums">
-                    <td class="col"><span class="rounded-circle">13</span></td>
-                    <td class="col"><span class="rounded-circle">20</span></td>
-                    <td class="col"><span class="rounded-circle">24</span></td>
-                    <td class="col"><span class="rounded-circle">32</span></td>
-                    <td class="col"><span class="rounded-circle">36</span></td>
-                    <td class="col"><span class="rounded-circle">45</span></td>
-                    <td class="col"><span class="rounded-circle ball-p">+</span></td>
-                    <td class="col"><span class="rounded-circle">29</span></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- END TABLE RESULT -->
+        <br>
 
-        <!-- BEGIN TABLE RESULT -->
-        <div class="table-responsive">
-            <table class="table" id="lotto-win-prize-table">
-                <thead class="thead-center">
-                <tr>
-                    <th class="col-1">순위</th>
-                    <th class="col">등위별 총 당첨금액</th>
-                    <th class="col-2">당첨게임 수</th>
-                    <th class="col">1게임당 당첨금액</th>
-                    <th class="col">당첨기준</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="col-1 col-center"><span>1</span>등</td>
-                    <td class="col col-right"><span>27,575,274,384</span>원</td>
-                    <td class="col-2 col-right"><span>14</span></td>
-                    <td class="col col-right"><span>1,969,662,456</span>원</td>
-                    <td class="col col-center"><span>당첨번호 <b>6개</b> 숫자일치</span></td>
-                </tr>
-                <tr>
-                    <td class="col-1 col-center"><span>2</span>등</td>
-                    <td class="col col-right"><span>4,595,879,088</span>원</td>
-                    <td class="col-2 col-right"><span>81</span></td>
-                    <td class="col col-right"><span>56,739,248</span>원</td>
-                    <td class="col col-center"><span>당첨번호 <b>5개</b> + <b>보너스</b> 숫자일치</span></td>
-                </tr>
-                <tr>
-                    <td class="col-1 col-center"><span>3</span>등</td>
-                    <td class="col col-right"><span>4,595,881,972</span>원</td>
-                    <td class="col-2 col-right"><span>3,223</span></td>
-                    <td class="col col-right"><span>1,425,964</span>원</td>
-                    <td class="col col-center"><span>당첨번호 <b>5개</b> 숫자일치</span></td>
-                </tr>
-                <tr>
-                    <td class="col-1 col-center"><span>4</span>등</td>
-                    <td class="col col-right"><span>7,549,800,000</span>원</td>
-                    <td class="col-2 col-right"><span>150,996</span></td>
-                    <td class="col col-right"><span>50,000</span>원</td>
-                    <td class="col col-center"><span>당첨번호 <b>4개</b> 숫자일치</span></td>
-                </tr>
-                <tr>
-                    <td class="col-1 col-center"><span>5</span>등</td>
-                    <td class="col col-right"><span>12,322,975,000</span>원</td>
-                    <td class="col-2 col-right"><span>2,464,595</span></td>
-                    <td class="col col-right"><span>5,000</span>원</td>
-                    <td class="col col-center"><span>당첨번호 <b>3개</b> 숫자일치</span></td>
-                </tr>
-                </tbody>
-            </table>
+        <!-- BEGIN 1등 당첨 판매점 목록 -->
+        <span class="label-title">1등 당첨 판매점</span>
+        <div class="win-none" id="win-1st-none">
+            <span class="label-sub-title">조회 결과가 없습니다.</span>
         </div>
-        <!-- END TABLE RESULT -->
-
-        <div class="title">
-            <h3><span class="text-red">1등</span> 배출점</h3>
-            <h6><span class="text-red">★262회차</span>부터 제공</h6>
-        </div>
-        <!-- BEGIN TABLE RESULT -->
-        <div class="table-responsive">
-            <table class="table table-hover" id="lotto-1st-win-shop-table">
-                <thead class="thead-center">
-                <tr>
-                    <th class="col">순번</th>
-                    <th class="col">상호명</th>
-                    <th class="col">구분</th>
-                    <th class="col">소재지</th>
-                    <th class="col">1등</th>
-                    <th class="col">2등</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="no col col-center">1</td>
-                    <td class="name col col-center">인터넷 복권판매사이트</td>
-                    <td class="purchase col col-center">자동</td>
-                    <td class="address col col-center">동행복권(dhlottery.co.kr)</td>
-                    <td class="count-1st-win col col-center">0</td>
-                    <td class="count-2nd-win col col-center">0</td>
-                </tr>
-                <tr>
-                    <td class="no col col-center">2</td>
-                    <td class="name col col-center">인터넷 복권판매사이트</td>
-                    <td class="purchase col col-center">자동</td>
-                    <td class="address col col-center">동행복권(dhlottery.co.kr)</td>
-                    <td class="count-1st-win col col-center">0</td>
-                    <td class="count-2nd-win col col-center">0</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- END TABLE RESULT -->
-
-        <details>
-            <summary>2등 배출점</summary>
-            <!-- BEGIN TABLE RESULT -->
-            <div class="table-responsive">
-                <table class="table table-hover" id="lotto-2nd-win-shop-table">
-                    <thead class="thead-center">
-                    <tr>
-                        <th class="col">순번</th>
-                        <th class="col">상호명</th>
-                        <th class="col">소재지</th>
-                        <th class="col">1등</th>
-                        <th class="col">2등</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="no col col-center">1</td>
-                        <td class="name col col-center">인터넷 복권판매사이트</td>
-                        <td class="address col col-center">동행복권(dhlottery.co.kr)</td>
-                        <td class="count-1st-win col col-center">0</td>
-                        <td class="count-2nd-win col col-center">0</td>
-                    </tr>
-                    <tr>
-                        <td class="no col col-center">2</td>
-                        <td class="name col col-center">인터넷 복권판매사이트</td>
-                        <td class="address col col-center">동행복권(dhlottery.co.kr)</td>
-                        <td class="count-1st-win col col-center">0</td>
-                        <td class="count-2nd-win col col-center">0</td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="card" id="lotto-1st-win-shops">
+            <div class="card-header">
+                <span class="label-text">자동</span> |
+                <span class="label-bold-text">인터넷판매(동행복권)</span>
+                <img src="/images/ico_1st_prize.png" class="ico"/><span class="label-text">51</span>
+                <img src="/images/ico_2nd_prize.png" class="ico"/><span class="label-text">282</span>
             </div>
-            <!-- END TABLE RESULT -->
-        </details>
+            <div class="card-body">
+                <span class="label-text">동행복권(dhlottery.co.kr)</span>
+                <img src="/images/ico_link.png" class="ico-small"/>
+            </div>
+        </div>
+        <!-- END 1등 당첨 판매점 목록 -->
+
+        <br>
+
+        <!-- BEGIN 2등 당첨 판매점 목록 -->
+        <span class="label-title">2등 당첨 판매점</span>
+        <div class="win-none" id="win-2nd-none">
+            <span class="label-sub-title">조회 결과가 없습니다.</span>
+        </div>
+        <div class="card" id="lotto-2nd-win-shops">
+            <div class="card-header card-header-silver">
+                <span class="label-bold-text">인터넷판매(동행복권)</span>
+                <img src="/images/ico_1st_prize.png" class="ico"/><span class="label-text">51</span>
+                <img src="/images/ico_2nd_prize.png" class="ico"/><span class="label-text">282</span>
+            </div>
+            <div class="card-body">
+                <span class="label-text">동행복권(dhlottery.co.kr)</span>
+                <img src="/images/ico_link.png" class="ico-small"/>
+            </div>
+        </div>
+        <!-- END 2등 당첨 판매점 목록 -->
     </div>
 </main>
-
+<script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
 <footer id="footer">
     <hr>
     footer 삽입부
