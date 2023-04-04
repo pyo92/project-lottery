@@ -1,0 +1,130 @@
+.desktop-menu {
+    background: #434348;
+    padding: 5px;
+}
+
+.desktop-menu img {
+    width: 150px;
+    padding: 0;
+}
+
+.desktop-menu ul {
+    margin-top: -45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.desktop-menu ul li {
+    margin: 0 10px;
+}
+
+.desktop-menu ul li a {
+    color: #ffffff80;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.desktop-menu ul li a:hover {
+    color: #ffffff;
+}
+
+.mobile-menu {
+    z-index: 1;
+    display: none;
+}
+
+.mobile-menu ul li a {
+    display: grid;
+    color: white;
+    text-decoration: none;
+}
+
+.mobile-menu ul li a div {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.mobile-menu ul li a div i {
+    font-size: 25px;
+}
+
+.mobile-menu ul li a div span {
+    font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .desktop-menu {
+        text-align: center;
+    }
+
+    .desktop-menu ul {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #434348;
+        border-top: 1px solid #ccc;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .mobile-menu ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .mobile-menu ul li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .mobile-menu ul li a {
+        display: block;
+    }
+
+    .mobile-menu ul li a div i {
+        font-size: 23px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 425px) {
+    .mobile-menu ul li a div i {
+        font-size: 21px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 375px) {
+    .mobile-menu ul li a div i {
+        font-size: 19px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 320px) {
+    .mobile-menu ul li a div i {
+        font-size: 17px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 12px;
+    }
+}
