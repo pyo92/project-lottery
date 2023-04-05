@@ -1,7 +1,10 @@
-package com.example.projectlottery.dto.response.lotto;
+package com.example.projectlottery.dto.response;
 
 import com.example.projectlottery.domain.LottoPrize;
 
+/**
+ *  `LottoResponse` 에 포함되는 회차별 등위별 당첨게임수, 당첨금 등 정보 response
+ */
 public record LottoPrizeResponse(
         Integer rank,
         long winAmount,
