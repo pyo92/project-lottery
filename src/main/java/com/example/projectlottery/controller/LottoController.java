@@ -37,6 +37,6 @@ public class LottoController {
         map.addAttribute("drawNos", drawNos);
         map.addAttribute("lottoResponse", lottoResponse);
 
-        return "/lotto/drawResult";
+        return "lotto/drawResult";
     }
 }
