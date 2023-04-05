@@ -91,7 +91,17 @@ public class ScrapLotteryWinShopService {
      */
     private void getWinShopL645_2nd(long drawNo) {
         String css = "#page_box > a";
+
         int pageCount = chromeDriverService.getElementsByCssSelector(css).size();
+        System.out.println("pageCount = " + pageCount);
+
+        //20230406 - 2등 당첨내역 scrap 오류 수정
+        if (chromeDriverService.getElementsByCssSelector(css).size() > 10) {
+            pageCount = Integer.parseInt(chromeDriverService
+                    .getElementsByCssSelector("#page_box > a.go.end").get(0)
+                    .getAttribute("onclick")
+                    .replaceAll("[^0-9]", ""));
+        }
 
         for (int i = 1; i <= pageCount; i++) {
             setSelectDrawNo(drawNo);
