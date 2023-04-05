@@ -19,7 +19,7 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     background: #f6e1e180;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 
@@ -47,14 +47,14 @@ body {
     padding: 0;
     margin-left: 5px;
     margin-right: 5px;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
 }
 
 .search-group button {
-    width: 75px;
+    width: 50px;
     padding: 0;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 
@@ -66,7 +66,7 @@ body {
 }
 
 .draw-no {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bold;
     color: #ff3827;
 }
@@ -76,13 +76,13 @@ body {
 }
 
 .ball {
-    width: 64px;
-    height: 64px;
-    line-height: 64px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
     border: none;
-    border-radius: 64px;
+    border-radius: 50px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    font-size: 32px;
+    font-size: 25px;
     font-weight: bold;
     color: white;
     display: inline-block;
@@ -123,8 +123,8 @@ body {
     padding: 10px 0;
     margin-top: 5px;
     display: grid;
-    grid-template-columns: 0.5fr 2fr 5fr 6fr 1fr 7fr 4fr 0.2fr;
-    grid-gap: 0px;
+    grid-template-columns: 0.5fr 2fr 5fr 5.5fr 1fr 8.5fr 5fr 0.2fr;
+    grid-gap: 0;
     white-space: nowrap;
 }
 
@@ -201,29 +201,27 @@ body {
 
 
 .label-title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-
     white-space: nowrap;
 }
 
-.label-sub-title {
-    font-size: 18px;
+.label-mini-title {
+    font-size: 13px;
     font-weight: bold;
     color: #888888;
-
     white-space: nowrap;
 }
 
 .label-bold-text {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
 
     white-space: nowrap;
 }
 
 .label-text {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 
@@ -239,7 +237,7 @@ body {
 
 @media screen and (max-width: 768px) {
     .move-button button {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .container {
@@ -248,30 +246,27 @@ body {
 
     .search-group select {
         height: 27px;
-
         font-size: 15px;
     }
 
     .search-group button {
-        width: 60px;
-
+        width: 45px;
         font-size: 15px;
     }
 
     .draw-no {
-        font-size: 35px;
+        font-size: 26px;
     }
 
     .ball {
-        width: 50px;
-        height: 50px;
-        line-height: 50px;
-
-        font-size: 25px;
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        font-size: 23px;
     }
 
     .split-token {
-        font-size: 25px;
+        font-size: 23px;
     }
 
     .card {
@@ -291,8 +286,8 @@ body {
         font-size: 17px;
     }
 
-    .label-sub-title {
-        font-size: 15px;
+    .label-mini-title {
+        font-size: 12px;
     }
 
     .label-bold-text {
@@ -306,18 +301,17 @@ body {
 
 @media screen and (max-width: 480px) {
     .move-button button {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .draw-no {
-        font-size: 30px;
+        font-size: 23px;
     }
 
     .ball {
         width: 40px;
         height: 40px;
         line-height: 40px;
-
         font-size: 20px;
     }
 
@@ -350,8 +344,8 @@ body {
         font-size: 16px;
     }
 
-    .label-sub-title {
-        font-size: 14px;
+    .label-mini-title {
+        font-size: 11px;
     }
 
     .label-bold-text {
@@ -365,18 +359,17 @@ body {
 
 @media screen and (max-width: 380px) {
     .move-button button {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .draw-no {
-        font-size: 28px;
+        font-size: 22px;
     }
 
     .ball {
         width: 35px;
         height: 35px;
         line-height: 35px;
-
         font-size: 17px;
     }
 
@@ -396,8 +389,8 @@ body {
         font-size: 15px;
     }
 
-    .label-sub-title {
-        font-size: 13px;
+    .label-mini-title {
+        font-size: 10px;
     }
 
     .label-bold-text {
@@ -410,19 +403,14 @@ body {
 }
 
 @media screen and (max-width: 350px) {
-    .move-button button {
-        font-size: 12px;
-    }
-
     .draw-no {
-        font-size: 26px;
+        font-size: 21px;
     }
 
     .ball {
         width: 30px;
         height: 30px;
         line-height: 30px;
-
         font-size: 15px;
     }
 
@@ -442,8 +430,8 @@ body {
         font-size: 14px;
     }
 
-    .label-sub-title {
-        font-size: 12px;
+    .label-mini-title {
+        font-size: 9px;
     }
 
     .label-bold-text {
@@ -457,18 +445,17 @@ body {
 
 @media screen and (max-width: 320px) {
     .move-button button {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .draw-no {
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .ball {
         width: 26px;
         height: 26px;
         line-height: 26px;
-
         font-size: 13px;
     }
 
@@ -492,8 +479,8 @@ body {
         font-size: 13px;
     }
 
-    .label-sub-title {
-        font-size: 11px;
+    .label-mini-title {
+        font-size: 8px;
     }
 
     .label-bold-text {

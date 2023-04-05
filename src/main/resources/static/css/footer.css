@@ -25,7 +25,7 @@
 .scroll-button button a {
     display: grid;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 @media screen and (max-width: 768px) {
@@ -34,19 +34,19 @@
     }
 
     .scroll-button button a {
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
 @media screen and (max-width: 425px) {
     .scroll-button button a {
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 
 @media screen and (max-width: 375px) {
     .scroll-button button a {
-        font-size: 12px;
+        font-size: 11px;
     }
 }
 
