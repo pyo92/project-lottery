@@ -20,7 +20,7 @@ public class ScrapController {
     private final ScrapLotteryWinService scrapLotteryWinService;
     private final ScrapLotteryWinShopService scrapLotteryWinShopService;
 
-    @GetMapping("/shop")
+    @GetMapping("/shop/L645")
     public String scrapShop(@RequestParam String state) {
         try {
             scrapLotteryShopService.getShopL645(state);

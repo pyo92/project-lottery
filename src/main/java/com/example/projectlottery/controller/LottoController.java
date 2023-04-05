@@ -1,6 +1,6 @@
 package com.example.projectlottery.controller;
 
-import com.example.projectlottery.dto.response.lotto.LottoResponse;
+import com.example.projectlottery.dto.response.LottoResponse;
 import com.example.projectlottery.service.LottoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -37,6 +37,6 @@ public class LottoController {
         map.addAttribute("drawNos", drawNos);
         map.addAttribute("lottoResponse", lottoResponse);
 
-        return "lotto/detail";
+        return "/lotto/drawResult";
     }
 }
