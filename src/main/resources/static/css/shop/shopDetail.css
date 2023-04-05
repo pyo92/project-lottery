@@ -1,0 +1,434 @@
+body {
+    background: #eeeeee;
+}
+
+
+.content-group {
+    background: white;
+    min-height: 90vh;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+
+.shop-info {
+    display: grid;
+}
+
+
+#map {
+    width: 100%;
+    height: 300px;
+}
+
+
+.win-info-short {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+    align-items: center;
+    justify-items: center;
+}
+
+.win-info-short ul {
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.win-info-short li {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.card {
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    transition: all 0.1s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(105%);
+    cursor: pointer;
+}
+
+.card:active {
+    filter: brightness(80%);
+    transform: scale(100%);
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(253, 223, 174, 0.8);
+}
+
+.card-header-silver {
+    background: rgba(161, 161, 161, 0.8);
+}
+
+.card-body {
+    padding: 5px 0;
+    display: grid;
+    grid-gap: 5px;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+
+.ball {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.ball.n0 {
+    background-color: #fbc400;
+}
+
+.ball.n1 {
+    background-color: #69c8f2;
+}
+
+.ball.n2 {
+    background-color: #ff7272;
+}
+
+.ball.n3 {
+    background-color: #aaaaaa;
+}
+
+.ball.n4 {
+    background-color: #b0d840;
+}
+
+.split-token {
+    font-size: 20px;
+    color: #ff7272;
+    vertical-align: middle;
+}
+
+
+.lotto-win-none {
+    display: none;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    padding: 10px;
+}
+
+.lotto-win-none-show {
+    display: block;
+}
+
+
+.ico {
+    width: 40px;
+}
+
+
+.label-title {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-mini-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #888888;
+    white-space: nowrap;
+}
+
+.label-bold-text {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-text {
+    font-size: 16px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding-bottom: 40px;
+    }
+
+    .card {
+        font-size: 16px;
+    }
+
+    .ball {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        font-size: 17px;
+    }
+
+    .split-token {
+        font-size: 17px;
+    }
+
+    .ico {
+        width: 35px;
+    }
+
+    .label-title {
+        font-size: 17px;
+    }
+
+    .label-mini-title {
+        font-size: 12px;
+    }
+
+    .label-bold-text {
+        font-size: 15px;
+    }
+
+    .label-text {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .win-info-short ul {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #win-1st-info-short li:nth-child(1) {
+        order: 1;
+    }
+
+    #win-1st-info-short li:nth-child(2) {
+        order: 3;
+    }
+
+    #win-1st-info-short li:nth-child(3) {
+        order: 5;
+    }
+
+    #win-1st-info-short li:nth-child(4) {
+        order: 2;
+    }
+
+    #win-1st-info-short li:nth-child(5) {
+        order: 4;
+    }
+
+    #win-1st-info-short li:nth-child(6) {
+        order: 6;
+    }
+
+    #win-2nd-info-short li:nth-child(2) {
+        display: none;
+    }
+
+    #win-2nd-info-short li:nth-child(3) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card {
+        font-size: 15px;
+    }
+
+    .ball {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 15px;
+    }
+
+    .split-token {
+        font-size: 15px;
+    }
+
+    .ico {
+        width: 30px;
+    }
+
+    .label-title {
+        font-size: 16px;
+    }
+
+    .label-mini-title {
+        font-size: 11px;
+    }
+
+    .label-bold-text {
+        font-size: 14px;
+    }
+
+    .label-text {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .card {
+        font-size: 14px;
+    }
+
+    .ball {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+    }
+
+    .split-token {
+        font-size: 14px;
+    }
+
+    .ico {
+        width: 29px;
+    }
+
+    .label-title {
+        font-size: 15px;
+    }
+
+    .label-mini-title {
+        font-size: 10px;
+    }
+
+    .label-bold-text {
+        font-size: 13px;
+    }
+
+    .label-text {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .win-info-short {
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .win-info-short ul {
+        margin-left: 20px;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    #win-1st-info-short li:nth-child(1) {
+        order: 1;
+    }
+
+    #win-1st-info-short li:nth-child(2) {
+        order: 2;
+    }
+
+    #win-1st-info-short li:nth-child(3) {
+        order: 3;
+    }
+
+    #win-1st-info-short li:nth-child(4) {
+        order: 4;
+    }
+
+    #win-1st-info-short li:nth-child(5) {
+        order: 5;
+    }
+
+    #win-1st-info-short li:nth-child(6) {
+        order: 6;
+    }
+
+    .card {
+        font-size: 13px;
+    }
+
+    .ball {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 13px;
+    }
+
+    .split-token {
+        font-size: 13px;
+    }
+
+    .ico {
+        width: 28px;
+    }
+
+    .label-title {
+        font-size: 14px;
+    }
+
+    .label-mini-title {
+        font-size: 9px;
+    }
+
+    .label-bold-text {
+        font-size: 12px;
+    }
+
+    .label-text {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .card {
+        font-size: 12px;
+    }
+
+    .ball {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 12px;
+    }
+
+    .split-token {
+        font-size: 12px;
+    }
+
+    .ico {
+        width: 27px;
+    }
+
+    .label-title {
+        font-size: 13px;
+    }
+
+    .label-mini-title {
+        font-size: 8px;
+    }
+
+    .label-bold-text {
+        font-size: 11px;
+    }
+
+    .label-text {
+        font-size: 11px;
+    }
+}
