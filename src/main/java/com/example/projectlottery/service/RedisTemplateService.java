@@ -1,7 +1,8 @@
 package com.example.projectlottery.service;
 
-import com.example.projectlottery.dto.response.lotto.LottoResponse;
-import com.example.projectlottery.dto.response.shop.ShopResponse;
+import com.example.projectlottery.dto.response.LottoResponse;
+import com.example.projectlottery.dto.response.ShopResponse;
+import com.example.projectlottery.dto.response.querydsl.QShopSummary;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -126,8 +127,8 @@ public class RedisTemplateService {
         }
     }
 
-    public void saveShopRanking(List<ShopResponse> shopResponses) {
-        for (ShopResponse dto : shopResponses) {
+    public void saveShopRanking(List<QShopSummary> shopRankingResponses) {
+        for (QShopSummary dto : shopRankingResponses) {
             if (Objects.isNull(dto) || Objects.isNull(dto.id())) {
                 log.error("Required values must not be null");
                 return;
@@ -136,7 +137,7 @@ public class RedisTemplateService {
             try {
                 //dto serialized 값을 value 로 사용
                 //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용
-                double score = dto.count1stWin() * 100000000 + dto.count2ndWin() + ((100000000 - dto.id()) / 100000000D);
+                double score = dto.firstPrizeWinCount() * 100000000 + dto.secondPrizeWinCount() + ((100000000 - dto.id()) / 100000000D);
                 zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), score);
                 log.info("[RedisTemplateService saveShopRanking() success] shopId: {}, score: {}", dto.id(), score);
             } catch (Exception e) {
@@ -154,11 +155,11 @@ public class RedisTemplateService {
         }
     }
 
-    public List<ShopResponse> getAllShopRanking() {
+    public List<QShopSummary> getAllShopRanking() {
         try {
             return zSetOperations.reverseRange(CACHE_SHOP_RANKING_KEY, 0, 99).stream().map((o -> {
                 try {
-                    return deserializeResponseDto(o.toString(), ShopResponse.class);
+                    return deserializeResponseDto(o.toString(), QShopSummary.class);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
