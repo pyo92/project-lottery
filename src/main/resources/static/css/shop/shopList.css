@@ -1,0 +1,335 @@
+body {
+    background: #eeeeee;
+}
+
+
+.content-group {
+    background: white;
+    min-height: 90vh;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+
+.display-none {
+    display: none;
+}
+
+.region-info {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.region {
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.region div {
+    padding-left: 5px;
+    border: 1px solid #eeeeeeee;
+    border-radius: 5px;
+}
+
+.region div:hover {
+    transform: scale(105%);
+    cursor: pointer;
+}
+
+.region div:active {
+    filter: brightness(80%);
+    transform: scale(100%);
+}
+
+.selected-state {
+    background: rgba(253, 223, 174, 0.8);
+}
+
+
+.card {
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    transition: all 0.1s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(105%);
+    cursor: pointer;
+}
+
+.card:active {
+    filter: brightness(80%);
+    transform: scale(100%);
+}
+
+.card-header {
+    background: rgba(161, 161, 161, 0.8);
+}
+
+
+.active {
+    z-index: 0;
+}
+
+
+.ico {
+    width: 25px;
+    margin: -4px 3px 0 5px;
+}
+
+.ico-small {
+    width: 13px;
+    padding: 0;
+    margin: 0 0 2px 3px;
+}
+
+
+.label-title {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-bold-text {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-text {
+    font-size: 16px;
+}
+
+
+.label-region-bold {
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.label-region-normal {
+    color: black;
+    font-size: 14px;
+}
+
+.label-region-count {
+    color: #888888;
+    font-size: 12px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding-bottom: 40px;
+    }
+
+    .region {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+        font-size: 16px;
+    }
+
+    .ico {
+        width: 23px;
+    }
+
+    .ico-small {
+        width: 12px;
+        margin-bottom: 3px;
+    }
+
+    .label-title {
+        font-size: 17px;
+    }
+
+    .label-bold-text {
+        font-size: 15px;
+    }
+
+    .label-text {
+        font-size: 15px;
+    }
+
+    .label-region-bold {
+        font-size: 14px;
+    }
+
+    .label-region-normal {
+        font-size: 13px;
+    }
+
+    .label-region-count {
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card {
+        font-size: 15px;
+    }
+
+    .ico {
+        width: 21px;
+    }
+
+    .ico-small {
+        width: 11px;
+        margin-bottom: 1px;
+    }
+
+    .label-title {
+        font-size: 16px;
+    }
+
+    .label-bold-text {
+        font-size: 14px;
+    }
+
+    .label-text {
+        font-size: 14px;
+    }
+
+    .label-region-bold {
+        font-size: 13px;
+    }
+
+    .label-region-normal {
+        font-size: 12px;
+    }
+
+    .label-region-count {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .region {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .page-link {
+        padding: 6px 12px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .card {
+        font-size: 14px;
+    }
+
+    .ico {
+        width: 20px;
+    }
+
+    .label-title {
+        font-size: 15px;
+    }
+
+    .label-bold-text {
+        font-size: 13px;
+    }
+
+    .label-text {
+        font-size: 13px;
+    }
+
+    .label-region-bold {
+        font-size: 12px;
+    }
+
+    .label-region-normal {
+        font-size: 11px;
+    }
+
+    .label-region-count {
+        font-size: 9px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .card {
+        font-size: 13px;
+    }
+
+    .page-link {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+
+    .ico {
+        width: 19px;
+    }
+
+    .label-title {
+        font-size: 14px;
+    }
+
+    .label-bold-text {
+        font-size: 12px;
+    }
+
+    .label-text {
+        font-size: 12px;
+    }
+
+    .label-region-bold {
+        font-size: 11px;
+    }
+
+    .label-region-normal {
+        font-size: 10px;
+    }
+
+    .label-region-count {
+        font-size: 8px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .card {
+        font-size: 12px;
+    }
+
+    .ico {
+        width: 18px;
+    }
+
+    .ico-small {
+        width: 10px;
+    }
+
+    .label-title {
+        font-size: 13px;
+    }
+
+    .label-bold-text {
+        font-size: 11px;
+    }
+
+    .label-text {
+        font-size: 11px;
+    }
+
+    .label-region-bold {
+        font-size: 10px;
+    }
+
+    .label-region-normal {
+        font-size: 8px;
+    }
+
+    .label-region-count {
+        font-size: 6px;
+    }
+}
