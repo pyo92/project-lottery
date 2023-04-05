@@ -1,0 +1,138 @@
+.desktop-menu {
+    background: #434348;
+    padding: 5px;
+}
+
+.desktop-menu a img {
+    width: 150px;
+    padding: 0;
+}
+
+.desktop-menu ul {
+    margin-top: -45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.desktop-menu ul li {
+    margin: 0 10px;
+}
+
+.desktop-menu ul li a {
+    color: #ffffff80;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.desktop-menu ul li a:hover {
+    color: #ffffff;
+}
+
+.mobile-menu {
+    z-index: 1;
+    display: none;
+    padding: 5px 0;
+}
+
+.mobile-menu ul {
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    list-style: none;
+}
+
+.mobile-menu ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.mobile-menu ul li a div {
+    display: grid;
+    grid-gap: 3px;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.mobile-menu ul li a div i {
+    font-size: 20px;
+}
+
+.mobile-menu ul li a div span {
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .desktop-menu {
+        text-align: center;
+    }
+
+    .desktop-menu a img {
+        width: 130px;
+    }
+
+    .desktop-menu ul {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #434348;
+        border-top: 1px solid #ccc;
+    }
+
+    .mobile-menu ul li a div i {
+        font-size: 20px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 425px) {
+    .desktop-menu a img {
+        width: 110px;
+    }
+
+    .mobile-menu ul li a div i {
+        font-size: 18px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 375px) {
+    .desktop-menu a img {
+        width: 100px;
+    }
+
+    .mobile-menu ul li a div i {
+        font-size: 17px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 320px) {
+    .mobile-menu ul li a div i {
+        font-size: 16px;
+    }
+
+    .mobile-menu ul li a div span {
+        font-size: 11px;
+    }
+}

@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel=".prev-button"
+          th:disabled="${#strings.equals(param.drawNo, '1')}"
+          th:onclick="|location.href='@{/L645(drawNo=${param.drawNo.toString} - 1)}'|"/>
+    <attr sel=".next-button"
+          th:disabled="${#strings.equals(param.drawNo, latestDrawNo)}"
+          th:onclick="|location.href='@{/L645(drawNo=${param.drawNo.toString} + 1)}'|"/>
+
+    <attr sel="#draw-no" th:remove="all-but-first">
+        <attr sel="option[0]"
+              th:each="drawNo : ${drawNos}"
+              th:value="${drawNo}"
+              th:text="${drawNo} + '회'"
+              th:selected="${drawNo.toString == param.drawNo.toString}"/>
+    </attr>
+
+    <attr sel=".win-result">
+        <attr sel=".draw-no" th:text="${lottoResponse.drawNo} + '회'"/>
+
+        <attr sel=".draw-dt" th:text="${lottoResponse.drawDt}"/>
+
+        <attr sel=".draw-numbers">
+            <attr sel="span[0]" th:text="${lottoResponse.number1}"
+                  th:classappend="${lottoResponse.number1 <= 10 ? 'n0' :
+                                  (lottoResponse.number1 <= 20 ? 'n1' :
+                                  (lottoResponse.number1 <= 30 ? 'n2' :
+                                  (lottoResponse.number1 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[1]" th:text="${lottoResponse.number2}"
+                  th:classappend="${lottoResponse.number2 <= 10 ? 'n0' :
+                                  (lottoResponse.number2 <= 20 ? 'n1' :
+                                  (lottoResponse.number2 <= 30 ? 'n2' :
+                                  (lottoResponse.number2 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[2]" th:text="${lottoResponse.number3}"
+                  th:classappend="${lottoResponse.number3 <= 10 ? 'n0' :
+                                  (lottoResponse.number3 <= 20 ? 'n1' :
+                                  (lottoResponse.number3 <= 30 ? 'n2' :
+                                  (lottoResponse.number3 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[3]" th:text="${lottoResponse.number4}"
+                  th:classappend="${lottoResponse.number4 <= 10 ? 'n0' :
+                                  (lottoResponse.number4 <= 20 ? 'n1' :
+                                  (lottoResponse.number4 <= 30 ? 'n2' :
+                                  (lottoResponse.number4 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[4]" th:text="${lottoResponse.number5}"
+                  th:classappend="${lottoResponse.number5 <= 10 ? 'n0' :
+                                  (lottoResponse.number5 <= 20 ? 'n1' :
+                                  (lottoResponse.number5 <= 30 ? 'n2' :
+                                  (lottoResponse.number5 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[5]" th:text="${lottoResponse.number6}"
+                  th:classappend="${lottoResponse.number6 <= 10 ? 'n0' :
+                                  (lottoResponse.number6 <= 20 ? 'n1' :
+                                  (lottoResponse.number6 <= 30 ? 'n2' :
+                                  (lottoResponse.number6 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[7]" th:text="${lottoResponse.bonus}"
+                  th:classappend="${lottoResponse.bonus <= 10 ? 'n0' :
+                                  (lottoResponse.bonus <= 20 ? 'n1' :
+                                  (lottoResponse.bonus <= 30 ? 'n2' :
+                                  (lottoResponse.bonus <= 40 ? 'n3' : 'n4')))}"/>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-win-prizes"
+          th:each="prize : ${lottoResponse.lottoPrizes}"
+          th:classappend="${prize.rank == 1 ? 'grid-win-1st' :
+                            (prize.rank == 2 ? 'grid-win-2nd' :
+                            (prize.rank == 3 ? 'grid-win-3rd' : ''))}">
+        <attr sel="div[1]/img"
+              th:src="${prize.rank == 1 ? '/images/ico_1st_prize.png' :
+                        (prize.rank == 2 ? '/images/ico_2nd_prize.png' :
+                        (prize.rank == 3 ? '/images/ico_3rd_prize.png' :
+                        (prize.rank == 4 ? '/images/ico_4th_prize.png' : '/images/ico_5th_prize.png')))}"/>
+        <attr sel="div[1]/span" th:text="${prize.rank} + '등'"/>
+        <attr sel="div[2]/span" th:text="${#numbers.formatInteger(prize.winGameCount, 0, 'COMMA')} + '게임'"/>
+        <attr sel="div[3]/span" th:text="${#numbers.formatInteger(prize.winAmountPerGame, 0, 'COMMA')} + '원'"/>
+        <attr sel="div[5]/span" th:utext="${prize.rank == 1 ? '당첨번호 <b>6개</b> 일치' :
+                                            (prize.rank == 2 ? '당첨번호 <b>5개</b> + <b>보너스번호</b> 일치' :
+                                            (prize.rank == 3 ? '당첨번호 <b>5개</b> 일치' :
+                                            (prize.rank == 4 ? '당첨번호 <b>4개</b> 일치' : '당첨번호 <b>3개</b> 일치')))}"/>
+        <attr sel="div[6]/span" th:text="${prize.rank == 1 ? '1 / 8,145,060' :
+                                            (prize.rank == 2 ? '1 / 1,357,510' :
+                                            (prize.rank == 3 ? '1 / 35,724' :
+                                            (prize.rank == 4 ? '1 / 733' : '1 / 45')))}"/>
+    </attr>
+
+    <attr sel="#win-1st-none" th:classappend="${lottoResponse.lotto1stWinShops.size() == 0 ? 'win-none-visible' : ''}"/>
+    <attr sel="#win-2nd-none" th:classappend="${lottoResponse.lotto2ndWinShops.size() == 0 ? 'win-none-visible' : ''}"/>
+
+    <attr sel="#lotto-1st-win-shops"
+          th:each="shop : ${lottoResponse.lotto1stWinShops}"
+          th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel="div[0]">
+            <attr sel="span[0]" th:text="${shop.lottoPurchaseType}"/>
+            <attr sel="span[1]" th:text="${shop.name}"/>
+            <attr sel="span[2]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+            <attr sel="span[3]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+        </attr>
+        <attr sel="div[1]">
+            <attr sel="span[0]" th:text="${shop.address}"/>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-2nd-win-shops"
+          th:each="shop : ${lottoResponse.lotto2ndWinShops}"
+          th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel="div[0]">
+            <attr sel="span[0]" th:text="${shop.name}"/>
+            <attr sel="span[1]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+            <attr sel="span[2]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+        </attr>
+        <attr sel="div[1]">
+            <attr sel="span[0]" th:text="${shop.address}"/>
+        </attr>
+    </attr>
+</thlogic>

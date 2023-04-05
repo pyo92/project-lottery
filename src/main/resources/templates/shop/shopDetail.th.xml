@@ -1,0 +1,158 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel="body" th:onload="|javascript:openMap(${shopResponse.longitude}, ${shopResponse.latitude})|"/>
+
+    <attr sel=".shop-info">
+        <attr sel="span[0]" th:text="${shopResponse.name}"/>
+        <attr sel="span[1]" th:text="${shopResponse.address}"/>
+    </attr>
+
+    <attr sel="#win-1st-info-short">
+        <attr sel="li[0]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count1stWin, 0, 'COMMA') + '게임'}"/>
+        <attr sel="li[1]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count1stWinAuto, 0, 'COMMA')} + '게임'"/>
+        <attr sel="li[2]/span[1]"
+              th:text="${#numbers.formatInteger(shopResponse.count1stWinManual, 0, 'COMMA') + '게임'}"/>
+        <attr sel="li[3]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountSum1stWin, 0, 'COMMA') + '원'}"/>
+        <attr sel="li[4]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMax1stWin, 0, 'COMMA') + '원'}"/>
+        <attr sel="li[5]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMin1stWin, 0, 'COMMA') + '원'}"/>
+    </attr>
+
+    <attr sel="#win-2nd-info-short">
+        <attr sel="li[0]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count2ndWin, 0, 'COMMA') + '게임'}"/>
+        <attr sel="li[3]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountSum2ndWin, 0, 'COMMA') + '원'}"/>
+        <attr sel="li[4]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMax2ndWin, 0, 'COMMA') + '원'}"/>
+        <attr sel="li[5]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMin2ndWin, 0, 'COMMA') + '원'}"/>
+    </attr>
+
+    <attr sel="#lotto-1st-win-none"
+          th:classappend="${shopResponse.lotto1stWin.size() == 0 ? 'lotto-win-none-show': ''}"/>
+
+    <attr sel="#lotto-1st-win"
+          th:each="lotto1stWin : ${shopResponse.lotto1stWin}"
+          th:onclick="|location.href='@{/L645(drawNo=${lotto1stWin.drawNo})}'|">
+        <attr sel=".card-header">
+            <attr sel="span[0]" th:text="${lotto1stWin.drawNo + '회'}"/>
+            <attr sel="span[1]" th:text="'&nbsp;|&nbsp;' + ${lotto1stWin.lottoPurchaseType}"/>
+        </attr>
+        <attr sel=".card-body">
+            <attr sel="div[0]">
+                <attr sel="span[1]" th:text="${lotto1stWin.drawDt}"/>
+            </attr>
+            <attr sel="div[1]">
+                <attr sel="span[0]"
+                      th:text="${lotto1stWin.number1}"
+                      th:classappend="${lotto1stWin.number1 <= 10 ? 'n0' :
+                                        (lotto1stWin.number1 <= 20 ? 'n1' :
+                                        (lotto1stWin.number1 <= 30 ? 'n2' :
+                                        (lotto1stWin.number1 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[1]"
+                      th:text="${lotto1stWin.number2}"
+                      th:classappend="${lotto1stWin.number2 <= 10 ? 'n0' :
+                                        (lotto1stWin.number2 <= 20 ? 'n1' :
+                                        (lotto1stWin.number2 <= 30 ? 'n2' :
+                                        (lotto1stWin.number2 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[2]"
+                      th:text="${lotto1stWin.number3}"
+                      th:classappend="${lotto1stWin.number3 <= 10 ? 'n0' :
+                                        (lotto1stWin.number3 <= 20 ? 'n1' :
+                                        (lotto1stWin.number3 <= 30 ? 'n2' :
+                                        (lotto1stWin.number3 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[3]"
+                      th:text="${lotto1stWin.number4}"
+                      th:classappend="${lotto1stWin.number4 <= 10 ? 'n0' :
+                                        (lotto1stWin.number4 <= 20 ? 'n1' :
+                                        (lotto1stWin.number4 <= 30 ? 'n2' :
+                                        (lotto1stWin.number4 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[4]"
+                      th:text="${lotto1stWin.number5}"
+                      th:classappend="${lotto1stWin.number5 <= 10 ? 'n0' :
+                                        (lotto1stWin.number5 <= 20 ? 'n1' :
+                                        (lotto1stWin.number5 <= 30 ? 'n2' :
+                                        (lotto1stWin.number5 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[5]"
+                      th:text="${lotto1stWin.number6}"
+                      th:classappend="${lotto1stWin.number6 <= 10 ? 'n0' :
+                                        (lotto1stWin.number6 <= 20 ? 'n1' :
+                                        (lotto1stWin.number6 <= 30 ? 'n2' :
+                                        (lotto1stWin.number6 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[7]"
+                      th:text="${lotto1stWin.bonus}"
+                      th:classappend="${lotto1stWin.bonus <= 10 ? 'n0' :
+                                        (lotto1stWin.bonus <= 20 ? 'n1' :
+                                        (lotto1stWin.bonus <= 30 ? 'n2' :
+                                        (lotto1stWin.bonus <= 40 ? 'n3' : 'n4')))}"/>
+            </attr>
+            <attr sel="div[2]">
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(lotto1stWin.winAmountPerGame, 0, 'COMMA') + '원'}"/>
+            </attr>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-2nd-win-none"
+          th:classappend="${shopResponse.lotto2ndWin.size() == 0 ? 'lotto-win-none-show': ''}"/>
+
+    <attr sel="#lotto-2nd-win"
+          th:each="lotto2ndWin : ${shopResponse.lotto2ndWin}"
+          th:onclick="|location.href='@{/L645(drawNo=${lotto2ndWin.drawNo})}'|">
+        <attr sel=".card-header">
+            <attr sel="span[0]" th:text="${lotto2ndWin.drawNo + '회'}"/>
+        </attr>
+        <attr sel=".card-body">
+            <attr sel="div[0]">
+                <attr sel="span[1]" th:text="${lotto2ndWin.drawDt}"/>
+            </attr>
+            <attr sel="div[1]">
+                <attr sel="span[0]"
+                      th:text="${lotto2ndWin.number1}"
+                      th:classappend="${lotto2ndWin.number1 <= 10 ? 'n0' :
+                                        (lotto2ndWin.number1 <= 20 ? 'n1' :
+                                        (lotto2ndWin.number1 <= 30 ? 'n2' :
+                                        (lotto2ndWin.number1 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[1]"
+                      th:text="${lotto2ndWin.number2}"
+                      th:classappend="${lotto2ndWin.number2 <= 10 ? 'n0' :
+                                        (lotto2ndWin.number2 <= 20 ? 'n1' :
+                                        (lotto2ndWin.number2 <= 30 ? 'n2' :
+                                        (lotto2ndWin.number2 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[2]"
+                      th:text="${lotto2ndWin.number3}"
+                      th:classappend="${lotto2ndWin.number3 <= 10 ? 'n0' :
+                                        (lotto2ndWin.number3 <= 20 ? 'n1' :
+                                        (lotto2ndWin.number3 <= 30 ? 'n2' :
+                                        (lotto2ndWin.number3 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[3]"
+                      th:text="${lotto2ndWin.number4}"
+                      th:classappend="${lotto2ndWin.number4 <= 10 ? 'n0' :
+                                        (lotto2ndWin.number4 <= 20 ? 'n1' :
+                                        (lotto2ndWin.number4 <= 30 ? 'n2' :
+                                        (lotto2ndWin.number4 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[4]"
+                      th:text="${lotto2ndWin.number5}"
+                      th:classappend="${lotto2ndWin.number5 <= 10 ? 'n0' :
+                                        (lotto2ndWin.number5 <= 20 ? 'n1' :
+                                        (lotto2ndWin.number5 <= 30 ? 'n2' :
+                                        (lotto2ndWin.number5 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[5]"
+                      th:text="${lotto2ndWin.number6}"
+                      th:classappend="${lotto2ndWin.number6 <= 10 ? 'n0' :
+                                        (lotto2ndWin.number6 <= 20 ? 'n1' :
+                                        (lotto2ndWin.number6 <= 30 ? 'n2' :
+                                        (lotto2ndWin.number6 <= 40 ? 'n3' : 'n4')))}"/>
+                <attr sel="span[7]"
+                      th:text="${lotto2ndWin.bonus}"
+                      th:classappend="${lotto2ndWin.bonus <= 10 ? 'n0' :
+                                        (lotto2ndWin.bonus <= 20 ? 'n1' :
+                                        (lotto2ndWin.bonus <= 30 ? 'n2' :
+                                        (lotto2ndWin.bonus <= 40 ? 'n3' : 'n4')))}"/>
+            </attr>
+            <attr sel="div[2]">
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(lotto2ndWin.winAmountPerGame, 0, 'COMMA') + '원'}"/>
+            </attr>
+        </attr>
+    </attr>
+
+    <attr sel="#js-kakao-map" th:src="|//dapi.kakao.com/v2/maps/sdk.js?appkey=| + ${@environment.getProperty('kakao.js.key')}"/>
+</thlogic>

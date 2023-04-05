@@ -30,9 +30,11 @@ public class LottoController {
         List<Long> drawNos = LongStream.range(1, latestDrawNo + 1)
                 .boxed()
                 .sorted(Comparator.reverseOrder()).toList();
-        map.addAttribute("drawNos", drawNos);
 
         LottoResponse lottoResponse = lottoService.getLottoResponse(drawNo);
+
+        map.addAttribute("latestDrawNo", latestDrawNo);
+        map.addAttribute("drawNos", drawNos);
         map.addAttribute("lottoResponse", lottoResponse);
 
         return "lotto/detail";

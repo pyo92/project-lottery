@@ -1,24 +1,67 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" charset="PARK GI-PYO">
-  <title>project-lottery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" charset="PARK GI-PYO">
+    <title>project-lottery</title>
+    <link href="/static/css/header.css" rel="stylesheet">
 </head>
 <body>
-<header class="p-3 text-bg-dark text-white">
-  <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a id="home" href="/" class="nav-link px-2">Home</a></li>
-        <li><a id="menu-lotto-detail" href="/L645" class="nav-link px-2 text-white">로또 당첨결과</a></li>
-        <li><a id="menu-shop-list" href="/shop/list?page=0&state1=&state2" class="nav-link px-2 text-white">로또 판매점</a></li>
-        <li><a id="menu-shop-ranking" href="/shop/ranking" class="nav-link px-2 text-white">로또 명당</a></li>
-      </ul>
-    </div>
-  </div>
+<header>
+    <!-- BEGIN 데스크탑 메뉴 -->
+    <nav class="desktop-menu">
+        <a href="/">
+            <img src="/images/logo.png">
+        </a>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li><a href="/shop/list">복권판매점</a></li>
+            <li><a href="/L645">로또추첨결과</a></li>
+            <li><a href="/shop/ranking">로또명당</a></li>
+        </ul>
+    </nav>
+    <!-- END 데스크탑 메뉴 -->
+    <!-- BEGIN 모바일 하단 메뉴 -->
+    <nav class="mobile-menu">
+        <ul>
+            <li>
+                <a href="/L645">
+                    <div>
+                        <i class="fas fa-home"></i>
+                        <span>홈</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/shop/list">
+                    <div>
+                        <i class="fas fa-store"></i>
+                        <span>복권판매점</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/L645">
+                    <div>
+                        <i class="fas fa-trophy"></i>
+                        <span>로또추첨결과</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/shop/ranking">
+                    <div>
+                        <i class="fas fa-ranking-star"></i>
+                        <span>로또명당</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- END 모바일 하단 메뉴 -->
 </header>
+<script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
 </body>
 </html>

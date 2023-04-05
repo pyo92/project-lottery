@@ -1,0 +1,57 @@
+#footer-content {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    background: #eeeeee;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.scroll-button {
+    display: grid;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+}
+
+.scroll-button button {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: #f6e1e180;
+    margin: 3px 0;
+}
+
+.scroll-button button a {
+    display: grid;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    .scroll-button {
+        right: 0;
+    }
+
+    .scroll-button button a {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .scroll-button button a {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .scroll-button button a {
+        font-size: 11px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .scroll-button button a {
+        font-size: 10px;
+    }
+}
