@@ -117,7 +117,7 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 
         query.orderBy(new OrderSpecifier<>(Order.DESC, Expressions.constant(4L))); //1등.DESC
         query.orderBy(new OrderSpecifier<>(Order.DESC, Expressions.constant(5L))); //2등.DESC
-        query.orderBy(new OrderSpecifier<>(Order.ASC, Expressions.constant(2L))); //name.ASC
+        query.orderBy(new OrderSpecifier<>(Order.ASC, Expressions.constant(1L))); //id.ASC
 
         return query.fetch();
     }
@@ -127,26 +127,26 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
      */
     @Override
     public QShopWinSummary getShopWinSummaryResponseForShopDetail(Long shopId) {
-        QShopWinSummary fetch = from(lottoWinShop)
-                .innerJoin(lottoPrize)
-                .on(lottoWinShop.lotto.eq(lottoPrize.lotto), lottoWinShop.rank.eq(lottoPrize.rank))
-                .where(lottoWinShop.shop.id.eq(shopId), lottoWinShop.rank.in(1, 2))
-                .groupBy(lottoWinShop.shop.id)
+        //오류수정
+        return from(shop)
+                .leftJoin(lottoWinShop)
+                    .on(shop.eq(lottoWinShop.shop), lottoWinShop.rank.in(1, 2))
+                .leftJoin(lottoPrize)
+                    .on(lottoWinShop.lotto.eq(lottoPrize.lotto), lottoWinShop.rank.eq(lottoPrize.rank))
+                .where(shop.id.eq(shopId))
+                .groupBy(shop.id)
                 .select(Projections.constructor(QShopWinSummary.class,
-                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(1).otherwise(0).sum(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(1).and(lottoWinShop.lottoPurchaseType.eq(LottoPurchaseType.AUTO))).then(1).otherwise(0).sum(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(1).and(lottoWinShop.lottoPurchaseType.ne(LottoPurchaseType.AUTO))).then(1).otherwise(0).sum(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).sum(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).max(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).min(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(1).otherwise(0).sum(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).sum(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).max(),
-                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).min()))
-                .fetch()
-                .get(0);
-
-        return fetch;
+                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(1).otherwise(0).sum().coalesce(0),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(1).and(lottoWinShop.lottoPurchaseType.eq(LottoPurchaseType.AUTO))).then(1).otherwise(0).sum().coalesce(0),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(1).and(lottoWinShop.lottoPurchaseType.ne(LottoPurchaseType.AUTO))).then(1).otherwise(0).sum().coalesce(0),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).sum().coalesce(0L),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).max().coalesce(0L),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).min().coalesce(0L),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(1).otherwise(0).sum().coalesce(0),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).sum().coalesce(0L),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).max().coalesce(0L),
+                        new CaseBuilder().when(lottoWinShop.rank.eq(2)).then(lottoPrize.winAmountPerGame).otherwise(Expressions.nullExpression()).min().coalesce(0L)))
+                .fetch().get(0);
     }
 
     /**
