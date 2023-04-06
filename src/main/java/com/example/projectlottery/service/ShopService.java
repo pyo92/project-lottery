@@ -54,12 +54,12 @@ public class ShopService {
             Optional<Shop> shopById = shopRepository.findById(id);
 
             if (shopById.isPresent()) {
-                QShopWinSummary QShopWinSummary = shopRepository.getShopWinSummaryResponseForShopDetail(id);
+                QShopWinSummary qShopWinSummaries = shopRepository.getShopWinSummaryResponseForShopDetail(id);
 
-                List<QLottoSummary> qLottoSummary = shopRepository.getLottoSummaryResponseForShopDetail(id, 1);
-                List<QLottoSummary> qLottoSummary1 = shopRepository.getLottoSummaryResponseForShopDetail(id, 2);
+                List<QLottoSummary> qLottoSummary1stWin = shopRepository.getLottoSummaryResponseForShopDetail(id, 1);
+                List<QLottoSummary> qLottoSummary2ndWin = shopRepository.getLottoSummaryResponseForShopDetail(id, 2);
 
-                shopResponse = ShopResponse.from(shopById.get(), QShopWinSummary, qLottoSummary, qLottoSummary1);
+                shopResponse = ShopResponse.from(shopById.get(), qShopWinSummaries, qLottoSummary1stWin, qLottoSummary2ndWin);
 
             } else {
                 throw new EntityNotFoundException("해당 판매점 없습니다. (id: " + id + ")");

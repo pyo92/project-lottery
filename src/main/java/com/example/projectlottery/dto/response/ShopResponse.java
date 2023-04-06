@@ -41,43 +41,7 @@ public record ShopResponse(
                 count2ndWin, amountSum2ndWin, amountMax2ndWin, amountMin2ndWin, lotto1stWin, lotto2ndWin);
     }
 
-    public static ShopResponse from(Shop entity, QShopWinSummary QShopWinSummary, List<QLottoSummary> r1, List<QLottoSummary> r2) {
-//        List<LottoWinShop> lotto1stWinShops = entity.getLottoWinShops().stream()
-//                .filter(lottoWinShop -> lottoWinShop.getRank() == 1)
-//                .toList();
-//        long count1stWinAuto = lotto1stWinShops.stream()
-//                .filter(lottoWinShop -> lottoWinShop.getLottoPurchaseType() == LottoPurchaseType.AUTO)
-//                .count();
-//        long count1stWinManual = lotto1stWinShops.stream()
-//                .filter(lottoWinShop -> lottoWinShop.getLottoPurchaseType() != LottoPurchaseType.AUTO)
-//                .count();
-//        long count1stWin = count1stWinAuto + count1stWinManual;
-//
-//        List<Long> lotto1stWinAmounts = lotto1stWinShops.stream()
-//                .map(lottoWinShop -> lottoWinShop.getLotto().getLottoPrizes().stream()
-//                        .filter(lottoPrize -> lottoPrize.getRank() == 1)
-//                        .mapToLong(LottoPrize::getWinAmountPerGame)
-//                        .sum())
-//                .toList();
-//        long amountSum1stWin = lotto1stWinAmounts.stream().mapToLong(value -> value).sum();
-//        long amountMax1stWin = lotto1stWinAmounts.stream().mapToLong(value -> value).max().orElse(0L);
-//        long amountMin1stWin = lotto1stWinAmounts.stream().mapToLong(value -> value).min().orElse(0L);
-//
-//        List<LottoWinShop> lotto2ndWinShops = entity.getLottoWinShops().stream()
-//                .filter(lottoWinShop -> lottoWinShop.getRank() == 2)
-//                .toList();
-//        long count2ndWin = lotto2ndWinShops.stream().count();
-//
-//        List<Long> lotto2ndWinAmounts = lotto2ndWinShops.stream()
-//                .map(lottoWinShop -> lottoWinShop.getLotto().getLottoPrizes().stream()
-//                        .filter(lottoPrize -> lottoPrize.getRank() == 2)
-//                        .mapToLong(LottoPrize::getWinAmountPerGame)
-//                        .sum())
-//                .toList();
-//        long amountSum2ndWin = lotto2ndWinAmounts.stream().mapToLong(value -> value).sum();
-//        long amountMax2ndWin = lotto2ndWinAmounts.stream().mapToLong(value -> value).max().orElse(0L);
-//        long amountMin2ndWin = lotto2ndWinAmounts.stream().mapToLong(value -> value).min().orElse(0L);
-
+    public static ShopResponse from(Shop entity, QShopWinSummary QShopWinSummary, List<QLottoSummary> winSummary1, List<QLottoSummary> winSummary2) {
         return ShopResponse.of(
                 entity.getId(),
                 entity.getName(),
@@ -98,8 +62,8 @@ public record ShopResponse(
                 QShopWinSummary.amountSum2ndWin(),
                 QShopWinSummary.amountMax2ndWin(),
                 QShopWinSummary.amountMin2ndWin(),
-                r1,
-                r2
+                winSummary1,
+                winSummary2
         );
     }
 }
