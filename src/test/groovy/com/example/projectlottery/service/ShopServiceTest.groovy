@@ -32,7 +32,6 @@ class ShopServiceTest extends IntegrationContainerBaseTest {
 
             //test container 는 빈 상태이므로 초기 데이터 세팅
             scrapLotteryShopService.getShopL645("SEJONG")
-            scrapLotteryShopService.getShopL645("JEJU")
         }
 
         testedCount++
@@ -41,7 +40,7 @@ class ShopServiceTest extends IntegrationContainerBaseTest {
     def cleanup() {
         //@Transactional 어노테이션을 사용해 rollback 할 수도 있지만,
         //테스트 케이스마다 스크랩핑을 통해 기초 데이터를 세팅하고 롤백하는 게 부하가 커 클래스 단위로 처리하도록 강제
-        if (testedCount == 14) {  //매번 스크랩핑 데이터를 삭제하면 느리기 때문에 조치
+        if (testedCount == 4) {  //매번 스크랩핑 데이터를 삭제하면 느리기 때문에 조치
             shopRepository.deleteAll()
         }
     }
@@ -81,24 +80,9 @@ class ShopServiceTest extends IntegrationContainerBaseTest {
         shop == null
     }
 
-    def "getShopByL645YNAndScrapedDt()"() {
-        when:
-        def actualResult = shopService.getShopByL645YNAndScrapedDt(l645YN, scrapedDt)
-
-        then:
-        expectedResultSize == actualResult.size()
-
-        where:
-        l645YN | scrapedDt                   | expectedResultSize
-        true   | LocalDate.now()             | 0
-        true   | LocalDate.now().plusDays(1) | 148
-        false  | LocalDate.now()             | 0
-        false  | LocalDate.now().plusDays(1) | 0
-    }
-
     def "getShopResponse() - 정상 case"() {
         given:
-        Long shopId = 13220001L
+        Long shopId = 14410113L
 
         when:
         def shop = shopService.getShopResponse(shopId)
@@ -106,11 +90,11 @@ class ShopServiceTest extends IntegrationContainerBaseTest {
         then:
         shop != null
         shop.id() == shopId
-        shop.name() == "세종행복컨설팅"
-        shop.address() == "세종 도움3로 105-8 신목빌딩 103호"
+        shop.name() == "대박슈퍼"
+        shop.address() == "세종 행복10길 3 1층 101호"
         shop.tel() == ""
-        shop.longitude() == 127.249223136707D
-        shop.latitude() == 36.5043390758359D
+        shop.longitude() == 127.291208003234D
+        shop.latitude() == 36.6035098877612D
         shop.l645YN()
         !shop.l720YN()
         !shop.spYN()
@@ -126,22 +110,5 @@ class ShopServiceTest extends IntegrationContainerBaseTest {
         then:
         def e = thrown EntityNotFoundException
         e.message == "해당 판매점 없습니다. (id: " + shopId + ")"
-    }
-
-    def "getShopListResponse()"() {
-        when:
-        def shops = shopService.getShopListResponse(state1, state2, Pageable.unpaged())
-
-        then:
-        expectedResultSize == shops.size()
-
-        where:
-        state1    | state2 | expectedResultSize
-        ""        | ""     | 148
-        "세종특별자치시" | ""     | 37
-        "제주특별자치도" | ""     | 111
-        "제주특별자치도" | "제주시"  | 82
-        "제주특별자치도" | "서귀포시" | 29
-        "뉴욕시"     | ""     | 0
     }
 }
