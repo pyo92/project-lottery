@@ -85,6 +85,15 @@ public class RedisTemplateService {
         }
     }
 
+    public void deleteAllWinDetail() {
+        try {
+            redisTemplate.delete(CACHE_WIN_DETAIL_KEY);
+            log.info("[RedisTemplateService deleteAllWinDetail() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deleteAllWinDetail() failed]: {}", e.getMessage());
+        }
+    }
+
     public LottoResponse getWinDetail(Long drawNo) {
         try {
             return deserializeResponseDto(hashOperations.get(CACHE_WIN_DETAIL_KEY, String.valueOf(drawNo)), LottoResponse.class);
@@ -136,8 +145,8 @@ public class RedisTemplateService {
 
             try {
                 //dto serialized 값을 value 로 사용
-                //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용
-                double score = dto.firstPrizeWinCount() * 100000000 + dto.secondPrizeWinCount() + ((100000000 - dto.id()) / 100000000D);
+                //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용 (1등.desc, 2등.desc, id.asc)
+                double score = (dto.firstPrizeWinCount() * 100000000D) + (dto.secondPrizeWinCount() * 10000D) - (dto.id() / 100000000D);
                 zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), score);
                 log.info("[RedisTemplateService saveShopRanking() success] shopId: {}, score: {}", dto.id(), score);
             } catch (Exception e) {
@@ -146,7 +155,7 @@ public class RedisTemplateService {
         }
     }
 
-    public void deleteALlShopRanking() {
+    public void deleteAllShopRanking() {
         try {
             redisTemplate.delete(CACHE_SHOP_RANKING_KEY);
             log.info("[RedisTemplateService deleteALlShopRanking() success]");
@@ -168,6 +177,13 @@ public class RedisTemplateService {
             log.info("[RedisTemplateService getAllShopRanking() failed]");
             return Collections.emptyList();
         }
+    }
+
+    public void flushAllCache() {
+        this.deleteLatestDrawNo();
+        this.deleteAllWinDetail();
+        this.deleteAllShopDetail();
+        this.deleteAllShopRanking();
     }
 
     private String serializeResponseDto(Object dto) throws JsonProcessingException {

@@ -1,8 +1,9 @@
 package com.example.projectlottery.service
 
 import com.example.projectlottery.IntegrationContainerBaseTest
-import com.example.projectlottery.dto.response.lotto.LottoResponse
-import com.example.projectlottery.dto.response.shop.ShopResponse
+import com.example.projectlottery.dto.response.LottoResponse
+import com.example.projectlottery.dto.response.ShopResponse
+import com.example.projectlottery.dto.response.querydsl.QShopSummary
 import org.springframework.beans.factory.annotation.Autowired
 
 class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
@@ -14,7 +15,7 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
         //redis cache -> 테스트 케이스마다 정리
         redisTemplateService.deleteLatestDrawNo()
         redisTemplateService.deleteAllShopDetail()
-        redisTemplateService.deleteALlShopRanking()
+        redisTemplateService.deleteAllShopRanking()
     }
 
     def "saveLatestDrawNo() - success"() {
@@ -117,7 +118,7 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
 
     def "saveShopDetail() - success"() {
         given:
-        ShopResponse expected = ShopResponse.of(id, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
+        ShopResponse expected = ShopResponse.of(id, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
 
         when:
         redisTemplateService.saveShopDetail(expected)
@@ -152,7 +153,7 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
     def "saveShopDetail() - fail"() {
         given:
         Long id = null
-        ShopResponse expected = ShopResponse.of(id, "", "", "", 0D, 0D, false, false, false, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
+        ShopResponse expected = ShopResponse.of(id, "", "", "", 0D, 0D, false, false, false, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
 
         when:
         redisTemplateService.saveShopDetail(expected)
@@ -173,7 +174,7 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
         boolean l645YN = true
         boolean l720YN = false
         boolean spYN = false
-        ShopResponse expected = ShopResponse.of(id, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
+        ShopResponse expected = ShopResponse.of(id, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
         redisTemplateService.saveShopDetail(expected)
 
         when:
@@ -189,27 +190,22 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
 
     def "saveShopRanking() - success"() {
         given:
-        List<ShopResponse> expected = new ArrayList<>();
+        List<QShopSummary> expected = new ArrayList<>()
         String name = ""
         String address = ""
-        String tel = ""
-        double longitude = 0
-        double latitude = 0
-        boolean l645YN = true
-        boolean l720YN = false
-        boolean spYN = false
-        expected.add(ShopResponse.of(11100016L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 1, 0, 1, 0, 4, List.of(), List.of()))
-        expected.add(ShopResponse.of(11100021L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 1, 0, 1, 0, 5, List.of(), List.of()))
-        expected.add(ShopResponse.of(11100773L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 42, 32, 9, 1, 197, List.of(), List.of()))
-        expected.add(ShopResponse.of(51100000L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 52, 20, 31, 1, 306, List.of(), List.of()))
+        String lottoPurchaseType = ""
+        expected.add(new QShopSummary(11100001L, name, address, lottoPurchaseType, 0, 0))
+        expected.add(new QShopSummary(11100002L, name, address, lottoPurchaseType, 1, 1))
+        expected.add(new QShopSummary(11100003L, name, address, lottoPurchaseType, 52, 0))
+        expected.add(new QShopSummary(11100004L, name, address, lottoPurchaseType, 52, 305))
 
-        ShopResponse target = ShopResponse.of(id, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, count1stWin, 0, 0, 0, count2ndWin, List.of(), List.of())
+        QShopSummary target = new QShopSummary(11100005L, name, address, lottoPurchaseType, count1stWin, count2ndWin)
         expected.add(target)
 
         //기존 redis 로직에서 정렬 조건처럼 가중치를 먹여서 정렬
         expected = expected.sort((s1, s2) -> {
-            double score1 = s1.count1stWin() * 100000000 + s1.count2ndWin() + ((100000000 - s1.id()) / 100000000D)
-            double score2 = s2.count1stWin() * 100000000 + s2.count2ndWin() + ((100000000 - s2.id()) / 100000000D)
+            double score1 = s1.firstPrizeWinCount() * 100000000D + s1.secondPrizeWinCount() * 10000D - s1.id() / 100000000D;
+            double score2 = s2.firstPrizeWinCount() * 100000000D + s2.secondPrizeWinCount() * 10000D - s2.id() / 100000000D;
 
             if (score2 > score1) return 1
             else if (score2 < score1) return -1
@@ -227,17 +223,17 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
         where:
         id | count1stWin | count2ndWin | expectedRank
         1L | 0           | 0           | 5
-        1L | 0           | 999         | 5
-        1L | 1           | 0           | 5
+        1L | 0           | 1           | 4
+        1L | 1           | 0           | 4
         1L | 1           | 999         | 3
-        1L | 52          | 306         | 1
+        1L | 52          | 304         | 2
         1L | 52          | 307         | 1
     }
 
     def "saveShopRanking() - fail"() {
         given:
         Long id = null
-        ShopResponse target = ShopResponse.of(id, "", "", "", 0D, 0D, false, false, false, 0L, 0L, 0L, 0L, 0L, List.of(), List.of())
+        QShopSummary target = new QShopSummary(id, "", "", "", 0L, 0L)
 
         when:
         redisTemplateService.saveShopRanking(List.of(target))
@@ -247,27 +243,22 @@ class RedisTemplateServiceTest extends IntegrationContainerBaseTest {
         actual.size() == 0
     }
 
-    def "deleteALlShopRanking()"() {
+    def "deleteAllShopRanking()"() {
         given:
-        List<ShopResponse> expected = new ArrayList<>();
+        List<QShopSummary> expected = new ArrayList<>()
         String name = ""
         String address = ""
-        String tel = ""
-        double longitude = 0
-        double latitude = 0
-        boolean l645YN = true
-        boolean l720YN = false
-        boolean spYN = false
-        expected.add(ShopResponse.of(11100016L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 1, 0, 1, 0, 4, List.of(), List.of()))
-        expected.add(ShopResponse.of(11100021L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 1, 0, 1, 0, 5, List.of(), List.of()))
-        expected.add(ShopResponse.of(11100773L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 42, 32, 9, 1, 197, List.of(), List.of()))
-        expected.add(ShopResponse.of(51100000L, name, address, tel, longitude, latitude, l645YN, l720YN, spYN, 52, 20, 31, 1, 306, List.of(), List.of()))
+        String lottoPurchaseType = ""
+        expected.add(new QShopSummary(11100001L, name, address, lottoPurchaseType, 0, 0))
+        expected.add(new QShopSummary(11100002L, name, address, lottoPurchaseType, 1, 1))
+        expected.add(new QShopSummary(11100003L, name, address, lottoPurchaseType, 52, 0))
+        expected.add(new QShopSummary(11100003L, name, address, lottoPurchaseType, 52, 305))
 
         redisTemplateService.saveShopRanking(expected)
 
         when:
         def beforeDelete = redisTemplateService.getAllShopRanking()
-        redisTemplateService.deleteALlShopRanking()
+        redisTemplateService.deleteAllShopRanking()
         def afterDelete = redisTemplateService.getAllShopRanking()
 
         then:

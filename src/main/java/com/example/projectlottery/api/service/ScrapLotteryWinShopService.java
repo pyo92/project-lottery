@@ -50,7 +50,7 @@ public class ScrapLotteryWinShopService {
         }
 
         //스크랩핑을 통해 최신 회차 정보가 반영되었기에 cache clear
-        redisTemplateService.deleteALlShopRanking();
+        redisTemplateService.flushAllCache();
 
         chromeDriverService.closeWebDriver();
     }
