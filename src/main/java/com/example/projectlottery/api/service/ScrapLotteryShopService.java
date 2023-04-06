@@ -62,7 +62,7 @@ public class ScrapLotteryShopService {
         }
 
         //스크랩핑을 통해 판매점에 대한 정보가 변경되었기에 cache clear
-        redisTemplateService.deleteAllShopDetail();
+        redisTemplateService.flushAllCache();
 
         chromeDriverService.closeWebDriver();
     }

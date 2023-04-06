@@ -46,7 +46,7 @@ public class ScrapLotteryWinService {
         }
 
         //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
-        redisTemplateService.deleteLatestDrawNo();
+        redisTemplateService.flushAllCache();
 
         chromeDriverService.closeWebDriver();
     }

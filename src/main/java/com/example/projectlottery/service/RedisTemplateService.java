@@ -85,6 +85,15 @@ public class RedisTemplateService {
         }
     }
 
+    public void deleteAllWinDetail() {
+        try {
+            redisTemplate.delete(CACHE_WIN_DETAIL_KEY);
+            log.info("[RedisTemplateService deleteAllWinDetail() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deleteAllWinDetail() failed]: {}", e.getMessage());
+        }
+    }
+
     public LottoResponse getWinDetail(Long drawNo) {
         try {
             return deserializeResponseDto(hashOperations.get(CACHE_WIN_DETAIL_KEY, String.valueOf(drawNo)), LottoResponse.class);
@@ -146,7 +155,7 @@ public class RedisTemplateService {
         }
     }
 
-    public void deleteALlShopRanking() {
+    public void deleteAllShopRanking() {
         try {
             redisTemplate.delete(CACHE_SHOP_RANKING_KEY);
             log.info("[RedisTemplateService deleteALlShopRanking() success]");
@@ -168,6 +177,13 @@ public class RedisTemplateService {
             log.info("[RedisTemplateService getAllShopRanking() failed]");
             return Collections.emptyList();
         }
+    }
+
+    public void flushAllCache() {
+        this.deleteLatestDrawNo();
+        this.deleteAllWinDetail();
+        this.deleteAllShopDetail();
+        this.deleteAllShopRanking();
     }
 
     private String serializeResponseDto(Object dto) throws JsonProcessingException {
