@@ -136,8 +136,8 @@ public class RedisTemplateService {
 
             try {
                 //dto serialized 값을 value 로 사용
-                //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용
-                double score = dto.firstPrizeWinCount() * 100000000 + dto.secondPrizeWinCount() + ((100000000 - dto.id()) / 100000000D);
+                //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용 (1등.desc, 2등.desc, id.asc)
+                double score = (dto.firstPrizeWinCount() * 100000000D) + (dto.secondPrizeWinCount() * 10000D) - (dto.id() / 100000000D);
                 zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), score);
                 log.info("[RedisTemplateService saveShopRanking() success] shopId: {}, score: {}", dto.id(), score);
             } catch (Exception e) {
