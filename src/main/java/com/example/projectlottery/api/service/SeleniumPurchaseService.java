@@ -2,10 +2,7 @@ package com.example.projectlottery.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +15,8 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class ChromeDriverService {
-    @Value("${selenium.hub.url}")
+public class SeleniumPurchaseService {
+    @Value("${selenium.hub.purchase.url}")
     private String SELENIUM_HUB_URL;
 
     private static WebDriver webDriver;
@@ -112,5 +109,27 @@ public class ChromeDriverService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String checkAlert() {
+        String result = "";
+
+        try {
+            Alert alert = webDriver.switchTo().alert();
+            result = alert.getText();
+            alert.accept();
+        } catch (Exception e) {
+
+        }
+
+        return result;
+    }
+
+    public void switchToIFrame(WebElement iFrameElement) {
+        webDriver.switchTo().frame(iFrameElement);
+    }
+
+    public void switchToDefaultContent() {
+        webDriver.switchTo().defaultContent();
     }
 }
