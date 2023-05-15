@@ -1,26 +1,41 @@
-body {
-    background: #eeeeee;
-}
-
-
-.content-group {
-    background: white;
-    min-height: 90vh;
-    padding: 10px;
-    margin-top: 10px;
-}
-
 
 .shop-info {
-    display: grid;
+    width: 100%;
+    background: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 10px;
 }
-
 
 #map {
     width: 100%;
     height: 300px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    margin: 5px 0;
 }
 
+.win-info-short-container {
+    width: 100%;
+    background: white;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#win-1st-info-short {
+    background: rgba(255, 215, 0, 0.8);
+}
+
+/*#win-2nd-info-short {*/
+/*    background: rgba(192, 192, 192, 0.8);*/
+/*}*/
 
 .win-info-short {
     border: none;
@@ -49,16 +64,25 @@ body {
     flex-direction: column;
 }
 
+.accordion {
+    width: 100%;
+}
+
+/*#lotto-1st-win-shops-header .accordion-button {*/
+/*    background: rgba(255, 215, 0, 0.8);*/
+/*}*/
 
 .card {
+    width: 100%;
     border: none;
+    border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     margin-top: 5px;
     transition: all 0.1s ease-in-out;
 }
 
 .card:hover {
-    transform: scale(105%);
+    transform: scale(103%);
     cursor: pointer;
 }
 
@@ -103,25 +127,6 @@ body {
     text-align: center;
 }
 
-.ball.n0 {
-    background-color: #fbc400;
-}
-
-.ball.n1 {
-    background-color: #69c8f2;
-}
-
-.ball.n2 {
-    background-color: #ff7272;
-}
-
-.ball.n3 {
-    background-color: #aaaaaa;
-}
-
-.ball.n4 {
-    background-color: #b0d840;
-}
 
 .split-token {
     font-size: 20px;
@@ -132,11 +137,7 @@ body {
 
 .lotto-win-none {
     display: none;
-    border: none;
-    border-radius: 4px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
     text-align: center;
-    padding: 10px;
 }
 
 .lotto-win-none-show {
@@ -144,40 +145,8 @@ body {
 }
 
 
-.ico {
-    width: 40px;
-}
-
-
-.label-title {
-    font-size: 18px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-mini-title {
-    font-size: 13px;
-    font-weight: bold;
-    color: #888888;
-    white-space: nowrap;
-}
-
-.label-bold-text {
-    font-size: 16px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-text {
-    font-size: 16px;
-}
-
 
 @media screen and (max-width: 768px) {
-    .container {
-        padding-bottom: 40px;
-    }
-
     .card {
         font-size: 16px;
     }
@@ -192,31 +161,11 @@ body {
     .split-token {
         font-size: 17px;
     }
-
-    .ico {
-        width: 35px;
-    }
-
-    .label-title {
-        font-size: 17px;
-    }
-
-    .label-mini-title {
-        font-size: 12px;
-    }
-
-    .label-bold-text {
-        font-size: 15px;
-    }
-
-    .label-text {
-        font-size: 15px;
-    }
 }
 
 @media screen and (max-width: 767px) {
     .win-info-short ul {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 2fr;
     }
 
     #win-1st-info-short li:nth-child(1) {
@@ -267,26 +216,6 @@ body {
     .split-token {
         font-size: 15px;
     }
-
-    .ico {
-        width: 30px;
-    }
-
-    .label-title {
-        font-size: 16px;
-    }
-
-    .label-mini-title {
-        font-size: 11px;
-    }
-
-    .label-bold-text {
-        font-size: 14px;
-    }
-
-    .label-text {
-        font-size: 14px;
-    }
 }
 
 @media screen and (max-width: 380px) {
@@ -305,61 +234,9 @@ body {
         font-size: 14px;
     }
 
-    .ico {
-        width: 29px;
-    }
-
-    .label-title {
-        font-size: 15px;
-    }
-
-    .label-mini-title {
-        font-size: 10px;
-    }
-
-    .label-bold-text {
-        font-size: 13px;
-    }
-
-    .label-text {
-        font-size: 13px;
-    }
 }
 
 @media screen and (max-width: 350px) {
-    .win-info-short {
-        grid-template-columns: 1fr 2fr;
-    }
-
-    .win-info-short ul {
-        margin-left: 20px;
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-    #win-1st-info-short li:nth-child(1) {
-        order: 1;
-    }
-
-    #win-1st-info-short li:nth-child(2) {
-        order: 2;
-    }
-
-    #win-1st-info-short li:nth-child(3) {
-        order: 3;
-    }
-
-    #win-1st-info-short li:nth-child(4) {
-        order: 4;
-    }
-
-    #win-1st-info-short li:nth-child(5) {
-        order: 5;
-    }
-
-    #win-1st-info-short li:nth-child(6) {
-        order: 6;
-    }
-
     .card {
         font-size: 13px;
     }
@@ -373,26 +250,6 @@ body {
 
     .split-token {
         font-size: 13px;
-    }
-
-    .ico {
-        width: 28px;
-    }
-
-    .label-title {
-        font-size: 14px;
-    }
-
-    .label-mini-title {
-        font-size: 9px;
-    }
-
-    .label-bold-text {
-        font-size: 12px;
-    }
-
-    .label-text {
-        font-size: 12px;
     }
 }
 
@@ -410,25 +267,5 @@ body {
 
     .split-token {
         font-size: 12px;
-    }
-
-    .ico {
-        width: 27px;
-    }
-
-    .label-title {
-        font-size: 13px;
-    }
-
-    .label-mini-title {
-        font-size: 8px;
-    }
-
-    .label-bold-text {
-        font-size: 11px;
-    }
-
-    .label-text {
-        font-size: 11px;
     }
 }

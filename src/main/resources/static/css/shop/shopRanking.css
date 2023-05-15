@@ -1,25 +1,19 @@
-body {
-    background: #eeeeee;
-}
-
-
-.content-group {
-    background: white;
-    min-height: 90vh;
-    padding: 10px;
-    margin-top: 10px;
+.accordion {
+    width: 100%;
 }
 
 
 .card {
+    width: 100%;
     border: none;
+    border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     margin-top: 5px;
     transition: all 0.1s ease-in-out;
 }
 
 .card:hover {
-    transform: scale(105%);
+    transform: scale(103%);
     cursor: pointer;
 }
 
@@ -37,63 +31,9 @@ body {
 }
 
 
-.ico {
-    width: 25px;
-    margin: -4px 3px 0 5px;
-}
-
-.ico-small {
-    width: 13px;
-    padding: 0;
-    margin: 0 0 2px 3px;
-}
-
-
-.label-title {
-    font-size: 18px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-bold-text {
-    font-size: 16px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-text {
-    font-size: 16px;
-}
-
-
 @media screen and (max-width: 768px) {
-    .container {
-        padding-bottom: 40px;
-    }
-
     .card {
         font-size: 16px;
-    }
-
-    .ico {
-        width: 23px;
-    }
-
-    .ico-small {
-        width: 12px;
-        margin-bottom: 3px;
-    }
-
-    .label-title {
-        font-size: 17px;
-    }
-
-    .label-bold-text {
-        font-size: 15px;
-    }
-
-    .label-text {
-        font-size: 15px;
     }
 }
 
@@ -102,47 +42,11 @@ body {
         font-size: 15px;
     }
 
-    .ico {
-        width: 21px;
-    }
-
-    .ico-small {
-        width: 11px;
-        margin-bottom: 1px;
-    }
-
-    .label-title {
-        font-size: 16px;
-    }
-
-    .label-bold-text {
-        font-size: 14px;
-    }
-
-    .label-text {
-        font-size: 14px;
-    }
 }
 
 @media screen and (max-width: 380px) {
     .card {
         font-size: 14px;
-    }
-
-    .ico {
-        width: 20px;
-    }
-
-    .label-title {
-        font-size: 15px;
-    }
-
-    .label-bold-text {
-        font-size: 13px;
-    }
-
-    .label-text {
-        font-size: 13px;
     }
 }
 
@@ -151,45 +55,10 @@ body {
         font-size: 13px;
     }
 
-    .ico {
-        width: 19px;
-    }
-
-    .label-title {
-        font-size: 14px;
-    }
-
-    .label-bold-text {
-        font-size: 12px;
-    }
-
-    .label-text {
-        font-size: 12px;
-    }
 }
 
 @media screen and (max-width: 320px) {
     .card {
         font-size: 12px;
-    }
-
-    .ico {
-        width: 18px;
-    }
-
-    .ico-small {
-        width: 10px;
-    }
-
-    .label-title {
-        font-size: 13px;
-    }
-
-    .label-bold-text {
-        font-size: 11px;
-    }
-
-    .label-text {
-        font-size: 11px;
     }
 }

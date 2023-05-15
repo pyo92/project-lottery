@@ -58,7 +58,11 @@ public class ShopController {
     public String ranking(ModelMap map) {
         List<QShopSummary> ranking = shopService.getShopRankingResponse();
 
-        map.addAttribute("ranking", ranking);
+        //100개의 리스트를 나눠서 map binding
+        map.addAttribute("chucked1", ranking.subList(0, 3));
+        map.addAttribute("chucked2", ranking.subList(3, 10));
+        map.addAttribute("chucked3", ranking.subList(10, 30));
+        map.addAttribute("chucked4", ranking.subList(30, 100));
 
         return "shop/shopRanking";
     }

@@ -6,25 +6,27 @@
     <attr sel="body" th:onload="|javascript:openMap(${shopResponse.longitude}, ${shopResponse.latitude})|"/>
 
     <attr sel=".shop-info">
-        <attr sel="span[0]" th:text="${shopResponse.name}"/>
-        <attr sel="span[1]" th:text="${shopResponse.address}"/>
-    </attr>
+        <attr sel="#shop-name" th:text="${shopResponse.name}"/>
+        <attr sel="#shop-address" th:text="${shopResponse.address}"/>
 
-    <attr sel="#win-1st-info-short">
-        <attr sel="li[0]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count1stWin, 0, 'COMMA') + '게임'}"/>
-        <attr sel="li[1]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count1stWinAuto, 0, 'COMMA')} + '게임'"/>
-        <attr sel="li[2]/span[1]"
-              th:text="${#numbers.formatInteger(shopResponse.count1stWinManual, 0, 'COMMA') + '게임'}"/>
-        <attr sel="li[3]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountSum1stWin, 0, 'COMMA') + '원'}"/>
-        <attr sel="li[4]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMax1stWin, 0, 'COMMA') + '원'}"/>
-        <attr sel="li[5]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMin1stWin, 0, 'COMMA') + '원'}"/>
-    </attr>
+        <attr sel=".win-info-short-container">
+            <attr sel="#win-1st-info-short">
+                <attr sel="li[0]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count1stWin, 0, 'COMMA') + '게임'}"/>
+                <attr sel="li[1]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count1stWinAuto, 0, 'COMMA')} + '게임'"/>
+                <attr sel="li[2]/span[1]"
+                      th:text="${#numbers.formatInteger(shopResponse.count1stWinManual, 0, 'COMMA') + '게임'}"/>
+                <attr sel="li[3]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountSum1stWin, 0, 'COMMA') + '원'}"/>
+                <attr sel="li[4]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMax1stWin, 0, 'COMMA') + '원'}"/>
+                <attr sel="li[5]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMin1stWin, 0, 'COMMA') + '원'}"/>
+            </attr>
 
-    <attr sel="#win-2nd-info-short">
-        <attr sel="li[0]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count2ndWin, 0, 'COMMA') + '게임'}"/>
-        <attr sel="li[3]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountSum2ndWin, 0, 'COMMA') + '원'}"/>
-        <attr sel="li[4]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMax2ndWin, 0, 'COMMA') + '원'}"/>
-        <attr sel="li[5]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMin2ndWin, 0, 'COMMA') + '원'}"/>
+            <attr sel="#win-2nd-info-short">
+                <attr sel="li[0]/span[1]" th:text="${#numbers.formatInteger(shopResponse.count2ndWin, 0, 'COMMA') + '게임'}"/>
+                <attr sel="li[3]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountSum2ndWin, 0, 'COMMA') + '원'}"/>
+                <attr sel="li[4]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMax2ndWin, 0, 'COMMA') + '원'}"/>
+                <attr sel="li[5]/span[1]" th:text="${#numbers.formatInteger(shopResponse.amountMin2ndWin, 0, 'COMMA') + '원'}"/>
+            </attr>
+        </attr>
     </attr>
 
     <attr sel="#lotto-1st-win-none"

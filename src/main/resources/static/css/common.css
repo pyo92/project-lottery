@@ -1,0 +1,247 @@
+body {
+    background: #434348;
+}
+
+.spinner-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-container {
+    position: fixed;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 9999;
+}
+
+.alert {
+    display: none;
+    cursor: pointer;
+    max-width: 500px;
+}
+
+.content-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.ball.n0 {
+    background-color: #fbc400;
+}
+
+.ball.n1 {
+    background-color: #69c8f2;
+}
+
+.ball.n2 {
+    background-color: #ff7272;
+}
+
+.ball.n3 {
+    background-color: #aaaaaa;
+}
+
+.ball.n4 {
+    background-color: #b0d840;
+}
+
+.ico {
+    width: 25px;
+    margin: -4px 3px 0 5px;
+}
+
+.ico-small {
+    width: 13px;
+    padding: 0;
+    margin: 0 0 2px 3px;
+}
+
+.label-title {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-mini-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #888888;
+    white-space: nowrap;
+}
+
+.label-bold-text {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-bold-wrap-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.label-text {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    .ico {
+        width: 23px;
+    }
+
+    .ico-small {
+        width: 12px;
+        margin-bottom: 3px;
+    }
+
+    .label-title {
+        font-size: 17px;
+    }
+
+    .label-mini-title {
+        font-size: 12px;
+    }
+
+    .label-bold-text {
+        font-size: 15px;
+    }
+
+    .label-bold-wrap-text {
+        font-size: 15px;
+    }
+
+    .label-text {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ico {
+        width: 21px;
+    }
+
+    .ico-small {
+        width: 11px;
+        margin-bottom: 1px;
+    }
+
+    .label-title {
+        font-size: 16px;
+    }
+
+    .label-mini-title {
+        font-size: 11px;
+    }
+
+    .label-bold-text {
+        font-size: 14px;
+    }
+
+    .label-bold-wrap-text {
+        font-size: 14px;
+    }
+
+    .label-text {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .ico {
+        width: 20px;
+    }
+
+    .label-title {
+        font-size: 15px;
+    }
+
+    .label-mini-title {
+        font-size: 10px;
+    }
+
+    .label-bold-text {
+        font-size: 13px;
+    }
+
+    .label-bold-wrap-text {
+        font-size: 13px;
+    }
+
+    .label-text {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .ico {
+        width: 19px;
+    }
+
+    .label-title {
+        font-size: 14px;
+    }
+
+    .label-mini-title {
+        font-size: 9px;
+    }
+
+    .label-bold-text {
+        font-size: 12px;
+    }
+
+    .label-bold-wrap-text {
+        font-size: 12px;
+    }
+
+    .label-text {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .ico {
+        width: 18px;
+    }
+
+    .ico-small {
+        width: 10px;
+    }
+
+    .label-title {
+        font-size: 13px;
+    }
+
+    .label-mini-title {
+        font-size: 8px;
+    }
+
+    .label-bold-text {
+        font-size: 11px;
+    }
+
+    .label-bold-wrap-text {
+        font-size: 11px;
+    }
+
+    .label-text {
+        font-size: 11px;
+    }
+}
