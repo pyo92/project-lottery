@@ -1,8 +1,10 @@
 package com.example.projectlottery.service;
 
+import com.example.projectlottery.dto.request.DhLoginRequest;
 import com.example.projectlottery.dto.response.LottoResponse;
 import com.example.projectlottery.dto.response.ShopResponse;
 import com.example.projectlottery.dto.response.querydsl.QShopSummary;
+import com.example.projectlottery.util.EncryptionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +29,10 @@ public class RedisTemplateService {
     private static final String CACHE_WIN_DETAIL_KEY = "L645_WIN_DETAIL";
     private static final String CACHE_SHOP_DETAIL_KEY = "L645_SHOP_DETAIL";
     private static final String CACHE_SHOP_RANKING_KEY = "L645_SHOP_RANKING";
+
+    private static final String REDIS_KEY_DH_LOGIN_INFO = "DH_LOGIN_INFO";
+
+    private final EncryptionUtils encryptionUtils;
 
     private final RedisTemplate<String, Object> redisTemplate;
 
@@ -40,6 +47,9 @@ public class RedisTemplateService {
         valueOperations = redisTemplate.opsForValue();
         hashOperations = redisTemplate.opsForHash();
         zSetOperations = redisTemplate.opsForZSet();
+
+        //동행복권 로그인정보는 30분 뒤에 자동으로 파기된다.
+        redisTemplate.expire(REDIS_KEY_DH_LOGIN_INFO, 30, TimeUnit.MINUTES);
     }
 
     public void saveLatestDrawNo(Long latestDrawNo) {
@@ -178,6 +188,48 @@ public class RedisTemplateService {
             return Collections.emptyList();
         }
     }
+
+    public void saveDhLoginInfo(DhLoginRequest dto) {
+        if (Objects.isNull(dto) || Objects.isNull(dto.id()) || Objects.isNull(dto.password())) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        try {
+            //비밀번호를 암호화해서 저장한다.
+            dto = DhLoginRequest.of(dto.id(), encryptionUtils.encrypt(dto.password()));
+
+            //id 를 hashKey 로 사용
+            hashOperations.put(REDIS_KEY_DH_LOGIN_INFO, dto.id(), serializeResponseDto(dto));
+            log.info("[RedisTemplateService saveDhLoginInfo() success] id: {}", dto.id());
+        } catch (Exception e) {
+            log.error("[RedisTemplateService saveDhLoginInfo() failed]: {}", e.getMessage());
+        }
+    }
+
+    public void deleteDhLoginInfo(String id) {
+        try {
+            hashOperations.delete(REDIS_KEY_DH_LOGIN_INFO, id);
+            log.info("[RedisTemplateService deleteDhLoginINfo() success] id: {}", id);
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deleteDhLoginINfo() failed]: {}", e.getMessage());
+        }
+    }
+
+    public DhLoginRequest getDhLoginInfo(String id) {
+        try {
+            DhLoginRequest encrypted = deserializeResponseDto(hashOperations.get(REDIS_KEY_DH_LOGIN_INFO, id), DhLoginRequest.class);
+
+            //비밀번호를 복호화해서 전달한다.
+            return DhLoginRequest.of(encrypted.id(), encryptionUtils.decrypt(encrypted.password()));
+        } catch (Exception e) {
+            log.info("[RedisTemplateService getDhLoginInfo() failed] id: {}", id);
+            return null;
+        } finally {
+            deleteDhLoginInfo(id); //동행복권 로그인 정보는 일회용으로 구매 시, 즉시 파기한다.
+        }
+    }
+
 
     public void flushAllCache() {
         this.deleteLatestDrawNo();
