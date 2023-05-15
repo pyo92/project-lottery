@@ -1,6 +1,5 @@
 package com.example.projectlottery.controller;
 
-import com.example.projectlottery.service.LottoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-    private final LottoService lottoService;
-
+    /**
+     * index view
+     * @return index view file name
+     */
     @GetMapping
     public String home() {
-        Long latestDrawNo = lottoService.getLatestDrawNo();
-
-        return "redirect:/L645?drawNo=" + latestDrawNo;
+        return "index";
     }
 }

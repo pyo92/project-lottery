@@ -1,0 +1,190 @@
+body {
+    background: #434348;
+}
+
+.logo {
+    width: 100%;
+    height: 20vh;
+    max-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+    display: none;
+}
+
+.lotto-timer {
+    width: 100%;
+    height: 50vh;
+    max-height: 500px;
+    display: flex;
+    justify-content: center;
+}
+
+.timer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.timer-progress {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.progress-fill {
+    fill: white;
+}
+
+.progress-bar-fill {
+    fill: none;
+    stroke: #cccccc;
+    stroke-width: 10;
+}
+
+.progress-bar {
+    fill: none;
+    stroke: #4caf50;
+    stroke-width: 10;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 0.3s ease-in-out;
+}
+
+.timer-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+}
+
+.timer-draw-no {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    color: #ff0000;
+}
+
+.timer-text {
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    color: #6c6c6c;
+}
+
+.timer-remain {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    color: #333;
+}
+
+.link-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.card {
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(103%);
+}
+
+.card:active {
+    filter: brightness(80%);
+    transform: scale(100%);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body a {
+    margin-left: auto;
+}
+
+.label-title {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-mini-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #888888;
+    white-space: nowrap;
+}
+
+.label-bold-text {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.label-text {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    .timer-draw-no {
+        font-size: 18px;
+    }
+
+    .timer-text {
+        font-size: 18px;
+    }
+
+    .timer-remain {
+        font-size: 38px;
+    }
+
+    .link-group {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .timer-draw-no {
+        font-size: 14px;
+    }
+
+    .timer-text {
+        font-size: 14px;
+    }
+
+    .timer-remain {
+        font-size: 36px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .timer-draw-no {
+        font-size: 13px;
+    }
+
+    .timer-text {
+        font-size: 13px;
+    }
+
+    .timer-remain {
+        font-size: 35px;
+    }
+}
