@@ -1,7 +1,3 @@
-body {
-    background: #eeeeee;
-}
-
 
 .move-button {
     z-index: 1;
@@ -22,16 +18,8 @@ body {
     font-size: 16px;
 }
 
-
-.content-group {
-    background: white;
-    min-height: 90vh;
-    padding: 10px;
-    margin-top: 10px;
-}
-
-
 .search-group {
+    width: 100%;
     margin-bottom: 20px;
     display: flex;
     justify-content: flex-end;
@@ -59,10 +47,15 @@ body {
 
 
 .win-result {
+    width: 100%;
+    background: white;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
 }
 
 .draw-no {
@@ -71,7 +64,7 @@ body {
     color: #ff3827;
 }
 
-.draw-numbers {
+.draw-ball-list {
     padding: 5px 0;
 }
 
@@ -116,23 +109,30 @@ body {
     vertical-align: middle;
 }
 
+.prize-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 5px;
+}
 
-.grid {
+.prize-item {
+    width: 100%;
+    background: white;
     border: none;
+    border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     padding: 10px 0;
-    margin-top: 5px;
     display: grid;
-    grid-template-columns: 0.5fr 2fr 5fr 5.5fr 1fr 8.5fr 5fr 0.2fr;
-    grid-gap: 0;
+    grid-template-columns: 0.3fr 1fr 0.1fr 2fr 0.1fr 2.5fr 1fr 3fr 0.3fr 2fr 0.3fr;
     white-space: nowrap;
 }
 
-.grid div:nth-child(2), .grid div:nth-child(6), .grid div:nth-child(7) {
+.prize-item div:nth-child(2), .prize-item div:nth-child(8), .prize-item div:nth-child(10) {
     text-align: center;
 }
 
-.grid div:nth-child(3), .grid div:nth-child(4) {
+.prize-item div:nth-child(4), .prize-item div:nth-child(6) {
     text-align: right;
 }
 
@@ -148,8 +148,16 @@ body {
     background: rgba(248, 203, 188, 0.8);
 }
 
+.accordion {
+    width: 100%;
+}
+
+/*#lotto-1st-win-shops-header .accordion-button {*/
+/*    background: rgba(255, 215, 0, 0.8);*/
+/*}*/
 
 .card {
+    width: 100%;
     border: none;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     margin-top: 5px;
@@ -157,7 +165,7 @@ body {
 }
 
 .card:hover {
-    transform: scale(105%);
+    transform: scale(103%);
     cursor: pointer;
 }
 
@@ -176,10 +184,6 @@ body {
 
 .win-none {
     display: none;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
@@ -187,50 +191,12 @@ body {
     display: block;
 }
 
-
-.ico {
-    width: 25px;
-    margin: -4px 3px 0 5px;
-}
-
-.ico-small {
-    width: 13px;
-    padding: 0;
-    margin: 0 0 2px 3px;
-}
-
-
-.label-title {
-    font-size: 18px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-mini-title {
-    font-size: 13px;
-    font-weight: bold;
-    color: #888888;
-    white-space: nowrap;
-}
-
-.label-bold-text {
-    font-size: 16px;
-    font-weight: bold;
-
-    white-space: nowrap;
-}
-
-.label-text {
-    font-size: 16px;
-}
-
-
 @media screen and (max-width: 1024px) {
-    .grid {
-        grid-template-columns: 0.5fr 2fr 5fr 6.5fr 2.5fr 4fr 0.5fr;
+    .prize-item {
+        grid-template-columns: 0.3fr 1fr 0.1fr 2fr 0.1fr 2.5fr 1fr 3fr 0.3fr;
     }
 
-    .grid div:nth-child(6) {
+    .prize-item div:nth-child(10), .prize-item div:nth-child(11) {
         display: none;
     }
 }
@@ -238,10 +204,6 @@ body {
 @media screen and (max-width: 768px) {
     .move-button button {
         font-size: 14px;
-    }
-
-    .container {
-        padding-bottom: 40px;
     }
 
     .search-group select {
@@ -269,33 +231,16 @@ body {
         font-size: 23px;
     }
 
+    .prize-item {
+        grid-template-columns: 0.3fr 1fr 0.1fr 2fr 0.1fr 2.5fr 0.5fr;
+    }
+
+    .prize-item div:nth-child(8), .prize-item div:nth-child(9) {
+        display: none;
+    }
+
     .card {
         font-size: 16px;
-    }
-
-    .ico {
-        width: 23px;
-    }
-
-    .ico-small {
-        width: 12px;
-        margin-bottom: 3px;
-    }
-
-    .label-title {
-        font-size: 17px;
-    }
-
-    .label-mini-title {
-        font-size: 12px;
-    }
-
-    .label-bold-text {
-        font-size: 15px;
-    }
-
-    .label-text {
-        font-size: 15px;
     }
 }
 
@@ -319,41 +264,8 @@ body {
         font-size: 20px;
     }
 
-    .grid {
-        grid-template-columns: 0.5fr 2fr 5.5fr 6fr 0.7fr 0.5fr;
-    }
-
-    .grid div:nth-child(7) {
-        display: none;
-    }
-
     .card {
         font-size: 15px;
-    }
-
-    .ico {
-        width: 21px;
-    }
-
-    .ico-small {
-        width: 11px;
-        margin-bottom: 1px;
-    }
-
-    .label-title {
-        font-size: 16px;
-    }
-
-    .label-mini-title {
-        font-size: 11px;
-    }
-
-    .label-bold-text {
-        font-size: 14px;
-    }
-
-    .label-text {
-        font-size: 14px;
     }
 }
 
@@ -380,26 +292,6 @@ body {
     .card {
         font-size: 14px;
     }
-
-    .ico {
-        width: 20px;
-    }
-
-    .label-title {
-        font-size: 15px;
-    }
-
-    .label-mini-title {
-        font-size: 10px;
-    }
-
-    .label-bold-text {
-        font-size: 13px;
-    }
-
-    .label-text {
-        font-size: 13px;
-    }
 }
 
 @media screen and (max-width: 350px) {
@@ -420,26 +312,6 @@ body {
 
     .card {
         font-size: 13px;
-    }
-
-    .ico {
-        width: 19px;
-    }
-
-    .label-title {
-        font-size: 14px;
-    }
-
-    .label-mini-title {
-        font-size: 9px;
-    }
-
-    .label-bold-text {
-        font-size: 12px;
-    }
-
-    .label-text {
-        font-size: 12px;
     }
 }
 
@@ -465,29 +337,5 @@ body {
 
     .card {
         font-size: 12px;
-    }
-
-    .ico {
-        width: 18px;
-    }
-
-    .ico-small {
-        width: 10px;
-    }
-
-    .label-title {
-        font-size: 13px;
-    }
-
-    .label-mini-title {
-        font-size: 8px;
-    }
-
-    .label-bold-text {
-        font-size: 11px;
-    }
-
-    .label-text {
-        font-size: 11px;
     }
 }

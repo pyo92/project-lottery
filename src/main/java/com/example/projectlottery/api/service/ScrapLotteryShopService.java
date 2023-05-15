@@ -26,7 +26,7 @@ public class ScrapLotteryShopService {
 
     private static final String URL_SHOP_LOTTO = "https://dhlottery.co.kr/store.do?method=sellerInfo645";
 
-    private final ChromeDriverService chromeDriverService;
+    private final SeleniumScrapService seleniumScrapService;
     private final ShopService shopService;
     private final KakaoLocalApiService kakaoLocalApiService;
 
@@ -38,8 +38,8 @@ public class ScrapLotteryShopService {
      * @param state 시.도
      */
     public void getShopL645(String state) {
-        chromeDriverService.openWebDriver();
-        chromeDriverService.openUrl(URL_SHOP_LOTTO, 200);
+        seleniumScrapService.openWebDriver();
+        seleniumScrapService.openUrl(URL_SHOP_LOTTO, 200);
 
         ScrapStateType shopScrapStateType = ScrapStateType.valueOf(state);
 
@@ -64,7 +64,7 @@ public class ScrapLotteryShopService {
         //스크랩핑을 통해 판매점에 대한 정보가 변경되었기에 cache clear
         redisTemplateService.flushAllCache();
 
-        chromeDriverService.closeWebDriver();
+        seleniumScrapService.closeWebDriver();
     }
 
     /**
@@ -79,28 +79,28 @@ public class ScrapLotteryShopService {
         //타 시.도로 이동해 구 단위 필터 해제
         if (scrapStateType == ScrapStateType.SEOUL) {
             css = "#mainMenuArea > a:nth-child(2)";
-            js = chromeDriverService.getElementByCssSelector(css).getAttribute("onclick");
-            chromeDriverService.procJavaScript(js, 200);
+            js = seleniumScrapService.getElementByCssSelector(css).getAttribute("onclick");
+            seleniumScrapService.procJavaScript(js, 200);
         }
 
         //대상 시.도로 이동
         css = "#mainMenuArea > a:nth-child(" + scrapStateType.ordinal() + ")";
-        js = chromeDriverService.getElementByCssSelector(css).getAttribute("onclick");
-        chromeDriverService.procJavaScript(js, 200);
+        js = seleniumScrapService.getElementByCssSelector(css).getAttribute("onclick");
+        seleniumScrapService.procJavaScript(js, 200);
 
         //항상 1 페이지부터 시작할 수 있도록 설정
         js = "$.selfSubmit(1);";
-        chromeDriverService.procJavaScript(js, 200);
+        seleniumScrapService.procJavaScript(js, 200);
 
         //현재 pagination view 에 [끝 페이지] 링크가 존재하는지 확인
         css = "#pagingView > a";
-        int firstPagingViewItemCount = chromeDriverService.getElementsByCssSelector(css).size();
+        int firstPagingViewItemCount = seleniumScrapService.getElementsByCssSelector(css).size();
 
         //마지막 페이지 번호 획득
         int lastPageNo = firstPagingViewItemCount;
         if (firstPagingViewItemCount > 10) {
             css = "#pagingView > a.go.end";
-            lastPageNo = Integer.parseInt(chromeDriverService.getElementByCssSelector(css)
+            lastPageNo = Integer.parseInt(seleniumScrapService.getElementByCssSelector(css)
                     .getAttribute("href")
                     .replaceAll("[^0-9]", ""));
         }
@@ -109,10 +109,10 @@ public class ScrapLotteryShopService {
         while (curPageNo <= lastPageNo) {
             //항상 1 페이지부터 시작할 수 있도록 세팅
             js = "$.selfSubmit(" + curPageNo + ");";
-            chromeDriverService.procJavaScript(js, 200);
+            seleniumScrapService.procJavaScript(js, 200);
 
             css = "#resultTable > tbody > tr";
-            List<WebElement> Shops = chromeDriverService.getElementsByCssSelector(css);
+            List<WebElement> Shops = seleniumScrapService.getElementsByCssSelector(css);
 
             for (WebElement shop : Shops) {
                 //판매점 id 획득
@@ -226,14 +226,14 @@ public class ScrapLotteryShopService {
             latitude = searchAddressResponse.getDocs().get(0).getLatitude();
         } else {
             //차선책으로 동행복권에서 제공하는 위치보기 팝업창에서 위도, 경도를 획득한다.
-            chromeDriverService.procJavaScript(jsOpenPopWindow, 200);
+            seleniumScrapService.procJavaScript(jsOpenPopWindow, 200);
 
-            chromeDriverService.switchMainWindow(false);
+            seleniumScrapService.switchMainWindow(false);
             longitude = Double.parseDouble(
-                    chromeDriverService.getElementByCssSelector("body > form > input[type=hidden]:nth-child(2)").getAttribute("value"));
+                    seleniumScrapService.getElementByCssSelector("body > form > input[type=hidden]:nth-child(2)").getAttribute("value"));
             latitude = Double.parseDouble(
-                    chromeDriverService.getElementByCssSelector("body > form > input[type=hidden]:nth-child(1)").getAttribute("value"));
-            chromeDriverService.switchMainWindow(true);
+                    seleniumScrapService.getElementByCssSelector("body > form > input[type=hidden]:nth-child(1)").getAttribute("value"));
+            seleniumScrapService.switchMainWindow(true);
         }
 
         return new double[]{longitude, latitude};

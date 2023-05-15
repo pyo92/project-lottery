@@ -22,13 +22,11 @@ import java.util.stream.Collectors;
 public class ScrapLotteryWinService {
     private static final String URL_RESULT_LOTTO = "https://dhlottery.co.kr/gameResult.do?method=byWin";
 
-    private final ChromeDriverService chromeDriverService;
+    private final SeleniumScrapService seleniumScrapService;
     private final LottoService lottoService;
     private final LottoPrizeService lottoPrizeService;
 
     private final RedisTemplateService redisTemplateService;
-
-    //TODO: 신규 회차만 가져오는 메서드를 만들고 이를 잡에서 사용해 매주 새로운 추첨 회자 정보를 스크랩핑할 수 있도록 한다.
 
     /**
      * 로또 6/45 회차별 당첨 번호 + 등위별 당첨 금액 스크랩핑
@@ -37,8 +35,8 @@ public class ScrapLotteryWinService {
      * @param end   종료 회차
      */
     public void getResultsL645(long start, long end) {
-        chromeDriverService.openWebDriver();
-        chromeDriverService.openUrl(URL_RESULT_LOTTO, 200);
+        seleniumScrapService.openWebDriver();
+        seleniumScrapService.openUrl(URL_RESULT_LOTTO, 200);
 
         for (long i = start; i <= end; i++) {
             getNumbersL645(i);
@@ -48,19 +46,19 @@ public class ScrapLotteryWinService {
         //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
         redisTemplateService.flushAllCache();
 
-        chromeDriverService.closeWebDriver();
+        seleniumScrapService.closeWebDriver();
     }
 
     private void getNumbersL645(long drawNo) {
-        Select select = new Select(chromeDriverService.getElementById("dwrNoList"));
+        Select select = new Select(seleniumScrapService.getElementById("dwrNoList"));
         select.selectByValue(String.valueOf(drawNo)); //회차 변경
 
         String js = "document.getElementById('searchBtn').click();";
-        chromeDriverService.procJavaScript(js, 200); //회차 조회
+        seleniumScrapService.procJavaScript(js, 200); //회차 조회
 
         //추첨일
         String css = "#article > div:nth-child(2) > div > div.win_result > p";
-        String strDrawDt = chromeDriverService.getElementByCssSelector(css).getText().replaceAll("[^0-9]", "");
+        String strDrawDt = seleniumScrapService.getElementByCssSelector(css).getText().replaceAll("[^0-9]", "");
         LocalDate drawDt = LocalDate.of(
                 Integer.parseInt(strDrawDt.substring(0, 4)),
                 Integer.parseInt(strDrawDt.substring(4, 6)),
@@ -69,14 +67,14 @@ public class ScrapLotteryWinService {
 
         //당첨번호
         css = "#article > div:nth-child(2) > div > div.win_result > div > div.num.win > p > span";
-        Set<Integer> numbers = chromeDriverService.getElementsByCssSelector(css)
+        Set<Integer> numbers = seleniumScrapService.getElementsByCssSelector(css)
                 .stream().map(WebElement::getText)
                 .map(Integer::parseInt)
                 .collect(Collectors.toUnmodifiableSet());
 
         //보너스 번호
         css = "#article > div:nth-child(2) > div > div.win_result > div > div.num.bonus > p > span";
-        Integer bonus = Integer.parseInt(chromeDriverService.getElementByCssSelector(css).getText());
+        Integer bonus = Integer.parseInt(seleniumScrapService.getElementByCssSelector(css).getText());
 
         LottoDto dto = LottoDto.of(drawNo, drawDt, numbers, bonus);
         lottoService.save(dto);
@@ -86,7 +84,7 @@ public class ScrapLotteryWinService {
         for (int i = 1; i <= 5; i++) {
             //등위별 당첨자 수 + 당첨 금액
             String css = "#article > div:nth-child(2) > div > table > tbody > tr:nth-child(" + i + ") > td";
-            List<WebElement> prizes = chromeDriverService.getElementsByCssSelector(css);
+            List<WebElement> prizes = seleniumScrapService.getElementsByCssSelector(css);
 
             LottoDto lottoDto = lottoService.getLotto(drawNo);
             Integer rank = i;

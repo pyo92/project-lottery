@@ -25,7 +25,7 @@ public class ScrapLotteryWinShopService {
 
     private static final String URL_SHOP_WINNING_LOTTO = "https://dhlottery.co.kr/store.do?method=topStore&pageGubun=L645";
 
-    private final ChromeDriverService chromeDriverService;
+    private final SeleniumScrapService seleniumScrapService;
     private final LottoService lottoService;
     private final ShopService shopService;
     private final LottoWinShopService lottoWinShopService;
@@ -41,8 +41,8 @@ public class ScrapLotteryWinShopService {
      * @param end   종료 회차
      */
     public void getWinShopL645(long start, long end) {
-        chromeDriverService.openWebDriver();
-        chromeDriverService.openUrl(URL_SHOP_WINNING_LOTTO, 200);
+        seleniumScrapService.openWebDriver();
+        seleniumScrapService.openUrl(URL_SHOP_WINNING_LOTTO, 200);
 
         for (long i = start; i <= end; i++) {
             getWinShopL645_1st(i);
@@ -52,7 +52,7 @@ public class ScrapLotteryWinShopService {
         //스크랩핑을 통해 최신 회차 정보가 반영되었기에 cache clear
         redisTemplateService.flushAllCache();
 
-        chromeDriverService.closeWebDriver();
+        seleniumScrapService.closeWebDriver();
     }
 
     /**
@@ -64,16 +64,16 @@ public class ScrapLotteryWinShopService {
         setSelectDrawNo(drawNo);
 
         String js = "document.getElementById('searchBtn').click();";
-        chromeDriverService.procJavaScript(js, 200);
+        seleniumScrapService.procJavaScript(js, 200);
 
         //1등 복권 판매점 목록 획득
         String css = "#article > div:nth-child(2) > div > div:nth-child(4) > table > tbody > tr";
-        List<WebElement> shops = chromeDriverService.getElementsByCssSelector(css);
+        List<WebElement> shops = seleniumScrapService.getElementsByCssSelector(css);
 
         for (int i = 1; i <= shops.size(); i++) {
             //판매점 정보 획득
             css = "#article > div:nth-child(2) > div > div:nth-child(4) > table > tbody > tr:nth-child(" + i + ") > td";
-            List<WebElement> shopInfos = chromeDriverService.getElementsByCssSelector(css);
+            List<WebElement> shopInfos = seleniumScrapService.getElementsByCssSelector(css);
 
             //1등 당첨자 없는 회차 대응
             if (shopInfos.size() == 1 && shopInfos.get(0).getText().equals("조회 결과가 없습니다.")) {
@@ -92,12 +92,12 @@ public class ScrapLotteryWinShopService {
     private void getWinShopL645_2nd(long drawNo) {
         String css = "#page_box > a";
 
-        int pageCount = chromeDriverService.getElementsByCssSelector(css).size();
+        int pageCount = seleniumScrapService.getElementsByCssSelector(css).size();
         System.out.println("pageCount = " + pageCount);
 
         //20230406 - 2등 당첨내역 scrap 오류 수정
-        if (chromeDriverService.getElementsByCssSelector(css).size() > 10) {
-            pageCount = Integer.parseInt(chromeDriverService
+        if (seleniumScrapService.getElementsByCssSelector(css).size() > 10) {
+            pageCount = Integer.parseInt(seleniumScrapService
                     .getElementsByCssSelector("#page_box > a.go.end").get(0)
                     .getAttribute("onclick")
                     .replaceAll("[^0-9]", ""));
@@ -108,15 +108,15 @@ public class ScrapLotteryWinShopService {
 
             if (i > 1) { //2번째 페이지부터 자바스크립트를 실행해 페이지를 이동
                 String js = "selfSubmit(" + i + ");";
-                chromeDriverService.procJavaScript(js, 200);
+                seleniumScrapService.procJavaScript(js, 200);
             }
 
             css = "#article > div:nth-child(2) > div > div:nth-child(5) > table > tbody > tr";
-            int shopCount = chromeDriverService.getElementsByCssSelector(css).size();
+            int shopCount = seleniumScrapService.getElementsByCssSelector(css).size();
 
             for (int j = 1; j <= shopCount; j++) {
                 css = "#article > div:nth-child(2) > div > div:nth-child(5) > table > tbody > tr:nth-child(" + j + ") > td";
-                List<WebElement> shops = chromeDriverService.getElementsByCssSelector(css);
+                List<WebElement> shops = seleniumScrapService.getElementsByCssSelector(css);
 
                 //당첨 정보 바인딩
                 saveWinShopL645(drawNo, 2, shops);
@@ -131,7 +131,7 @@ public class ScrapLotteryWinShopService {
      */
     private void setSelectDrawNo(long drawNo) {
         String css = "#drwNo";
-        Select select = new Select(chromeDriverService.getElementByCssSelector(css));
+        Select select = new Select(seleniumScrapService.getElementByCssSelector(css));
 
         //공식적으로 제공하는 가장 과거 회차 번호 힉득
         List<WebElement> options = select.getOptions();
@@ -143,10 +143,10 @@ public class ScrapLotteryWinShopService {
         } else {
             //나머지 회차는 강제로 select value 변경해서 검색
             css = "#drwNo > option:nth-child(1)";
-            WebElement option = chromeDriverService.getElementByCssSelector(css);
+            WebElement option = seleniumScrapService.getElementByCssSelector(css);
 
             String js = "arguments[0].value=" + drawNo + ";";
-            chromeDriverService.procJavaScript(js, option, 0);
+            seleniumScrapService.procJavaScript(js, option, 0);
         }
     }
 

@@ -18,6 +18,10 @@ spring:
       hibernate:
         default_batch_fetch_size: 100
 
+dhlottery:
+  encryption:
+      key: ${DH_LOTTERY_ENCRYPTION_KEY}
+
 kakao:
   js:
     key: ${KAKAO_JAVA_SCRIPT_KEY}
@@ -27,7 +31,10 @@ kakao:
 
 selenium:
   hub:
-    url: ${SELENIUM_HUB_URL}
+    scrap:
+      url: ${SELENIUM_HUB_FOR_SCRAP_URL}
+    purchase:
+      url: ${SELENIUM_HUB_FOR_PURCHASE_URL}
 
 ---
 
@@ -46,7 +53,7 @@ spring:
       port: 6379
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
