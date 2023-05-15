@@ -23,7 +23,7 @@
 
         <attr sel=".draw-dt" th:text="${lottoResponse.drawDt}"/>
 
-        <attr sel=".draw-numbers">
+        <attr sel=".draw-ball-list">
             <attr sel="span[0]" th:text="${lottoResponse.number1}"
                   th:classappend="${lottoResponse.number1 <= 10 ? 'n0' :
                                   (lottoResponse.number1 <= 20 ? 'n1' :
@@ -62,24 +62,24 @@
         </attr>
     </attr>
 
-    <attr sel="#lotto-win-prizes"
+    <attr sel=".prize-item"
           th:each="prize : ${lottoResponse.lottoPrizes}"
           th:classappend="${prize.rank == 1 ? 'grid-win-1st' :
                             (prize.rank == 2 ? 'grid-win-2nd' :
                             (prize.rank == 3 ? 'grid-win-3rd' : ''))}">
         <attr sel="div[1]/img"
-              th:src="${prize.rank == 1 ? '/images/ico_1st_prize.png' :
-                        (prize.rank == 2 ? '/images/ico_2nd_prize.png' :
-                        (prize.rank == 3 ? '/images/ico_3rd_prize.png' :
-                        (prize.rank == 4 ? '/images/ico_4th_prize.png' : '/images/ico_5th_prize.png')))}"/>
+              th:src="${prize.rank == 1 ? '/img/ico-1st-prize.png' :
+                        (prize.rank == 2 ? '/img/ico-2nd-prize.png' :
+                        (prize.rank == 3 ? '/img/ico-3rd-prize.png' :
+                        (prize.rank == 4 ? '/img/ico-4th-prize.png' : '/img/ico-5th-prize.png')))}"/>
         <attr sel="div[1]/span" th:text="${prize.rank} + '등'"/>
-        <attr sel="div[2]/span" th:text="${#numbers.formatInteger(prize.winGameCount, 0, 'COMMA')} + '게임'"/>
-        <attr sel="div[3]/span" th:text="${#numbers.formatInteger(prize.winAmountPerGame, 0, 'COMMA')} + '원'"/>
-        <attr sel="div[5]/span" th:utext="${prize.rank == 1 ? '당첨번호 <b>6개</b> 일치' :
+        <attr sel="div[3]/span" th:text="${#numbers.formatInteger(prize.winGameCount, 0, 'COMMA')} + '게임'"/>
+        <attr sel="div[5]/span" th:text="${#numbers.formatInteger(prize.winAmountPerGame, 0, 'COMMA')} + '원'"/>
+        <attr sel="div[7]/span" th:utext="${prize.rank == 1 ? '당첨번호 <b>6개</b> 일치' :
                                             (prize.rank == 2 ? '당첨번호 <b>5개</b> + <b>보너스번호</b> 일치' :
                                             (prize.rank == 3 ? '당첨번호 <b>5개</b> 일치' :
                                             (prize.rank == 4 ? '당첨번호 <b>4개</b> 일치' : '당첨번호 <b>3개</b> 일치')))}"/>
-        <attr sel="div[6]/span" th:text="${prize.rank == 1 ? '1 / 8,145,060' :
+        <attr sel="div[9]/span" th:text="${prize.rank == 1 ? '1 / 8,145,060' :
                                             (prize.rank == 2 ? '1 / 1,357,510' :
                                             (prize.rank == 3 ? '1 / 35,724' :
                                             (prize.rank == 4 ? '1 / 733' : '1 / 45')))}"/>

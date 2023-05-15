@@ -1,0 +1,228 @@
+.lotto-purchase-group {
+    width: 100%;
+    max-width: 600px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 10px;
+}
+
+.lotto-purchase-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.dh-info-wrapper {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.dh-button {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.dh-button button {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+.dh-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.lotto-purchase {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.omr-check-wrapper {
+    border: red 1px solid;
+}
+
+.number-grid {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+    margin: 0 auto;
+    padding: 5px;
+    max-width: 600px;
+}
+
+.check-cell {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 20px;
+    height: 27px;
+    margin: 5px;
+    padding: 0;
+    border: 1px solid red;
+}
+
+.check-cell-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7px;
+    margin: 1px -5px;
+    background: white;
+}
+
+.check-cell-inner label {
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    width: 18px;
+    color: red;
+    background-color: white;
+}
+
+.check-cell input[type="checkbox"] {
+    display: none;
+}
+
+.check-cell input[type="checkbox"]:checked + label {
+    color: white;
+    background-color: black;
+}
+
+.fn-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.init-cell, .auto-cell {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.init-cell span, .auto-cell span {
+    color: red;
+}
+
+.selected-number-wrapper {
+    width: 100%;
+}
+
+.game-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 5px;
+    border: black 1px solid;
+}
+
+.game-numbers {
+    width: 100%;
+    border: none;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+}
+
+.game-grid > .game-numbers:not(:last-child) {
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 5px;
+}
+
+.ball {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#add-btn, #purchase-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .lotto-purchase {
+        flex-direction: column;
+    }
+
+    .ball {
+        width: 29px;
+        height: 29px;
+        line-height: 29px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ball {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .ball {
+        width: 27px;
+        height: 27px;
+        line-height: 27px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .ball {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .ball {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 13px;
+    }
+}

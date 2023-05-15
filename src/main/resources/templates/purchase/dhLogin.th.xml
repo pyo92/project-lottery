@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel=".alert-danger" th:if="${dhLoginResponse}">
+        <attr sel="span" th:class="'fas fa-circle-exclamation'" th:text="${dhLoginResponse.errorMessage}"/>
+    </attr>
+</thlogic>

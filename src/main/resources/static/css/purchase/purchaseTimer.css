@@ -1,0 +1,115 @@
+.lotto-timer {
+    width: 100%;
+    height: 50vh;
+    max-height: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.timer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.timer-progress {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.progress-fill {
+    fill: white;
+}
+
+.progress-bar-fill {
+    fill: none;
+    stroke: #cccccc;
+    stroke-width: 10;
+}
+
+.progress-bar {
+    fill: none;
+    stroke: #4caf50;
+    stroke-width: 10;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 0.3s ease-in-out;
+}
+
+.timer-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+}
+
+.timer-draw-no {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    color: #ff0000;
+}
+
+.timer-text {
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    color: #6c6c6c;
+}
+
+.timer-remain {
+    font-size: 45px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    color: #333;
+}
+
+@media screen and (max-width: 768px) {
+    .timer-draw-no {
+        font-size: 18px;
+    }
+
+    .timer-text {
+        font-size: 18px;
+    }
+
+    .timer-remain {
+        font-size: 43px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .timer-draw-no {
+        font-size: 14px;
+    }
+
+    .timer-text {
+        font-size: 14px;
+    }
+
+    .timer-remain {
+        font-size: 37px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .timer-draw-no {
+        font-size: 13px;
+    }
+
+    .timer-text {
+        font-size: 13px;
+    }
+
+    .timer-remain {
+        font-size: 35px;
+    }
+}

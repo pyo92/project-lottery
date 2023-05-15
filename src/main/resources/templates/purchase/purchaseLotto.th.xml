@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel=".alert-danger" th:if="${dhPurchaseResponse}">
+        <attr sel="span" th:class="'fas fa-circle-exclamation'" th:text="${dhPurchaseResponse.errorMessage}"/>
+    </attr>
+
+    <attr sel="form">
+        <attr sel="input[1]" th:each="n : ${#numbers.sequence(1, 5)}" th:name="'game' + ${n}" th:id="'game' + ${n}"/>
+    </attr>
+
+    <attr sel=".dh-info-wrapper">
+        <attr sel="#deposit" th:text="${#numbers.formatInteger(dhLoginResponse.deposit, 0, 'COMMA')}"/>
+        <attr sel="#purchasable-count" th:text="${dhLoginResponse.purchasableCount}"/>
+    </attr>
+
+    <attr sel=".number-grid">
+        <attr sel=".check-cell" th:each="n : ${#numbers.sequence(1, 45)}">
+            <attr sel="input" th:name="'number' + ${n}" th:id="'number' + ${n}" th:value="${n}"/>
+            <attr sel="label" th:for="'number' + ${n}" th:text="${n}"/>
+        </attr>
+    </attr>
+
+    <attr sel=".game-grid">
+        <attr sel=".game-numbers" th:each="n : ${#numbers.sequence(1, 5)}" th:id="'game-numbers' + ${n}"/>
+    </attr>
+</thlogic>
