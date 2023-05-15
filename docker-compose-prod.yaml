@@ -22,12 +22,12 @@ services:                                                  # 실행하려는 컨
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
-  project-lottery-selenium:
-    container_name: project-lottery-selenium
+  project-lottery-selenium-for-scrap:
+    container_name: project-lottery-selenium-for-scrap
     build:
       dockerfile: Dockerfile
       context: ./selenium
-    image: pyo92/project-lottery-selenium
+    image: pyo92/project-lottery-selenium-for-scrap
     volumes:
       - /dev/shm:/dev/shm
     shm_size: 256mb
@@ -38,21 +38,41 @@ services:                                                  # 실행하려는 컨
       - "4444:4444"
       - "5900:5900"
       - "7900:7900"
+  project-lottery-selenium-for-purchase:
+    container_name: project-lottery-selenium-for-purchase
+    build:
+      dockerfile: Dockerfile
+      context: ./selenium
+    image: pyo92/project-lottery-selenium-for-purchase
+    volumes:
+      - /dev/shm:/dev/shm
+    shm_size: 256mb
+    environment:
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=768
+      - SE_NODE_SESSION_TIMEOUT=30
+    ports:
+      - "4445:4444"
+      - "5901:5900"
+      - "7901:7900"
   project-lottery-app:
     container_name: project-lottery-app
     build: .
     depends_on:                                            # DB, REDIS 컨테이너가 실행된 다음 해당 컨테이너 실행되도록 설정
       - project-lottery-database
       - project-lottery-redis
-      - project-lottery-selenium
-    image: pro92/project-lottery-app
+      - project-lottery-selenium-for-scrap
+      - project-lottery-selenium-for-purchase
+    image: pyo92/project-lottery-app
     environment:                                           # env 파일에서 환경변수 주입
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
       - DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
       - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
       - KAKAO_JAVA_SCRIPT_KEY=${KAKAO_JAVA_SCRIPT_KEY}
-      - SELENIUM_HUB_URL=${SELENIUM_HUB_URL}
+      - SELENIUM_HUB_FOR_SCRAP_URL=${SELENIUM_HUB_FOR_SCRAP_URL}
+      - SELENIUM_HUB_FOR_PURCHASE_URL=${SELENIUM_HUB_FOR_PURCHASE_URL}
+      - DH_LOTTERY_ENCRYPTION_KEY=${DH_LOTTERY_ENCRYPTION_KEY}
     ports:
       - "80:8080"
     restart: always                                        # 컨테이너 실행 실패하는 경우 재시작할 수 있도록 설정

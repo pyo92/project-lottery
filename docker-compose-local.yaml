@@ -22,15 +22,15 @@ services:
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
-  project-lottery-selenium:
-    container_name: project-lottery-selenium
+  project-lottery-selenium-for-scrap:
+    container_name: project-lottery-selenium-for-scrap
     build:
       dockerfile: Dockerfile
       context: ./selenium
-    image: pyo92/project-lottery-selenium
+    image: pyo92/project-lottery-selenium-for-scrap
     volumes:
       - /dev/shm:/dev/shm
-    shm_size: 2g
+    shm_size: 256mb
     environment:
       - SE_SCREEN_WIDTH=1920
       - SE_SCREEN_HEIGHT=768
@@ -38,3 +38,21 @@ services:
       - "4444:4444"
       - "5900:5900"
       - "7900:7900"
+  project-lottery-selenium-for-purchase:
+    container_name: project-lottery-selenium-for-purchase
+    build:
+      dockerfile: Dockerfile
+      context: ./selenium
+    image: pyo92/project-lottery-selenium-for-purchase
+    volumes:
+      - /dev/shm:/dev/shm
+    shm_size: 256mb
+    environment:
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=768
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_SESSION_TIMEOUT=30
+    ports:
+      - "4445:4444"
+      - "5901:5900"
+      - "7901:7900"
