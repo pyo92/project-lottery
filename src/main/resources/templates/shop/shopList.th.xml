@@ -17,28 +17,52 @@
     <attr sel=".region">
         <attr sel="div[0]"
               th:classappend="${#strings.isEmpty(param.state1) ? 'display-none' : ''}"
-              th:onclick="|location.href='@{/shop/list(page=${0}, sort=${param.sort}, state1=${(#strings.isEmpty(param.state2) && #strings.isEmpty(param.state3)) ? '' : param.state1}, state2=${''}, state3=${''})}'|"/>
+              th:onclick="|location.href='@{/shop/list(page=${0}, sort=${param.sort}, state1=${(#strings.isEmpty(param.state2) && #strings.isEmpty(param.state3)) ? '' : param.state1}, state2=${''}, state3=${''}, keyword=${param.keyword})}'|"/>
         <attr sel="div[1]"
-              th:classappend="${#strings.isEmpty(param.state2) ? 'display-none' : (#strings.isEmpty(param.state3) ? 'selected-state' : '')}"
-              th:onclick="|location.href='@{/shop/list(page=${0}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${''})}'|"/>
+              th:classappend="${#strings.isEmpty(param.state2) || #strings.isEmpty(param.state3) ? 'selected-state' : ''}"
+              th:onclick="|location.href='@{/shop/list(page=${0}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${''}, keyword=${param.keyword})}'|"/>
         <attr sel="div[2]"
+              th:if="${!#strings.equals(param.state1, '세종특별자치시')}"
               th:each="region : ${regions}"
               th:classappend="${(!#strings.isEmpty(param.state2) && #strings.equals(param.state3, region.state3)) ? 'selected-state' : ''}"
-              th:onclick="|location.href='@{/shop/list(page=${0}, sort=${param.sort}, state1=${region.state1}, state2=${region.state2}, state3=${region.state3})}'|">
+              th:onclick="|location.href='@{/shop/list(page=${0}, sort=${param.sort}, state1=${region.state1}, state2=${region.state2}, state3=${region.state3}, keyword=${param.keyword})}'|">
             <attr sel="span[0]"
                   th:text="${#strings.isEmpty(param.state1) ? region.state1 :
-                            (#strings.isEmpty(param.state2) ? (#strings.equals(region.state1, '세종특별자치시') ? '세종시' : region.state2) : region.state3)}"/>
+                            (#strings.isEmpty(param.state2) ? region.state2 : region.state3)}"/>
             <attr sel="span[1]" th:text="' (' + ${region.lottoShopCnt} + ')'"/>
         </attr>
     </attr>
 
-    <attr sel="#lottery-shops" th:each="shop : ${shops}" th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
-        <attr sel="div[0]">
-            <attr sel="span[0]" th:text="${shop.name}"/>
-            <attr sel="span[1]" th:text="${shop.firstPrizeWinCount}"/>
-            <attr sel="span[2]" th:text="${shop.secondPrizeWinCount}"/>
+    <attr sel=".sort-search-group">
+        <attr sel=".search-group">
+            <attr sel="#input-shop-name" th:value="${param.keyword}"/>
         </attr>
-        <attr sel="div[1]">
+        <attr sel=".sort-group">
+            <attr sel="#sort-by">
+                <attr sel="option[0]" th:selected="${#strings.isEmpty(param.sort) || #strings.startsWith(param.sort, 'address')}"/>
+                <attr sel="option[1]" th:selected="${!#strings.isEmpty(param.sort) && #strings.startsWith(param.sort, 'name')}"/>
+                <attr sel="option[2]" th:selected="${!#strings.isEmpty(param.sort) && #strings.startsWith(param.sort, 'win')}"/>
+            </attr>
+            <attr sel="#direction-btn">
+                <attr sel="i"
+                      th:classappend="${#strings.isEmpty(param.sort) ? 'fa-arrow-down-z-a' :
+                                        (#strings.endsWith(#strings.toUpperCase(param.sort), 'DESC') ? 'fa-arrow-up-z-a' : 'fa-arrow-down-z-a')}"/>
+            </attr>
+        </attr>
+    </attr>
+
+    <attr sel="#lottery-shops" th:each="shop, stat : ${shops}" th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel=".card-header">
+            <attr sel=".shop-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (shops.getNumber * shops.getSize + stat.index + 1) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${shop.name}"/>
+            </attr>
+            <attr sel=".shop-win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+            </attr>
+        </attr>
+        <attr sel=".card-body">
             <attr sel="span[0]" th:text="${shop.address}"/>
         </attr>
     </attr>
@@ -48,30 +72,29 @@
             <attr sel="li[0]" th:class="'page-item' + (${shops.number} <= 0 ? ' disabled' : '')">
                 <attr sel="a"
                       th:class="'page-link' + (${shops.number} <= 0 ? ' disabled' : '')"
-                      th:href="@{/shop/list(page=${0}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2})}"/>
+                      th:href="@{/shop/list(page=${0}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${param.state3}, keyword=${param.keyword})}"/>
             </attr>
             <attr sel="li[1]" th:class="'page-item' + (${shops.number} <= 0 ? ' disabled' : '')">
                 <attr sel="a"
                       th:class="'page-link' + (${shops.number} <= 0 ? ' disabled' : '')"
-                      th:href="@{/shop/list(page=${shops.number - 1}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2})}"/>
+                      th:href="@{/shop/list(page=${shops.number - 1}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${param.state3}, keyword=${param.keyword})}"/>
             </attr>
             <attr sel="li[2]" th:each="pageNumber : ${pagination}"
                   th:class="'page-item' + (${shops.number} == ${pageNumber} ? ' active' : '')">
                 <attr sel="a" th:text="${pageNumber + 1}"
-                      th:href="@{/shop/list(page=${pageNumber}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2})}"/>
+                      th:href="@{/shop/list(page=${pageNumber}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${param.state3}, keyword=${param.keyword})}"/>
             </attr>
             <attr sel="li[3]"
                   th:class="'page-item' + (${shops.number + 1} >= ${shops.totalPages} ? ' disabled' : '')">
                 <attr sel="a"
                       th:class="'page-link' + (${shops.number + 1} >= ${shops.totalPages} ? ' disabled' : '')"
-                      th:href="@{/shop/list(page=${shops.number + 1}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2})}"
-                />
+                      th:href="@{/shop/list(page=${shops.number + 1}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${param.state3}, keyword=${param.keyword})}"/>
             </attr>
             <attr sel="li[4]"
                   th:class="'page-item' + (${shops.number + 1} >= ${shops.totalPages} ? ' disabled' : '')">
                 <attr sel="a"
                       th:class="'page-link' + (${shops.number + 1} >= ${shops.totalPages} ? ' disabled' : '')"
-                      th:href="@{/shop/list(page=${shops.totalPages - 1}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2})}"/>
+                      th:href="@{/shop/list(page=${shops.totalPages - 1}, sort=${param.sort}, state1=${param.state1}, state2=${param.state2}, state3=${param.state3}, keyword=${param.keyword})}"/>
             </attr>
         </attr>
     </attr>

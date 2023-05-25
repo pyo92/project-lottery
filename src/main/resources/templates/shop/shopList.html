@@ -19,9 +19,7 @@
 </header>
 <main class="container">
     <div class="content-group">
-
-
-
+        <!-- BEGIN 지역 선택 영역 -->
         <div class="accordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="search-section-header">
@@ -43,7 +41,7 @@
                                 <span class="label-region-bold">이전</span>
                             </div>
                             <div>
-                                <span class="label-region-bold">동 전체</span>
+                                <span class="label-region-bold">전체</span>
                             </div>
                             <div>
                                 <span class="label-region-normal">서울특별시</span><span class="label-region-count">&nbsp;(0)</span>
@@ -55,37 +53,70 @@
                 </div>
             </div>
         </div>
-        
-        
-
+        <!-- END 지역 선택 영역 -->
+        <!-- BEGIN 로또 판매점 표시 영역 -->
         <div class="accordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="shop-list-section-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#shop-list-section-body" aria-expanded="true" aria-controls="shop-list-section-body">
                         <img class="ico" src="/img/ico-shop.png">
-                        <span class="label-title">복권 판매점</span>
+                        <span class="label-title">&nbsp;로또판매점</span>
                     </button>
                 </h2>
                 <div id="shop-list-section-body" class="accordion-collapse collapse show" aria-labelledby="shop-list-section-header">
                     <div class="accordion-body">
-
-
-                        <!-- BEGIN 로또 판매점 목록 -->
-                        <div class="card" id="lottery-shops">
-                            <div class="card-header">
-                                <span class="label-bold-text">인터넷판매(동행복권)</span>
-                                <img src="/img/ico-1st-prize.png" class="ico"/><span class="label-text">0</span>
-                                <img src="/img/ico-2nd-prize.png" class="ico"/><span class="label-text">0</span>
+                        <!-- BEGIN 로또 판매점 검색 영역 -->
+                        <div class="sort-search-group">
+                            <div class="search-group">
+                                <span class="label-mini-title">상호</span>
+                                <input class="form-control label-mini-title" type="text" id="input-shop-name">
+                                <button class="btn btn-primary label-mini-title" id="search-btn">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
-                            <div class="card-body">
-                                <span class="label-text">동행복권(dhlottery.co.kr)</span>
-                                <img src="/img/ico-link.png" class="ico-small"/>
+                            <div class="sort-group">
+                                <span class="label-mini-title">정렬</span>
+                                <select class="form-select label-mini-title" id="sort-by">
+                                    <option value="address">주소</option>
+                                    <option value="name">상호</option>
+                                    <option value="win">당첨</option>
+                                </select>
+                                <button class="btn btn-dark label-mini-title" id="direction-btn">
+                                    <i class="fas"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- END 로또 판매점 검색 영역 -->
+                        <br>
+                        <!-- BEGIN 로또 판매점 목록 -->
+                        <div class="grid-view">
+                            <div class="card" id="lottery-shops">
+                                <div class="card-header">
+                                    <div class="shop-info">
+                                        <div class="shop-info-inner">
+                                            <span class="label-mini-title">[0]</span>
+                                            <span class="label-bold-ellipsis-text">인터넷판매(동행복권)</span>
+                                        </div>
+                                        <div>
+                                            <span class="label-text">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="shop-win-count">
+                                        <div class="shop-win-count-inner">
+                                            <img src="/img/ico-1st-prize.png" class="ico"/>
+                                            <span class="label-text">0</span>
+                                            <img src="/img/ico-2nd-prize.png" class="ico"/>
+                                            <span class="label-text">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <span class="label-ellipsis-text">동행복권(dhlottery.co.kr)</span>
+                                </div>
                             </div>
                         </div>
                         <!-- END 로또 판매점 목록 -->
-
                         <br>
-
                         <!-- BEGIN PAGINATION -->
                         <nav id="pagination">
                             <ul class="pagination justify-content-center">
@@ -115,17 +146,20 @@
                             </ul>
                         </nav>
                         <!-- END PAGINATION -->
-
                     </div>
                 </div>
             </div>
         </div>
+        <!-- END 로또 판매점 표시 영역 -->
     </div>
 </main>
 <script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/shop/shopList.js"></script>
+<script type="text/javascript" src="/js/footer.js"></script>
+<script type="text/javascript" src="/js/header.js"></script>
 <footer id="footer">
     <hr>
     footer 삽입부

@@ -15,6 +15,8 @@ public record QLottoSummary(
         int number6,
         int bonus,
         long winAmountPerGame,
+        long winCount1st,
+        long winCount2nd,
         String lottoPurchaseType
 ) {
 }

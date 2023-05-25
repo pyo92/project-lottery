@@ -18,6 +18,7 @@
     header 삽입부
     <hr>
 </header>
+<!-- BEGIN 안내용 문구 + spinner -->
 <div class="spinner-container" id="purchase-spinner">
     <div class="spinner-border text-warning" role="status"></div>
     <span class="text-warning label-bold-text">
@@ -36,13 +37,14 @@
         &nbsp;&nbsp;예치금, 구매 정보 조회중입니다.<br>
         &nbsp;&nbsp;잠시만 기다려주세요.</span>
 </div>
-
+<!-- END 안내용 문구 + spinner -->
+<!-- BEGIN alert container -->
 <div class="alert-container">
     <div class="alert alert-danger label-bold-wrap-text">
         <span></span>
     </div>
 </div>
-
+<!-- END alert container -->
 <!-- BEGIN 예치금 입금창 -->
 <div class="modal fade" id="deposit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deposit-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -53,6 +55,7 @@
             </div>
             <div class="modal-body">
                 <span class="label-bold-text">반드시 예치금을 입금하고, 확인버튼을 눌러주세요.</span><br>
+                <br>
                 <ul>
                     <li>
                         <span class="label-mini-title">계좌명:&nbsp;</span><span class="account-name label-text"></span>
@@ -61,7 +64,7 @@
                         <span class="label-mini-title">계좌번호:&nbsp;</span><span class="account-number label-text"></span>
                     </li>
                     <li>
-                        <span class="label-mini-title">금액:&nbsp;</span><span class="deposit-amount label-text"></span>
+                        <span class="label-mini-title">입금금액:&nbsp;</span><span class="deposit-amount label-text"></span>
                     </li>
                 </ul>
             </div>
@@ -84,11 +87,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span class="modal-title label-title">로또 구매</span>
+                    <span class="modal-title label-title">구매 확인</span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    로또를 구매하시겠습니까?
+                    구매하시겠습니까?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary label-text" data-bs-dismiss="modal">취소</button>
@@ -118,33 +121,34 @@
             </div>
         </div>
         <!-- END 로또 구매 타이머 -->
-
+        <!-- BEGIN 로또 번호 선택 -->
         <div class="lotto-purchase-group">
             <div class="lotto-purchase-header">
                 <span class="label-title">번호 선택</span>
                 <div class="dh-info-wrapper">
                     <div class="dh-button">
-                        <button class="btn btn-secondary" type="button" id="refresh-btn">
+                        <button class="btn btn-secondary label-mini-title" type="button" id="refresh-btn">
                             <i class="fas fa-arrows-rotate"></i>
                         </button>
-                        <button class="btn btn-warning" type="button" id="deposit-btn">
+                        <button class="btn btn-warning label-mini-title" type="button" id="deposit-btn">
                             <i class="fas fa-won-sign"></i>
                         </button>
                     </div>
-                    <div class="dh-info">
-                        <span class="label-mini-title">잔여&nbsp;</span>
-                        <span class="label-text"></span>
-                        <span class="label-bold-text"><span id="purchasable-count">0</span>게임</span>
-                    </div>
-                    <div class="dh-info">
-                        <span class="label-mini-title">예치금&nbsp;</span>
-                        <span class="label-text"></span>
-                        <span class="label-bold-text"><span id="deposit">0</span>원</span>
+                    <div class="dh-infos">
+                        <div class="dh-info">
+                            <span class="label-mini-title">구매가능:</span>
+                            <span class="label-bold-text"><span id="purchasable-count">0</span>/5</span>
+                        </div>
+                        <div class="dh-info">
+                            <span class="label-mini-title">예치금:</span>
+                            <span class="label-bold-text"><span id="deposit">0</span>원</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <hr>
             <div class="lotto-purchase">
+                <!-- BEGIN 로또 번호 선택 omr -->
                 <div class="lotto-paper">
                     <div class="omr-check-wrapper">
                         <div class="number-grid">
@@ -180,6 +184,8 @@
                     </div>
                     <button class="btn btn-secondary label-text" type="button" id="add-btn">추가</button>
                 </div>
+                <!-- END 로또 번호 선택 omr -->
+                <!-- BEGIN 로또 번호 선택 결과 -->
                 <div class="selected-number-wrapper">
                     <div class="game-grid">
                         <div class="game-numbers" id="game-numbers1">
@@ -196,8 +202,10 @@
                     </div>
                     <button class="btn btn-primary label-text" type="button" id="purchase-btn">구매</button>
                 </div>
+                <!-- END 로또 번호 선택 결과 -->
             </div>
         </div>
+        <!-- END 로또 번호 선택 -->
     </div>
 </main>
 <script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
@@ -205,6 +213,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/purchase/purchaseTimer.js"></script>
 <script type="text/javascript" src="/js/purchase/purchaseLotto.js"></script>
+<script type="text/javascript" src="/js/footer.js"></script>
+<script type="text/javascript" src="/js/header.js"></script>
 <footer id="footer">
     <hr>
     footer 삽입부

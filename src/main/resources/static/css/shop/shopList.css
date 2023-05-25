@@ -1,7 +1,3 @@
-.accordion {
-    width: 100%;
-}
-
 .display-none {
     display: none;
 }
@@ -35,6 +31,54 @@
     background: rgba(253, 223, 174, 0.8);
 }
 
+.accordion {
+    width: 100%;
+}
+
+.sort-search-group {
+    width: 200px;
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: auto;
+}
+
+.search-group {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+#input-shop-name {
+    color: black;
+}
+
+#search-btn {
+    color: white;
+}
+
+.sort-group {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+#sort-by {
+    color: black;
+}
+
+#direction-btn {
+    color: white;
+}
+
+.grid-view {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
 
 .card {
     width: 100%;
@@ -55,9 +99,44 @@
 }
 
 .card-header {
-    background: rgba(161, 161, 161, 0.8);
+    display: grid;
+    grid-template-columns: 1fr 75px;
+    background: rgba(196, 196, 196, 0.8);
 }
 
+.shop-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.shop-info-inner {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.shop-win-count {
+    margin-left: auto;
+}
+
+.shop-win-count-inner {
+    display: grid;
+    grid-template-columns: 30px 45px;
+    align-items: center;
+}
+
+.card-body {
+    background: rgba(238, 238, 238, 0.8);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
 
 .active {
     z-index: 0;
@@ -79,14 +158,20 @@
     font-size: 12px;
 }
 
+@media screen and (max-width: 991px) {
+    .grid-view {
+        grid-template-columns: 1fr;
+    }
+}
 
 @media screen and (max-width: 768px) {
     .region {
         grid-template-columns: repeat(3, 1fr);
     }
 
-    .card {
-        font-size: 16px;
+    .pagination li a {
+        padding: 11px;
+        font-size: 11px;
     }
 
     .label-region-bold {
@@ -103,10 +188,6 @@
 }
 
 @media screen and (max-width: 480px) {
-    .card {
-        font-size: 15px;
-    }
-
     .label-region-bold {
         font-size: 13px;
     }
@@ -125,17 +206,13 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .page-link {
-        padding: 6px 12px;
-        font-size: 15px;
+    .pagination li a {
+        padding: 9px;
+        font-size: 9px;
     }
 }
 
 @media screen and (max-width: 380px) {
-    .card {
-        font-size: 14px;
-    }
-
     .label-region-bold {
         font-size: 12px;
     }
@@ -150,15 +227,6 @@
 }
 
 @media screen and (max-width: 350px) {
-    .card {
-        font-size: 13px;
-    }
-
-    .page-link {
-        padding: 5px 10px;
-        font-size: 13px;
-    }
-
     .label-region-bold {
         font-size: 11px;
     }
@@ -173,10 +241,6 @@
 }
 
 @media screen and (max-width: 320px) {
-    .card {
-        font-size: 12px;
-    }
-
     .label-region-bold {
         font-size: 10px;
     }

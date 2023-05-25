@@ -33,17 +33,22 @@
           th:classappend="${shopResponse.lotto1stWin.size() == 0 ? 'lotto-win-none-show': ''}"/>
 
     <attr sel="#lotto-1st-win"
-          th:each="lotto1stWin : ${shopResponse.lotto1stWin}"
+          th:each="lotto1stWin, stat : ${shopResponse.lotto1stWin}"
           th:onclick="|location.href='@{/L645(drawNo=${lotto1stWin.drawNo})}'|">
         <attr sel=".card-header">
-            <attr sel="span[0]" th:text="${lotto1stWin.drawNo + '회'}"/>
-            <attr sel="span[1]" th:text="'&nbsp;|&nbsp;' + ${lotto1stWin.lottoPurchaseType}"/>
+            <attr sel=".draw-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (#lists.size(shopResponse.lotto1stWin) - stat.index) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${lotto1stWin.drawNo + '회'}"/>
+                <attr sel="div[0]/span[2]" th:text="${'(' + lotto1stWin.drawDt + ')'}"/>
+                <attr sel="div[1]/span[0]" th:text="${lotto1stWin.lottoPurchaseType}"/>
+            </attr>
+            <attr sel=".win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(lotto1stWin.winCount1st, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(lotto1stWin.winCount2nd, 0, 'COMMA')}"/>
+            </attr>
         </attr>
         <attr sel=".card-body">
             <attr sel="div[0]">
-                <attr sel="span[1]" th:text="${lotto1stWin.drawDt}"/>
-            </attr>
-            <attr sel="div[1]">
                 <attr sel="span[0]"
                       th:text="${lotto1stWin.number1}"
                       th:classappend="${lotto1stWin.number1 <= 10 ? 'n0' :
@@ -87,7 +92,7 @@
                                         (lotto1stWin.bonus <= 30 ? 'n2' :
                                         (lotto1stWin.bonus <= 40 ? 'n3' : 'n4')))}"/>
             </attr>
-            <attr sel="div[2]">
+            <attr sel="div[1]">
                 <attr sel="span[1]" th:text="${#numbers.formatInteger(lotto1stWin.winAmountPerGame, 0, 'COMMA') + '원'}"/>
             </attr>
         </attr>
@@ -97,16 +102,21 @@
           th:classappend="${shopResponse.lotto2ndWin.size() == 0 ? 'lotto-win-none-show': ''}"/>
 
     <attr sel="#lotto-2nd-win"
-          th:each="lotto2ndWin : ${shopResponse.lotto2ndWin}"
+          th:each="lotto2ndWin, stat : ${shopResponse.lotto2ndWin}"
           th:onclick="|location.href='@{/L645(drawNo=${lotto2ndWin.drawNo})}'|">
         <attr sel=".card-header">
-            <attr sel="span[0]" th:text="${lotto2ndWin.drawNo + '회'}"/>
+            <attr sel=".draw-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (#lists.size(shopResponse.lotto2ndWin) - stat.index) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${lotto2ndWin.drawNo + '회'}"/>
+                <attr sel="div[0]/span[2]" th:text="${'(' + lotto2ndWin.drawDt + ')'}"/>
+            </attr>
+            <attr sel=".win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(lotto2ndWin.winCount1st, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(lotto2ndWin.winCount2nd, 0, 'COMMA')}"/>
+            </attr>
         </attr>
         <attr sel=".card-body">
             <attr sel="div[0]">
-                <attr sel="span[1]" th:text="${lotto2ndWin.drawDt}"/>
-            </attr>
-            <attr sel="div[1]">
                 <attr sel="span[0]"
                       th:text="${lotto2ndWin.number1}"
                       th:classappend="${lotto2ndWin.number1 <= 10 ? 'n0' :
@@ -150,7 +160,7 @@
                                         (lotto2ndWin.bonus <= 30 ? 'n2' :
                                         (lotto2ndWin.bonus <= 40 ? 'n3' : 'n4')))}"/>
             </attr>
-            <attr sel="div[2]">
+            <attr sel="div[1]">
                 <attr sel="span[1]" th:text="${#numbers.formatInteger(lotto2ndWin.winAmountPerGame, 0, 'COMMA') + '원'}"/>
             </attr>
         </attr>
