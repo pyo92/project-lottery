@@ -15,6 +15,10 @@ public class LottoWinShopService {
 
     private final LottoWinShopRepository lottoWinShopRepository;
 
+    /**
+     * 로또 당첨 판매점 정보 저장 (for 동행복권 로또 당첨 판매점 scrap)
+     * @param dto 로또 당첨 판매점 dto
+     */
     public void save(LottoWinShopDto dto) {
         lottoWinShopRepository.save(dto.toEntity());
     }
