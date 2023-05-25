@@ -1,12 +1,17 @@
 const shopName = document.getElementById('shop-name').textContent;
 
+/**
+ * 판매점 지도에 표시 처리
+ * @param longitude 경도
+ * @param latitude 위도
+ */
 function openMap(longitude, latitude) {
     var coords = new kakao.maps.LatLng(latitude, longitude);
 
     var mapContainer = document.getElementById('map'),
         mapOption = {
             center: coords, // 지도의 중심좌표
-            level: 2 // 지도의 확대 레벨
+            level: 4 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
@@ -18,7 +23,7 @@ function openMap(longitude, latitude) {
     });
 
     var infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding: 10px 5px 5px 5px;"><span class="label-bold-text">' + shopName + '</span></div>',
+        content: '<div class="label-mini-title" style="display:flex; padding: 10px; color: black;">' + shopName + '</div>',
         removable : true
     });
     infowindow.open(map, marker);

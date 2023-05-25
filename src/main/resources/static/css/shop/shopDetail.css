@@ -1,4 +1,3 @@
-
 .shop-info {
     width: 100%;
     background: white;
@@ -29,14 +28,6 @@
     gap: 5px;
 }
 
-#win-1st-info-short {
-    background: rgba(255, 215, 0, 0.8);
-}
-
-/*#win-2nd-info-short {*/
-/*    background: rgba(192, 192, 192, 0.8);*/
-/*}*/
-
 .win-info-short {
     border: none;
     border-radius: 5px;
@@ -45,6 +36,14 @@
     grid-template-columns: 2fr 10fr;
     align-items: center;
     justify-items: center;
+}
+
+#win-1st-info-short {
+    background: rgba(253, 223, 174, 0.8);
+}
+
+#win-2nd-info-short {
+    background: rgba(196, 196, 196, 0.8);
 }
 
 .win-info-short ul {
@@ -68,16 +67,26 @@
     width: 100%;
 }
 
-/*#lotto-1st-win-shops-header .accordion-button {*/
-/*    background: rgba(255, 215, 0, 0.8);*/
-/*}*/
+.lotto-win-none {
+    display: none;
+    text-align: center;
+}
+
+.lotto-win-none-show {
+    display: block;
+}
+
+.lotto-win-exists {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
 
 .card {
     width: 100%;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    margin-top: 5px;
     transition: all 0.1s ease-in-out;
 }
 
@@ -92,18 +101,42 @@
 }
 
 .card-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 75px;
     background: rgba(253, 223, 174, 0.8);
 }
 
 .card-header-silver {
-    background: rgba(161, 161, 161, 0.8);
+    background: rgba(196, 196, 196, 0.8);
+}
+
+.draw-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.draw-info-inner {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.win-count {
+    margin-left: auto;
+}
+
+.win-count-inner {
+    display: grid;
+    grid-template-columns: 30px 45px;
+    align-items: center;
 }
 
 .card-body {
-    padding: 5px 0;
+    padding: 10px 0;
     display: grid;
     grid-gap: 5px;
     justify-content: center;
@@ -111,15 +144,22 @@
     align-items: center;
 }
 
+#lotto-1st-win .card-body {
+    background: rgba(255, 245, 238, 0.8);
+}
+
+#lotto-2nd-win .card-body {
+    background: rgba(238, 238, 238, 0.8);
+}
 
 .ball {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
     border: none;
-    border-radius: 40px;
+    border-radius: 35px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     color: white;
     display: inline-block;
@@ -127,35 +167,21 @@
     text-align: center;
 }
 
-
 .split-token {
     font-size: 20px;
     color: #ff7272;
     vertical-align: middle;
 }
 
-
-.lotto-win-none {
-    display: none;
-    text-align: center;
+@media screen and (max-width: 991px) {
+    .lotto-win-exists {
+        grid-template-columns: 1fr;
+    }
 }
-
-.lotto-win-none-show {
-    display: block;
-}
-
-
 
 @media screen and (max-width: 768px) {
     .card {
         font-size: 16px;
-    }
-
-    .ball {
-        width: 35px;
-        height: 35px;
-        line-height: 35px;
-        font-size: 17px;
     }
 
     .split-token {
@@ -192,12 +218,28 @@
         order: 6;
     }
 
+    #win-2nd-info-short li:nth-child(1) {
+        order: 3;
+    }
+
     #win-2nd-info-short li:nth-child(2) {
-        display: none;
+        order: 1;
     }
 
     #win-2nd-info-short li:nth-child(3) {
-        display: none;
+        order: 5;
+    }
+
+    #win-2nd-info-short li:nth-child(4) {
+        order: 2;
+    }
+
+    #win-2nd-info-short li:nth-child(5) {
+        order: 4;
+    }
+
+    #win-2nd-info-short li:nth-child(6) {
+        order: 6;
     }
 }
 

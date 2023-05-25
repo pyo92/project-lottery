@@ -15,54 +15,30 @@ footer {
 }
 
 .scroll-button {
+    z-index: 9998;
     display: grid;
     position: fixed;
     bottom: 100px;
     right: 20px;
+    gap: 10px;
 }
 
 .scroll-button button {
+    display: flex;
+    align-items: center;
+    padding: 5px;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    background: #f6e1e180;
-    margin: 3px 0;
-}
-
-.scroll-button button a {
-    display: grid;
-    text-decoration: none;
-    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 @media screen and (max-width: 768px) {
     footer {
-        padding-bottom: 50px;
+        padding-bottom: 60px;
     }
 
     .scroll-button {
-        right: 0;
-    }
-
-    .scroll-button button a {
-        font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 425px) {
-    .scroll-button button a {
-        font-size: 12px;
-    }
-}
-
-@media screen and (max-width: 375px) {
-    .scroll-button button a {
-        font-size: 11px;
-    }
-}
-
-@media screen and (max-width: 320px) {
-    .scroll-button button a {
-        font-size: 10px;
+        right: 5px;
     }
 }

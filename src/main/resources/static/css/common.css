@@ -83,7 +83,7 @@ body {
 .label-mini-title {
     font-size: 13px;
     font-weight: bold;
-    color: #888888;
+    color: #666666;
     white-space: nowrap;
 }
 
@@ -93,6 +93,14 @@ body {
     white-space: nowrap;
 }
 
+.label-bold-ellipsis-text {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .label-bold-wrap-text {
     font-size: 16px;
     font-weight: bold;
@@ -100,6 +108,13 @@ body {
 
 .label-text {
     font-size: 16px;
+}
+
+.label-ellipsis-text {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 768px) {
@@ -124,11 +139,19 @@ body {
         font-size: 15px;
     }
 
+    .label-bold-ellipsis-text {
+        font-size: 15px;
+    }
+
     .label-bold-wrap-text {
         font-size: 15px;
     }
 
     .label-text {
+        font-size: 15px;
+    }
+
+    .label-ellipsis-text {
         font-size: 15px;
     }
 }
@@ -152,6 +175,10 @@ body {
     }
 
     .label-bold-text {
+        font-size: 14px;
+    }
+
+    .label-bold-ellipsis-text {
         font-size: 14px;
     }
 
@@ -181,11 +208,19 @@ body {
         font-size: 13px;
     }
 
+    .label-bold-ellipsis-text {
+        font-size: 13px;
+    }
+
     .label-bold-wrap-text {
         font-size: 13px;
     }
 
     .label-text {
+        font-size: 13px;
+    }
+
+    .label-ellipsis-text {
         font-size: 13px;
     }
 }
@@ -207,11 +242,19 @@ body {
         font-size: 12px;
     }
 
+    .label-bold-ellipsis-text {
+        font-size: 12px;
+    }
+
     .label-bold-wrap-text {
         font-size: 12px;
     }
 
     .label-text {
+        font-size: 12px;
+    }
+
+    .label-ellipsis-text {
         font-size: 12px;
     }
 }
@@ -237,11 +280,19 @@ body {
         font-size: 11px;
     }
 
+    .label-bold-ellipsis-text {
+        font-size: 11px;
+    }
+
     .label-bold-wrap-text {
         font-size: 11px;
     }
 
     .label-text {
+        font-size: 11px;
+    }
+
+    .label-ellipsis-text {
         font-size: 11px;
     }
 }

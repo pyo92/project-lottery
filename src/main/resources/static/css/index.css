@@ -1,26 +1,7 @@
-body {
-    background: #434348;
-}
-
-.logo {
-    width: 100%;
-    height: 20vh;
-    max-height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: scale-down;
-    display: none;
-}
-
+/* BEGIN 로또 회차 타이머 */
 .lotto-timer {
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     max-height: 500px;
     display: flex;
     justify-content: center;
@@ -91,7 +72,9 @@ body {
     width: 100%;
     color: #333;
 }
+/* END 로또 회차 타이머 */
 
+/* START 메뉴 바로가기 */
 .link-group {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -119,31 +102,9 @@ body {
 .card-body a {
     margin-left: auto;
 }
+/* END 메뉴 바로가기 */
 
-.label-title {
-    font-size: 18px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-mini-title {
-    font-size: 13px;
-    font-weight: bold;
-    color: #888888;
-    white-space: nowrap;
-}
-
-.label-bold-text {
-    font-size: 16px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.label-text {
-    font-size: 16px;
-}
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .timer-draw-no {
         font-size: 18px;
     }
@@ -156,8 +117,8 @@ body {
         font-size: 38px;
     }
 
-    .link-group {
-        grid-template-columns: repeat(1, 1fr);
+    .card-text {
+        display: none;
     }
 }
 

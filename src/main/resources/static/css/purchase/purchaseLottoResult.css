@@ -1,0 +1,120 @@
+.purchased-group {
+    width: 400px;
+    max-width: 90%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 10px;
+}
+
+.purchased-number-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
+#draw-no {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.game-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 5px;
+    border: black 1px solid;
+}
+
+.game-numbers {
+    width: 100%;
+    border: none;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+}
+
+.game-grid > .game-numbers:not(:last-child) {
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 5px;
+}
+
+.game-numbers .label-mini-title {
+    width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+}
+
+.ball {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#confirm-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .ball {
+        width: 29px;
+        height: 29px;
+        line-height: 29px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ball {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .ball {
+        width: 27px;
+        height: 27px;
+        line-height: 27px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .ball {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .ball {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 13px;
+    }
+}

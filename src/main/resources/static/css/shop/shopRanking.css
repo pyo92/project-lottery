@@ -2,6 +2,11 @@
     width: 100%;
 }
 
+.accordion-body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
 
 .card {
     width: 100%;
@@ -23,42 +28,55 @@
 }
 
 .card-header {
+    display: grid;
+    grid-template-columns: 1fr 75px;
     background: rgba(253, 223, 174, 0.8);
 }
 
 .card-header-silver {
-    background: rgba(161, 161, 161, 0.8);
+    background: rgba(196, 196, 196, 0.8);
 }
 
-
-@media screen and (max-width: 768px) {
-    .card {
-        font-size: 16px;
-    }
+.shop-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
 }
 
-@media screen and (max-width: 480px) {
-    .card {
-        font-size: 15px;
-    }
-
+.shop-info-inner {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
 }
 
-@media screen and (max-width: 380px) {
-    .card {
-        font-size: 14px;
-    }
+.shop-win-count {
+    margin-left: auto;
 }
 
-@media screen and (max-width: 350px) {
-    .card {
-        font-size: 13px;
-    }
-
+.shop-win-count-inner {
+    display: grid;
+    grid-template-columns: 30px 45px;
+    align-items: center;
 }
 
-@media screen and (max-width: 320px) {
-    .card {
-        font-size: 12px;
+.card-body {
+    background: rgba(255, 245, 238, 0.8);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.card-body-silver {
+    background: rgba(238, 238, 238, 0.8);
+}
+
+@media screen and (max-width: 991px) {
+    .accordion-body {
+        grid-template-columns: 1fr;
     }
 }

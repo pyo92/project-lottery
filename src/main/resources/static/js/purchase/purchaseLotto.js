@@ -1,30 +1,109 @@
 let deposit = 0;
 let purchasableCount = 0;
 
+/**
+ * load event handler
+ */
 window.addEventListener('load', function () {
-    //처음 로드되면, 예치금과 구매가능 게임 수를 세팅한다. (변조 방지용 변수임)
+    //예치금과 구매가능 게임 수를 세팅 (변조 방지용 변수)
     deposit = parseInt($('#deposit').text().replace(/[^0-9]/g, ''));
     purchasableCount = parseInt($('#purchasable-count').text());
 
+    //alert message 표시
     const serverAlert = document.querySelector('.alert.alert-danger');
-
     if (serverAlert != null) {
-        const currentDate = new Date();
-        const currentTime = currentDate.toLocaleTimeString(); // 현재 시간을 문자열로 변환
-        const milliseconds = currentDate.getMilliseconds().toString().padStart(3, '0'); // 밀리초 추출
-        const alertMessage = document.createElement('span');
-        alertMessage.className = 'fas fa-triangle-exclamation';
-        alertMessage.textContent = ` [${currentTime}.${milliseconds}] - ${serverAlert.textContent}`;
-        serverAlert.textContent = '';
-        serverAlert.appendChild(alertMessage);
-        serverAlert.style.display = 'block'; // 알림 창 표시
-        setTimeout(function () {
-            serverAlert.remove();
-        }, 5000);
+        alert(serverAlert.textContent.trim());
+        serverAlert.remove();
     }
 });
 
-///////////
+//////////////////////////////
+
+const refreshSpinner = document.querySelector('#refresh-spinner');
+const refreshButton = document.querySelector('#refresh-btn');
+
+/**
+ * 예치금, 구매가능 금액 업데이트 버튼 처리
+ */
+function refresh () {
+    keyDownPrevent = true;
+    refreshSpinner.style.display = 'flex';
+
+    //예치금, 구매가능 정보를 새로고침 해야한다.
+    $.ajax({
+        type: 'POST',
+        url: '/purchase/dh/refresh',
+        success: function (response) {
+            $('#deposit').text(response.deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            $('#purchasable-count').text(response.purchasableCount);
+
+            //변조방지용 변수를 리프레시 한다.
+            deposit = parseInt($('#deposit').text().replace(/[^0-9]/g, ''));
+            purchasableCount = parseInt($('#purchasable-count').text());
+        },
+        error: function (xhr) {
+            window.location.href = xhr.getResponseHeader('Location');
+        },
+        complete: function () {
+            keyDownPrevent = false;
+            refreshSpinner.style.display = 'none';
+        }
+    });
+}
+
+refreshButton.addEventListener('click', refresh);
+
+//////////////////////////////
+
+const depositModal = new bootstrap.Modal(document.querySelector('#deposit-modal'));
+const depositSpinner = document.querySelector('#deposit-spinner');
+const depositButton = document.querySelector('#deposit-btn');
+
+/**
+ * 예치금 입금 신청 버튼 click event handler
+ */
+depositButton.addEventListener('click', function () {
+    keyDownPrevent = true;
+    depositSpinner.style.display = 'flex';
+
+    //selenium 으로 입금신청을하고, 계좌와 입금액을 가져온다. (5000원으로 고정)
+    $.ajax({
+        type: 'POST',
+        url: '/purchase/dh/deposit',
+        success: function (response) {
+            $('.account-name').text(response.accountName);
+            $('.account-number').text(response.accountNumber);
+            $('.deposit-amount').text(response.depositAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원');
+
+            //modal 표시
+            depositModal.show();
+        },
+        error: function (xhr) {
+            window.location.href = xhr.getResponseHeader('Location');
+        },
+        complete: function () {
+            keyDownPrevent = false;
+            depositSpinner.style.display = 'none';
+        }
+    });
+});
+
+//////////////////////////////
+
+const depositConfirmButton = document.querySelector('#deposit-confirm-btn');
+
+/**
+ * 예치금 입금 신청 확인 modal 확인 버튼 click event handler
+ */
+depositConfirmButton.addEventListener('click', function () {
+    //예치금, 구매가능 정보 갱신
+    refresh();
+
+    //modal 닫기
+    depositModal.hide();
+});
+
+//////////////////////////////
 
 const checkboxes = document.querySelectorAll('input[type="checkbox"][name^="number"]');
 const initCheckbox = document.querySelector('input[type="checkbox"][name^="init"]');
@@ -34,6 +113,9 @@ const purchaseButton = document.querySelector('#purchase-btn');
 let gameCount = 0;
 let selectedNumbers = [];
 
+/**
+ * 로또 번호 OMR 체크 선택 처리
+ */
 function handleCheckboxChange() {
     selectedNumbers = [];
     checkboxes.forEach((checkbox) => {
@@ -45,12 +127,20 @@ function handleCheckboxChange() {
     if (selectedNumbers.length > 6) {
         this.checked = false;
         selectedNumbers.pop();
-        showAlert('숫자는 6개까지만 선택할 수 있습니다.');
+        alert('숫자는 6개까지만 선택할 수 있습니다.');
+
     } else if (selectedNumbers.length === 6) {
         autoCheckbox.checked = false;
     }
 }
 
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', handleCheckboxChange);
+});
+
+/**
+ * 로또 번호 OMR 초기화 버튼 처리
+ */
 function handleInitCheckBoxChange() {
     selectedNumbers = [];
     checkboxes.forEach((checkbox) => {
@@ -61,13 +151,23 @@ function handleInitCheckBoxChange() {
     this.checked = false;
 }
 
+initCheckbox.addEventListener('change', handleInitCheckBoxChange);
+
+/**
+ * 로또 번호 OMR 자동 선택 버튼 처리
+ */
 function handleAutoCheckBoxChange() {
     if (selectedNumbers.length === 6) {
-        showAlert('이미 6개의 숫자를 선택하셨습니다.');
+        alert('이미 6개의 숫자를 선택하셨습니다.');
         autoCheckbox.checked = false;
     }
 }
 
+autoCheckbox.addEventListener('change', handleAutoCheckBoxChange);
+
+/**
+ * 로또 번호 선택 후, 게임 추가 버튼 처리
+ */
 function handleAddButtonClick() {
     let isError = false;
     selectedNumbers.forEach(number => {
@@ -75,17 +175,18 @@ function handleAddButtonClick() {
     });
 
     if (isError) {
-        showAlert('부적절한 조작이 감지되었습니다.');
+        alert('비정상적인 접근이 감지되어 페이지를 새로고침합니다.');
+        location.reload();
         return;
     }
 
     if (selectedNumbers.length < 6 && !autoCheckbox.checked) {
-        showAlert('숫자 또는 자동을 선택해주세요.');
+        alert('숫자 또는 자동을 선택해주세요.');
         return;
     }
 
     if (gameCount === purchasableCount) { //변조방지 변수로 비교
-        showAlert('더 이상 게임을 추가할 수 없습니다.');
+        alert('더 이상 추가할 수 없습니다.');
         return;
     }
 
@@ -130,14 +231,40 @@ function handleAddButtonClick() {
     });
 }
 
+/**
+ * 게임 추가 시, ball class 계산 및 부여
+ * @param number 선택 번호
+ * @returns {string} ball class
+ */
+function getNumberClass(number) {
+    if (number >= 1 && number <= 10) {
+        return 'n0';
+    } else if (number >= 11 && number <= 20) {
+        return 'n1';
+    } else if (number >= 21 && number <= 30) {
+        return 'n2';
+    } else if (number >= 31 && number <= 40) {
+        return 'n3';
+    } else if (number >= 41 && number <= 45) {
+        return 'n4';
+    } else {
+        return '';
+    }
+}
+
+addButton.addEventListener('click', handleAddButtonClick);
+
+/**
+ * 게임 추가 후, 구매 버튼 처리
+ */
 function handlePurchaseButtonClick() {
     if (gameCount < 1) {
-        showAlert('구매할 게임이 존재하지 않습니다.');
+        alert('게임이 존재하지 않습니다.');
         return;
     }
 
     if (deposit < gameCount * 1000) {
-        showAlert('예치금 잔액이 부족합니다.');
+        alert('예치금 잔액이 부족합니다.');
         return;
     }
 
@@ -161,7 +288,8 @@ function handlePurchaseButtonClick() {
     });
 
     if (isError) {
-        showAlert('부적절한 조작이 감지되었습니다.');
+        alert('비정상적인 접근이 감지되어 페이지를 새로고침합니다.');
+        location.reload();
         return;
     }
 
@@ -195,25 +323,18 @@ function handlePurchaseButtonClick() {
 
 }
 
-checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener('change', handleCheckboxChange);
-});
-
-initCheckbox.addEventListener('change', handleInitCheckBoxChange);
-
-autoCheckbox.addEventListener('change', handleAutoCheckBoxChange);
-
-addButton.addEventListener('click', handleAddButtonClick);
-
 purchaseButton.addEventListener('click', handlePurchaseButtonClick);
 
+//////////////////////////////
+
 const purchaseSpinner = document.querySelector('#purchase-spinner');
-
 const purchaseConfirmButton = document.querySelector('#purchase-confirm-btn');
-
 
 let keyDownPrevent;
 
+/**
+ * 구매 확인 modal 에서의 확인 버튼 클릭 event handler
+ */
 purchaseConfirmButton.addEventListener('click', function () {
     //변조로 인한 부적절한 값이 없는지 검증
     let isError = false;
@@ -229,7 +350,8 @@ purchaseConfirmButton.addEventListener('click', function () {
     }
 
     if (isError) {
-        showAlert('부적절한 조작이 감지되었습니다.');
+        alert('비정상적인 접근이 감지되어 페이지를 새로고침합니다.');
+        location.reload();
         return;
     }
 
@@ -241,14 +363,23 @@ purchaseConfirmButton.addEventListener('click', function () {
     $('#purchase-form').submit();
 });
 
+/**
+ * key down event handler
+ */
 document.addEventListener('keydown', function(e) {
     if (keyDownPrevent) {
         e.preventDefault();
     }
 });
 
+//////////////////////////////
+
+/**
+ * 추가한 게임 삭제 처리
+ * @param buttonElement 삭제 버튼
+ */
 function clearNumbers(buttonElement) {
-    // 클릭한 버튼의 부모 요소인 div.item을 찾습니다.
+    // 클릭한 버튼의 부모 요소인 div.item find
     const parentElement = buttonElement.parentNode;
     const balls = parentElement.getElementsByClassName('ball');
 
@@ -263,126 +394,4 @@ function clearNumbers(buttonElement) {
     gameCount--;
 
     buttonElement.disabled = true;
-}
-
-function getNumberClass(number) {
-    if (number >= 1 && number <= 10) {
-        return 'n0';
-    } else if (number >= 11 && number <= 20) {
-        return 'n1';
-    } else if (number >= 21 && number <= 30) {
-        return 'n2';
-    } else if (number >= 31 && number <= 40) {
-        return 'n3';
-    } else if (number >= 41 && number <= 45) {
-        return 'n4';
-    } else {
-        return '';
-    }
-}
-
-///////////
-
-const MAX_ALERTS = 3; // 최대 알림 창 개수
-const loginAlertContainer = document.querySelector('.alert-container');
-
-function showAlert(message) {
-    const currentDate = new Date();
-    const currentTime = currentDate.toLocaleTimeString(); // 현재 시간을 문자열로 변환
-    const milliseconds = currentDate.getMilliseconds().toString().padStart(3, '0'); // 밀리초 추출
-    const alertMessage = document.createElement('span');
-    alertMessage.className = 'fas fa-triangle-exclamation';
-    alertMessage.textContent = ` [${currentTime}.${milliseconds}] - ${message}`;
-
-    const newAlert = document.createElement('div'); // 새로운 알림 창 생성
-    newAlert.className = 'alert alert-warning label-bold-wrap-text'; // CSS 클래스 설정
-    newAlert.appendChild(alertMessage);
-    newAlert.style.display = 'block'; // 알림 창 표시
-
-    newAlert.addEventListener('click', function () {
-        this.remove();
-    });
-
-    // 최대 알림 창 개수 제한
-    if (loginAlertContainer.children.length >= MAX_ALERTS) {
-        loginAlertContainer.removeChild(loginAlertContainer.lastElementChild);
-    }
-
-    loginAlertContainer.insertBefore(newAlert, loginAlertContainer.firstChild); // 문서에 추가
-
-    setTimeout(function () {
-        newAlert.remove();
-    }, 5000);
-}
-
-//////////
-
-const depositModal = new bootstrap.Modal(document.querySelector('#deposit-modal'));
-const depositSpinner = document.querySelector('#deposit-spinner');
-const depositButton = document.querySelector('#deposit-btn');
-
-depositButton.addEventListener('click', function () {
-    keyDownPrevent = true;
-    depositSpinner.style.display = 'flex';
-
-    //selenium 으로 입금신청을하고, 계좌와 입금액을 가져온다. (5000원으로 고정)
-    $.ajax({
-        type: 'POST',
-        url: '/purchase/dh/deposit',
-        success: function (response) {
-            $('.account-name').text(response.accountName);
-            $('.account-number').text(response.accountNumber);
-            $('.deposit-amount').text(response.depositAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원');
-
-            //modal 표시
-            depositModal.show();
-        },
-        error: function (xhr) {
-            window.location.href = xhr.getResponseHeader('Location');
-        },
-        complete: function () {
-            keyDownPrevent = false;
-            depositSpinner.style.display = 'none';
-        }
-    });
-});
-
-//////////
-
-const refreshSpinner = document.querySelector('#refresh-spinner');
-const refreshButton = document.querySelector('#refresh-btn');
-refreshButton.addEventListener('click', refresh);
-const depositConfirmButton = document.querySelector('#deposit-confirm-btn');
-depositConfirmButton.addEventListener('click', function () {
-    //예치금, 구매가능 정보 갱신
-    refresh();
-
-    //modal 닫기
-    depositModal.hide();
-});
-
-function refresh () {
-    keyDownPrevent = true;
-    refreshSpinner.style.display = 'flex';
-
-    //예치금, 구매가능 정보를 새로고침 해야한다.
-    $.ajax({
-        type: 'POST',
-        url: '/purchase/dh/refresh',
-        success: function (response) {
-            $('#deposit').text(response.deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-            $('#purchasable-count').text(response.purchasableCount);
-
-            //변조방지용 변수를 리프레시 한다.
-            deposit = parseInt($('#deposit').text().replace(/[^0-9]/g, ''));
-            purchasableCount = parseInt($('#purchasable-count').text());
-        },
-        error: function (xhr) {
-            window.location.href = xhr.getResponseHeader('Location');
-        },
-        complete: function () {
-            keyDownPrevent = false;
-            refreshSpinner.style.display = 'none';
-        }
-    });
 }

@@ -6,11 +6,11 @@
     <meta name="description" content="">
     <meta name="author" charset="PARK GI-PYO">
     <title>project-lottery</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/footer.css">
-    <link rel="stylesheet" href="/css/shop/shopDetail.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/footer.css" rel="stylesheet">
+    <link href="/css/shop/shopDetail.css" rel="stylesheet">
 </head>
 <body>
 <header id="header">
@@ -86,8 +86,7 @@
             <!-- END 복권 판매점 당첨 집계 -->
         </div>
         <!-- END 복권 판매점 정보 -->
-
-
+        <!-- BEGIN 1등 배출 회차 목록 -->
         <div class="accordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="lotto-1st-win-header">
@@ -98,44 +97,57 @@
                 </h2>
                 <div id="lotto-1st-win-body" class="accordion-collapse collapse" aria-labelledby="lotto-1st-win-header">
                     <div class="accordion-body">
-
                         <!-- BEGIN 복권 판매점 1등 당첨 내역 -->
                         <div class="lotto-win-none" id="lotto-1st-win-none">
                             <span class="label-text">조회 결과가 없습니다.</span>
                         </div>
-                        <div class="card" id="lotto-1st-win">
-                            <div class="card-header">
-                                <span class="label-bold-text">0회</span>
-                                <span class="label-text"> | 자동</span>
-                            </div>
-                            <div class="card-body">
-                                <div>
-                                    <span class="label-mini-title">추첨일</span>
-                                    <span class="label-text">1900-01-01</span>
+                        <div class="lotto-win-exists">
+                            <div class="card" id="lotto-1st-win">
+                                <div class="card-header">
+                                    <div class="draw-info">
+                                        <div class="draw-info-inner">
+                                            <span class="label-mini-title">[0]</span>
+                                            <span class="label-bold-text">0회</span>
+                                            <span class="label-mini-title">(1900-01-01)</span>
+                                        </div>
+                                        <div>
+                                            <span class="label-text">자동</span>
+                                        </div>
+                                    </div>
+                                    <div class="win-count">
+                                        <div class="win-count-inner">
+                                            <img src="/img/ico-1st-prize.png" class="ico"/>
+                                            <span class="label-text">0</span>
+                                            <img src="/img/ico-2nd-prize.png" class="ico"/>
+                                            <span class="label-text">0</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="ball">1</span>
-                                    <span class="ball">2</span>
-                                    <span class="ball">3</span>
-                                    <span class="ball">4</span>
-                                    <span class="ball">5</span>
-                                    <span class="ball">6</span>
-                                    <span class="split-token">+</span>
-                                    <span class="ball">7</span>
-                                </div>
-                                <div>
-                                    <span class="label-mini-title">당첨금</span>
-                                    <span class="label-text">0원</span>
+                                <div class="card-body">
+                                    <div>
+                                        <span class="ball">1</span>
+                                        <span class="ball">2</span>
+                                        <span class="ball">3</span>
+                                        <span class="ball">4</span>
+                                        <span class="ball">5</span>
+                                        <span class="ball">6</span>
+                                        <span class="split-token">+</span>
+                                        <span class="ball">7</span>
+                                    </div>
+                                    <div>
+                                        <span class="label-mini-title">당첨금</span>
+                                        <span class="label-text">0원</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- END 복권 판매점 1등 당첨 내역 -->
-
                     </div>
                 </div>
             </div>
         </div>
-
+        <!-- END 1등 배출 회차 목록 -->
+        <!-- BEGIN 2등 배출 회차 목록 -->
         <div class="accordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="lotto-2nd-win-header">
@@ -146,49 +158,65 @@
                 </h2>
                 <div id="lotto-2nd-win-body" class="accordion-collapse collapse" aria-labelledby="lotto-2nd-win-header">
                     <div class="accordion-body">
-
                         <!-- BEGIN 복권 판매점 2등 당첨 내역 -->
                         <div class="lotto-win-none" id="lotto-2nd-win-none">
                             <span class="label-text">조회 결과가 없습니다.</span>
                         </div>
-                        <div class="card" id="lotto-2nd-win">
-                            <div class="card-header card-header-silver">
-                                <span class="label-bold-text">0회</span>
-                            </div>
-                            <div class="card-body">
-                                <div>
-                                    <span class="label-mini-title">추첨일</span>
-                                    <span class="label-text">1900-01-01</span>
+                        <div class="lotto-win-exists">
+                            <div class="card" id="lotto-2nd-win">
+                                <div class="card-header card-header-silver">
+                                    <div class="draw-info">
+                                        <div class="draw-info-inner">
+                                            <span class="label-mini-title">[0]</span>
+                                            <span class="label-bold-text">0회</span>
+                                            <span class="label-mini-title">(1900-01-01)</span>
+                                        </div>
+                                        <div>
+                                            <span class="label-text">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="win-count">
+                                        <div class="win-count-inner">
+                                            <img src="/img/ico-1st-prize.png" class="ico"/>
+                                            <span class="label-text">0</span>
+                                            <img src="/img/ico-2nd-prize.png" class="ico"/>
+                                            <span class="label-text">0</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span class="ball">1</span>
-                                    <span class="ball">2</span>
-                                    <span class="ball">3</span>
-                                    <span class="ball">4</span>
-                                    <span class="ball">5</span>
-                                    <span class="ball">6</span>
-                                    <span class="split-token">+</span>
-                                    <span class="ball">7</span>
-                                </div>
-                                <div>
-                                    <span class="label-mini-title">당첨금</span>
-                                    <span class="label-text">0원</span>
+                                <div class="card-body">
+                                    <div>
+                                        <span class="ball">1</span>
+                                        <span class="ball">2</span>
+                                        <span class="ball">3</span>
+                                        <span class="ball">4</span>
+                                        <span class="ball">5</span>
+                                        <span class="ball">6</span>
+                                        <span class="split-token">+</span>
+                                        <span class="ball">7</span>
+                                    </div>
+                                    <div>
+                                        <span class="label-mini-title">당첨금</span>
+                                        <span class="label-text">0원</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- END 복권 판매점 2등 당첨 내역 -->
-
                     </div>
                 </div>
             </div>
         </div>
+        <!-- END 2등 배출 회차 목록 -->
     </div>
 </main>
 <script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" id="js-kakao-map"></script>
-<script type="text/javascript" src="/js/map.js"></script>
+<script type="text/javascript" src="/js/shop/shopDetailMap.js"></script>
+<script type="text/javascript" src="/js/footer.js"></script>
+<script type="text/javascript" src="/js/header.js"></script>
 <footer id="footer">
     <hr>
     footer 삽입부

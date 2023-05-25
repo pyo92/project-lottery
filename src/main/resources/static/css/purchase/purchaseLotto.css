@@ -1,6 +1,6 @@
 .lotto-purchase-group {
-    width: 100%;
-    max-width: 600px;
+    width: 400px;
+    max-width: 90%;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
@@ -26,26 +26,37 @@
 
 .dh-button {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-content: center;
     align-items: center;
     gap: 5px;
 }
 
 .dh-button button {
-    width: 25px;
-    height: 25px;
     padding: 0;
-    font-size: 13px;
-    font-weight: bold;
+    width: 20px;
+    height: 20px;
     text-align: center;
     color: white;
+}
+
+.dh-infos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .dh-info {
     height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.dh-info .label-bold-text {
+    margin-left: auto;
 }
 
 .lotto-purchase {
