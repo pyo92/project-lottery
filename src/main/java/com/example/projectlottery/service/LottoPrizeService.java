@@ -18,10 +18,20 @@ public class LottoPrizeService {
 
     private final LottoPrizeRepository lottoPrizeRepository;
 
+    /**
+     * 로또 등위별 당첨정보 저장 (for 동행복권 로또추첨결과 scrap)
+     * @param dto 등위별 당첨정보 dto
+     */
     public void save(LottoPrizeDto dto) {
         lottoPrizeRepository.save(dto.toEntity());
     }
 
+    /**
+     * 로또 회차별 등위별 당첨정보 조회
+     * @param drawNo 회차 번호
+     * @return 등위별 당첨정보 목록
+     */
+    @Transactional(readOnly = true)
     List<LottoPrizeResponse> getPrizeResponse(Long drawNo) {
         return lottoPrizeRepository.findByLotto_DrawNo(drawNo).stream()
                 .map(LottoPrizeResponse::from)

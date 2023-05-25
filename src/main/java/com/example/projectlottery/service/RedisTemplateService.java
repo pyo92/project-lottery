@@ -52,6 +52,10 @@ public class RedisTemplateService {
         redisTemplate.expire(REDIS_KEY_DH_LOGIN_INFO, 30, TimeUnit.MINUTES);
     }
 
+    /**
+     * redis cache save - 최신 회차 번호
+     * @param latestDrawNo 최신 회차 번호
+     */
     public void saveLatestDrawNo(Long latestDrawNo) {
         if (Objects.isNull(latestDrawNo)) {
             log.error("Required values must not be null");
@@ -62,6 +66,9 @@ public class RedisTemplateService {
         log.info("[RedisTemplateService saveLatestDrawNo() success] drawNo: {}", latestDrawNo);
     }
 
+    /**
+     * redis cache clear - 최신 회차 번호
+     */
     public void deleteLatestDrawNo() {
         try {
             redisTemplate.delete(CACHE_LATEST_DRAW_NO_KEY);
@@ -71,6 +78,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache hit - 최신 회차 번호
+     */
     public Long getLatestDrawNo() {
         try {
             return Long.valueOf(String.valueOf(valueOperations.get(CACHE_LATEST_DRAW_NO_KEY)));
@@ -80,6 +90,10 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache save - 로또추첨결과 view response dto
+     * @param dto 로또추첨결과 view response dto
+     */
     public void saveWinDetail(LottoResponse dto) {
         if (Objects.isNull(dto) || Objects.isNull(dto.drawNo())) {
             log.error("Required values must not be null");
@@ -95,6 +109,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache clear - 로또추첨결과 view response dto
+     */
     public void deleteAllWinDetail() {
         try {
             redisTemplate.delete(CACHE_WIN_DETAIL_KEY);
@@ -104,6 +121,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache hit - 로또추첨결과 view response dto
+     */
     public LottoResponse getWinDetail(Long drawNo) {
         try {
             return deserializeResponseDto(hashOperations.get(CACHE_WIN_DETAIL_KEY, String.valueOf(drawNo)), LottoResponse.class);
@@ -113,6 +133,10 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache save - 로또판매점상세 view response dto
+     * @param dto 로또판매점상세 view response dto
+     */
     public void saveShopDetail(ShopResponse dto) {
         if (Objects.isNull(dto) || Objects.isNull(dto.id())) {
             log.error("Required values must not be null");
@@ -128,6 +152,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache delete - 로또판매점상세 view response dto
+     */
     public void deleteAllShopDetail() {
         try {
             redisTemplate.delete(CACHE_SHOP_DETAIL_KEY);
@@ -137,6 +164,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache hit - 로또판매점상세 view response dto
+     */
     public ShopResponse getShopDetail(Long shopId) {
         try {
             return deserializeResponseDto(hashOperations.get(CACHE_SHOP_DETAIL_KEY, String.valueOf(shopId)), ShopResponse.class);
@@ -146,6 +176,10 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache save - 로또명당 view response dto
+     * @param shopRankingResponses 로또명당 view response dto
+     */
     public void saveShopRanking(List<QShopSummary> shopRankingResponses) {
         for (QShopSummary dto : shopRankingResponses) {
             if (Objects.isNull(dto) || Objects.isNull(dto.id())) {
@@ -156,7 +190,7 @@ public class RedisTemplateService {
             try {
                 //dto serialized 값을 value 로 사용
                 //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용 (1등.desc, 2등.desc, id.asc)
-                double score = (dto.firstPrizeWinCount() * 100000000D) + (dto.secondPrizeWinCount() * 10000D) - (dto.id() / 100000000D);
+                double score = (dto.firstPrizeWinCount() * 100000D) + (dto.secondPrizeWinCount() * 1D) + (1 - dto.id() / 100000000D);
                 zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), score);
                 log.info("[RedisTemplateService saveShopRanking() success] shopId: {}, score: {}", dto.id(), score);
             } catch (Exception e) {
@@ -165,6 +199,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache clear - 로또명당 view response dto
+     */
     public void deleteAllShopRanking() {
         try {
             redisTemplate.delete(CACHE_SHOP_RANKING_KEY);
@@ -174,6 +211,9 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache hit - 로또명당 view response dto
+     */
     public List<QShopSummary> getAllShopRanking() {
         try {
             return zSetOperations.reverseRange(CACHE_SHOP_RANKING_KEY, 0, 99).stream().map((o -> {
@@ -189,6 +229,10 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache save - 동행복권 로그인 request dto (for selenium 로또 구매)
+     * @param dto 동행복권 로그인 request dto
+     */
     public void saveDhLoginInfo(DhLoginRequest dto) {
         if (Objects.isNull(dto) || Objects.isNull(dto.id()) || Objects.isNull(dto.password())) {
             log.error("Required values must not be null");
@@ -207,6 +251,10 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache clear - 동행복권 로그인 request dto
+     * @param id 동행복권 사용자 id
+     */
     public void deleteDhLoginInfo(String id) {
         try {
             hashOperations.delete(REDIS_KEY_DH_LOGIN_INFO, id);
@@ -216,6 +264,11 @@ public class RedisTemplateService {
         }
     }
 
+    /**
+     * redis cache hit - 동행복권 로그인 request dto
+     * @param id 동행복권 사용자 id
+     * @return 동행복권 로그인 request dto
+     */
     public DhLoginRequest getDhLoginInfo(String id) {
         try {
             DhLoginRequest encrypted = deserializeResponseDto(hashOperations.get(REDIS_KEY_DH_LOGIN_INFO, id), DhLoginRequest.class);
@@ -230,7 +283,9 @@ public class RedisTemplateService {
         }
     }
 
-
+    /**
+     * redis all cache clear - scrap 완료 후에 모든 cache 삭제
+     */
     public void flushAllCache() {
         this.deleteLatestDrawNo();
         this.deleteAllWinDetail();
@@ -238,10 +293,24 @@ public class RedisTemplateService {
         this.deleteAllShopRanking();
     }
 
+    /**
+     * serialize dto
+     * @param dto target dto
+     * @return serialized dto
+     * @throws JsonProcessingException
+     */
     private String serializeResponseDto(Object dto) throws JsonProcessingException {
         return objectMapper.writeValueAsString(dto);
     }
 
+    /**
+     * deserialize dto
+     * @param serializedValue serialized dto string
+     * @param valueType original dto type
+     * @return deserialized dto
+     * @param <T> generic
+     * @throws JsonProcessingException
+     */
     private <T> T deserializeResponseDto(String serializedValue, Class<T> valueType) throws JsonProcessingException {
         return objectMapper.readValue(serializedValue, valueType);
     }

@@ -18,6 +18,13 @@ public interface ShopRepository extends
         QuerydslPredicateExecutor<Shop>,
         QuerydslBinderCustomizer<QShop> {
 
+    /**
+     * 판매 중단 판매점 목록 조회 (for 동행복권 로또 판매점 정보 scrap)
+     * @param state1 시.도
+     * @param l645YN 로또 판매 여부
+     * @param scrapedDt 마지막 scrap 일자
+     * @return 판매 중단 판매점 목록
+     */
     Set<Shop> findByState1EqualsAndL645YNAndScrapedDtBefore(String state1, boolean l645YN, LocalDate scrapedDt);
 
     @Override

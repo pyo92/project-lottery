@@ -15,8 +15,13 @@ public class EncryptionUtils {
     private static final String ALGORITHM = "AES";
 
     @Value("${dhlottery.encryption.key}")
-    private String KEY; // 실제로는 보안에 취약한 방식이므로 키 관리에 유의해야 합니다.
+    private String KEY;
 
+    /**
+     * 암호화 처리
+     * @param plainText 평문
+     * @return 암호문
+     */
     public String encrypt(String plainText) {
         try {
             SecretKey key = new SecretKeySpec(KEY.getBytes(StandardCharsets.UTF_8), ALGORITHM);
@@ -30,6 +35,11 @@ public class EncryptionUtils {
         }
     }
 
+    /**
+     * 복호화 처리
+     * @param encryptedText 암호문
+     * @return 평문
+     */
     public String decrypt(String encryptedText) {
         try {
             SecretKey key = new SecretKeySpec(KEY.getBytes(StandardCharsets.UTF_8), ALGORITHM);

@@ -2,11 +2,9 @@ package com.example.projectlottery.api.service;
 
 import com.example.projectlottery.dto.request.DhLoginRequest;
 import com.example.projectlottery.dto.request.DhLottoPurchaseRequest;
-import com.example.projectlottery.dto.request.PurchaseRequest;
 import com.example.projectlottery.dto.response.DhDepositResponse;
 import com.example.projectlottery.dto.response.DhLoginResponse;
 import com.example.projectlottery.dto.response.DhLottoPurchaseResponse;
-import com.example.projectlottery.service.PurchaseService;
 import com.example.projectlottery.service.RedisTemplateService;
 import com.example.projectlottery.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +30,6 @@ public class PurchaseLotteryService {
     private static final String URL_DH_DEPOSIT = "https://dhlottery.co.kr/payment.do?method=payment";
 
     private final SeleniumPurchaseService seleniumPurchaseService;
-
-    private final PurchaseService purchaseService;
 
     private final RedisTemplateService redisTemplateService;
 
@@ -277,12 +273,6 @@ public class PurchaseLotteryService {
         }
 
         seleniumPurchaseService.closeWebDriver();
-
-        //구매 결과 반환 전 서버에 history 저장 (내부 저장용 request dto 를 만들어서 보낸다.)
-        for (int[] game : games) {
-            PurchaseRequest purchaseRequest = PurchaseRequest.of(dhLotteryId, request.drawNo(), game);
-            purchaseService.savePurchaseHistory(purchaseRequest);
-        }
 
         return DhLottoPurchaseResponse.of(purchaseOk, errorMessage);
     }

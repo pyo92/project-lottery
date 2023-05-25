@@ -24,7 +24,10 @@ public class LottoRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     }
 
     /**
-     *  로또추첨결과 페이지 - 1, 2등 당첨 판매점 목록 리스팅
+     * 로또추첨결과 - 1, 2등 배출 목록 조회 (for querydsl)
+     * @param drawNo 회차 번호
+     * @param rank 등위
+     * @return 1, 2등 배출 목록
      */
     @Override
     public List<QShopSummary> getShopSummaryResponseForLotto(Long drawNo, Integer rank) {

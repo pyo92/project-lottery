@@ -25,9 +25,13 @@ public class LottoService {
     private final LottoRepository lottoRepository;
 
     private final LottoPrizeService lottoPrizeService;
-
     private final RedisTemplateService redisTemplateService;
 
+    /**
+     * 로또 회차별 추첨 결과 조회 (for 동행복권 scrap)
+     * @param drawNo 회차 번호
+     * @return 추첨 결과
+     */
     @Transactional(readOnly = true)
     public LottoDto getLotto(Long drawNo) {
         return lottoRepository.findById(drawNo)
@@ -35,6 +39,10 @@ public class LottoService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 회차가 없습니다. (drawNo: " + drawNo + ")"));
     }
 
+    /**
+     * 가장 최근 회차 번호 조회
+     * @return 가장 최근 회차 번호
+     */
     @Transactional(readOnly = true)
     public Long getLatestDrawNo() {
         Long latestDrawNo = redisTemplateService.getLatestDrawNo();
@@ -48,6 +56,11 @@ public class LottoService {
         return latestDrawNo;
     }
 
+    /**
+     * 로또 회차별 추첨 결과 조회 (for view)
+     * @param drawNo 회차 번호
+     * @return 추첨 결과
+     */
     @Transactional(readOnly = true)
     public LottoResponse getLottoResponse(Long drawNo) {
         LottoResponse lottoResponse = redisTemplateService.getWinDetail(drawNo);
@@ -73,6 +86,10 @@ public class LottoService {
         return lottoResponse;
     }
 
+    /**
+     * 로또추첨결과 정보 저장 (for 동행복권 로또추첨결과 scrap)
+     * @param dto 로또추첨결과 dto
+     */
     public void save(LottoDto dto) {
         lottoRepository.save(dto.toEntity());
     }

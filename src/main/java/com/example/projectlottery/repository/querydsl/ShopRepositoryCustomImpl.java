@@ -22,6 +22,8 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import java.util.List;
 
+import static com.example.projectlottery.util.StringUtils.isNullOrEmpty;
+
 public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implements ShopRepositoryCustom {
 
     private QShop shop;
@@ -41,7 +43,11 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     /**
-     *  복권판매점 페이지 - 검색 가능한 지역 목록, 지역에 포함된 판매점 수 리스팅
+     * 로또판매점 검색 페이지 상단 - 행정구역 목록 + 행정구역에 속한 판매점 수 조회
+     * @param state1 시.도
+     * @param state2 시.군.구
+     * @param state3 읍.면.동.리
+     * @return 행정구역 목록 + 행정구역에 속한 판매점 수
      */
     @Override
     public List<QShopRegion> getShopRegionResponse(String state1, String state2, String state3) {
@@ -63,12 +69,23 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     /**
-     *  복권판매점 페이지 - 선택한 지역에 속한 복권 판매점 목록 리스팅
+     * 로또판매점 검색 페이지 - 행정구역에 속하고 keyword 가 상호에 포함된 판매점 목록 조회
+     * @param state1 시.도
+     * @param state2 시.군.구
+     * @param state3 읍.면.동.리
+     * @param keyword 상호 검색 keyword
+     * @param pageable pageable
+     * @return 행정구역에 속하고 keyword 가 상호에 포함된 판매점 목록
      */
     @Override
-    public Page<QShopSummary> getShopSummaryResponseForShopList(String state1, String state2, String state3, Pageable pageable) {
+    public Page<QShopSummary> getShopSummaryResponseForShopList(String state1, String state2, String state3, String keyword, Pageable pageable) {
+        String keywordUpper = "";
+        if (!isNullOrEmpty(keyword)) {
+            keywordUpper = keyword.toUpperCase();
+        }
+
         JPQLQuery<QShopSummary> query = from(shop)
-                .where(shop.l645YN.eq(true), state1Eq(state1), state2Eq(state2), state3Eq(state3))
+                .where(shop.l645YN.eq(true), state1Eq(state1), state2Eq(state2), state3Eq(state3), shop.name.upper().contains(keywordUpper))
                 .select(Projections.constructor(QShopSummary.class,
                         shop.id,
                         shop.name,
@@ -89,15 +106,16 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     /**
-     *  로또명당 페이지 - 명당에 해당하는 100개의 판매점 요약 정보 리스팅
+     * 로또 명당 페이지 - 로또 명당 목록 조회
+     * @return 로또 명당 목록
      */
     @Override
     public List<QShopSummary> getShopSummaryResponseForRanking() {
         List<Long> shopIds = from(lottoWinShop)
-                .where(lottoWinShop.shop.l645YN.eq(true), lottoWinShop.rank.eq(1))
+                .where(lottoWinShop.shop.l645YN.eq(true))
                 .groupBy(lottoWinShop.shop.id)
                 .select(lottoWinShop.shop.id)
-                .orderBy(lottoWinShop.count().desc())
+                .orderBy(new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(1000000).otherwise(1).sum().desc())
                 .limit(100)
                 .fetch();
 
@@ -123,7 +141,9 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     /**
-     *  복권판매점상세 페이지 - '당첨요약' 부분에 해당하는 1, 2등 당첨집계 정보 조회
+     * 로또판매점 상세 페이지 - 상단 1, 2등 당첨 집계 요약 조회
+     * @param shopId 판매점 id
+     * @return 상단 1, 2등 당첨 집계 요약
      */
     @Override
     public QShopWinSummary getShopWinSummaryResponseForShopDetail(Long shopId) {
@@ -150,7 +170,10 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     /**
-     *  복권판매점상세 페이지 - 1, 2등 당첨내역에 해당하는 회차별 추첨결과 요약 정보 리스팅
+     * 로또판매점 상세 페이지 - 하단 1, 2등 당첨 회차 목록 조회
+     * @param shopId 판매점 id
+     * @param rank 등위
+     * @return 1, 2등 당첨 회차 목록
      */
     @Override
     public List<QLottoSummary> getLottoSummaryResponseForShopDetail(Long shopId, Integer rank) {
@@ -170,6 +193,12 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                         JPAExpressions.select(lottoPrize.winAmountPerGame)
                                 .from(lottoPrize)
                                 .where(lottoPrize.lotto.eq(lottoWinShop.lotto), lottoPrize.rank.eq(lottoWinShop.rank)),
+                        JPAExpressions.select(lottoPrize.winGameCount)
+                                .from(lottoPrize)
+                                .where(lottoPrize.lotto.eq(lottoWinShop.lotto), lottoPrize.rank.eq(1)),
+                        JPAExpressions.select(lottoPrize.winGameCount)
+                                .from(lottoPrize)
+                                .where(lottoPrize.lotto.eq(lottoWinShop.lotto), lottoPrize.rank.eq(2)),
                         new CaseBuilder().when(lottoWinShop.lottoPurchaseType.eq(LottoPurchaseType.AUTO)).then("자동")
                                 .when(lottoWinShop.lottoPurchaseType.eq(LottoPurchaseType.MANUAL)).then("수동")
                                 .when(lottoWinShop.lottoPurchaseType.eq(LottoPurchaseType.MIX)).then("반자동")
@@ -177,18 +206,38 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                 .orderBy(lottoWinShop.lotto.drawNo.desc()).fetch();
     }
 
+    /**
+     * 시.도 조건 처리 (for 행정구역 복합 검색조건 dynamic query)
+     * @param state1 시.도
+     * @return 시.도 boolean
+     */
     private BooleanExpression state1Eq(String state1) {
         return StringUtils.isNullOrEmpty(state1) ? null : shop.state1.eq(state1);
     }
 
+    /**
+     * 시.군.구 조건 처리 (for 행정구역 복합 검색조건 dynamic query)
+     * @param state2 시.군.구
+     * @return 시.군.구 boolean
+     */
     private BooleanExpression state2Eq(String state2) {
         return StringUtils.isNullOrEmpty(state2) ? null : shop.state2.eq(state2);
     }
 
+    /**
+     * 읍.면.동.리 조건 처리 (for 행정구역 복합 검색조건 dynamic query)
+     * @param state3 읍.면.동.리
+     * @return 읍.면.동.리 boolean
+     */
     private BooleanExpression state3Eq(String state3) {
         return StringUtils.isNullOrEmpty(state3) ? null : shop.state3.eq(state3);
     }
 
+    /**
+     * 로또판매점 검색 페이지 정렬 처리 (for dynamic query)
+     * @param query 정렬 전 검색 query
+     * @param pageable pageable
+     */
     private void dynamicSortForShopList(JPQLQuery<?> query, Pageable pageable) {
         if (pageable.getSort().isEmpty()) {
             query.orderBy(new OrderSpecifier<>(Order.ASC, Expressions.constant(3L))); //address,ASC
@@ -201,7 +250,7 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
             } else if (order[0].equals("win")) {
                 query.orderBy(new OrderSpecifier<>(direction, Expressions.constant(4L))); //1등
                 query.orderBy(new OrderSpecifier<>(direction, Expressions.constant(5L))); //2등
-                query.orderBy(new OrderSpecifier<>(Order.ASC, Expressions.constant(3L))); //address.ASC
+                query.orderBy(new OrderSpecifier<>(Order.ASC, Expressions.constant(1L))); //id.ASC
             } else {
                 query.orderBy(new OrderSpecifier<>(direction, Expressions.constant(3L)));
             }

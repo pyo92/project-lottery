@@ -20,6 +20,12 @@ public class ScrapController {
     private final ScrapLotteryWinService scrapLotteryWinService;
     private final ScrapLotteryWinShopService scrapLotteryWinShopService;
 
+    /**
+     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
+     * 동행복권 로또 판매점 정보 scrap 호출 api
+     * @param state 지역
+     * @return scrap 결과 message
+     */
     @GetMapping("/L645/shop")
     public String scrapShop(@RequestParam String state) {
         try {
@@ -31,6 +37,13 @@ public class ScrapController {
         return "[scrapShop() - success] state = " + state;
     }
 
+    /**
+     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
+     * 동행복권 로또 추첨 결과 정보 scrap 호출 api
+     * @param start 시작 회차 번호
+     * @param end 종료 회차 번호
+     * @return scrap 결과 message
+     */
     @GetMapping("/L645/win")
     public String scrapLotto(@RequestParam Long start, @RequestParam(required = false) Long end) {
         if (Objects.isNull(end)) end = start;
@@ -43,6 +56,13 @@ public class ScrapController {
         return "[scrapLotto() - success] start = " + start + ", end = " + end;
     }
 
+    /**
+     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
+     * 동행복권 로또 당첨 판매점 정보 scrap 호출 api
+     * @param start 시작 회차 번호
+     * @param end 종료 회차 번호
+     * @return scrap 결과 message
+     */
     @GetMapping("/L645/shop/win")
     public String scrapLottoWinShop(@RequestParam Long start, @RequestParam(required = false) Long end) {
         if (Objects.isNull(end)) end = start;
