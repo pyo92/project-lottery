@@ -37,18 +37,31 @@ public class ScrapScheduler {
         log.info("=== Success scrapShopL645() : {}", LocalDateTime.now());
     }
 
-    @Scheduled(cron = "0 0 22 * * SAT", zone = "Asia/Seoul") //매주 토요일 22시에 실행 (로또 6/45 추첨 결과)
+    @Scheduled(cron = "0 0 21 * * SAT", zone = "Asia/Seoul") //매주 토요일 21시에 실행 (로또 6/45 추첨 결과)
     public void scrapWinL645() {
         log.info("=== Started scrapWinL645() : {}", LocalDateTime.now());
 
         try {
             Long drawNo = lottoService.getLatestDrawNo() + 1;
             scrapLotteryWinService.getResultsL645(drawNo, drawNo);
-            scrapLotteryWinShopService.getWinShopL645(drawNo, drawNo);
         } catch (Exception e) {
             log.error("=== Failed scrapWinL645() : {}", LocalDateTime.now());
         }
 
         log.info("=== Success scrapWinL645() : {}", LocalDateTime.now());
+    }
+
+    @Scheduled(cron = "0 0 22 * * SAT", zone = "Asia/Seoul") //매주 토요일 22시에 실행 (로또 6/45 당첨 판매점 결과)
+    public void scrapWinL645Shop() {
+        log.info("=== Started scrapWinL645Shop() : {}", LocalDateTime.now());
+
+        try {
+            Long drawNo = lottoService.getLatestDrawNo();
+            scrapLotteryWinShopService.getWinShopL645(drawNo, drawNo);
+        } catch (Exception e) {
+            log.error("=== Failed scrapWinL645Shop() : {}", LocalDateTime.now());
+        }
+
+        log.info("=== Success scrapWinL645Shop() : {}", LocalDateTime.now());
     }
 }
