@@ -29,7 +29,6 @@
 
 #draw-no {
     color: red;
-    margin-bottom: 10px;
 }
 
 .game-grid {
@@ -151,6 +150,19 @@
 
 .fa-heart {
     cursor: pointer;
+}
+
+.group-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center
+}
+
+.btn-success {
+    margin-left: auto;
+    color: white;
 }
 
 @media screen and (max-width: 768px) {

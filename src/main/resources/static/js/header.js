@@ -37,11 +37,15 @@ document.addEventListener("DOMContentLoaded", function() {
             break;
         case '/purchase/dh/L645/result':
             activeMenuIco.classList.add('fa-wallet');
-            activeMenuLabel.textContent = '로또구매 > 로또구매결과';
+            activeMenuLabel.textContent = '로또구매 > 로또구매내역';
             break;
         case '/L645/tool':
             activeMenuIco.classList.add('fa-screwdriver-wrench');
-            activeMenuLabel.textContent = '로또도구';
+            activeMenuLabel.textContent = '로또조합';
+            break;
+        case '/L645/tool/result':
+            activeMenuIco.classList.add('fa-screwdriver-wrench');
+            activeMenuLabel.textContent = '로또조합> 로또조합내역';
             break;
         case '/L645/analysis':
             activeMenuIco.classList.add('fa-chart-simple');

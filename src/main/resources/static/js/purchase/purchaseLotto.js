@@ -42,7 +42,13 @@ function refresh () {
             purchasableCount = parseInt($('#purchasable-count').text());
         },
         error: function (xhr) {
-            window.location.href = xhr.getResponseHeader('Location');
+            const responseHeaders = xhr.getAllResponseHeaders();
+            if (responseHeaders.includes('Location')) {
+                window.location.href = xhr.getResponseHeader('Location');
+            } else {
+                alert('로그인 세션이 만료되었습니다.')
+                window.location.href = '/';
+            }
         },
         complete: function () {
             keyDownPrevent = false;
@@ -79,7 +85,13 @@ depositButton.addEventListener('click', function () {
             depositModal.show();
         },
         error: function (xhr) {
-            window.location.href = xhr.getResponseHeader('Location');
+            const responseHeaders = xhr.getAllResponseHeaders();
+            if (responseHeaders.includes('Location')) {
+                window.location.href = xhr.getResponseHeader('Location');
+            } else {
+                alert('로그인 세션이 만료되었습니다.')
+                window.location.href = '/';
+            }
         },
         complete: function () {
             keyDownPrevent = false;
@@ -126,8 +138,8 @@ function handleCheckboxChange() {
 
     if (selectedNumbers.length > 6) {
         this.checked = false;
-        selectedNumbers.pop();
-        alert('숫자는 6개까지만 선택할 수 있습니다.');
+        selectedNumbers.splice(selectedNumbers.indexOf(this.value), 1);
+        alert('더 이상 선택할 수 없습니다.');
 
     } else if (selectedNumbers.length === 6) {
         autoCheckbox.checked = false;
@@ -158,7 +170,7 @@ initCheckbox.addEventListener('change', handleInitCheckBoxChange);
  */
 function handleAutoCheckBoxChange() {
     if (selectedNumbers.length === 6) {
-        alert('이미 6개의 숫자를 선택하셨습니다.');
+        alert('더 이상 선택할 수 없습니다.');
         autoCheckbox.checked = false;
     }
 }
@@ -190,45 +202,31 @@ function handleAddButtonClick() {
         return;
     }
 
-    $.ajax({
-        type: 'POST',
-        url: '/purchase/dh/L645/game',
-        data: {
-            number1: selectedNumbers[0],
-            number2: selectedNumbers[1],
-            number3: selectedNumbers[2],
-            number4: selectedNumbers[3],
-            number5: selectedNumbers[4],
-            number6: selectedNumbers[5]
-        },
-        success: function (response) {
-            const gameNumbers = document.querySelectorAll('.game-numbers');
+    const gameNumbers = document.querySelectorAll('.game-numbers');
 
-            for (let i = 0 ; i < 5; i++) {
-                const numbers = gameNumbers[i];
-                const deleteButton = numbers.querySelector('.btn');
-                if (deleteButton.disabled) {
-                    const balls = numbers.querySelectorAll('.ball');
-                    balls[0].textContent = response.number1;
-                    balls[0].classList.add(getNumberClass(balls[0].textContent));
-                    balls[1].textContent = response.number2;
-                    balls[1].classList.add(getNumberClass(balls[1].textContent));
-                    balls[2].textContent = response.number3;
-                    balls[2].classList.add(getNumberClass(balls[2].textContent));
-                    balls[3].textContent = response.number4;
-                    balls[3].classList.add(getNumberClass(balls[3].textContent));
-                    balls[4].textContent = response.number5;
-                    balls[4].classList.add(getNumberClass(balls[4].textContent));
-                    balls[5].textContent = response.number6;
-                    balls[5].classList.add(getNumberClass(balls[5].textContent));
-                    deleteButton.disabled = '';
-                    gameCount++;
+    for (let i = 0 ; i < 5; i++) {
+        const numbers = gameNumbers[i];
+        const deleteButton = numbers.querySelector('.btn');
+        if (deleteButton.disabled) {
+            const balls = numbers.querySelectorAll('.ball');
+            balls[0].textContent = (selectedNumbers.length < 1 ? '?' : selectedNumbers[0]);
+            balls[0].classList.add(selectedNumbers.length < 1 ? 'na' : getNumberClass(balls[0].textContent));
+            balls[1].textContent = (selectedNumbers.length < 2 ? '?' : selectedNumbers[1]);
+            balls[1].classList.add(selectedNumbers.length < 2 ? 'na' : getNumberClass(balls[1].textContent));
+            balls[2].textContent = (selectedNumbers.length < 3 ? '?' : selectedNumbers[2]);
+            balls[2].classList.add(selectedNumbers.length < 3 ? 'na' : getNumberClass(balls[2].textContent));
+            balls[3].textContent = (selectedNumbers.length < 4 ? '?' : selectedNumbers[3]);
+            balls[3].classList.add(selectedNumbers.length < 4 ? 'na' : getNumberClass(balls[3].textContent));
+            balls[4].textContent = (selectedNumbers.length < 5 ? '?' : selectedNumbers[4]);
+            balls[4].classList.add(selectedNumbers.length < 5 ? 'na' : getNumberClass(balls[4].textContent));
+            balls[5].textContent = (selectedNumbers.length < 6 ? '?' : selectedNumbers[5]);
+            balls[5].classList.add(selectedNumbers.length < 6 ? 'na' : getNumberClass(balls[5].textContent));
+            deleteButton.disabled = '';
+            gameCount++;
 
-                    break;
-                }
-            }
+            break;
         }
-    });
+    }
 }
 
 /**
@@ -281,8 +279,9 @@ function handlePurchaseButtonClick() {
 
             // 현재 .game-numbers 요소에 속한 모든 .ball 요소의 값을 sets 배열에 저장합니다.
             numbers.each(function () {
-                const number = parseInt($(this).text());
-                isError |= (isNaN(number) || number < 1 || number > 45);
+                const numberText = $(this).text();
+                const number = parseInt(numberText);
+                isError |= (numberText !== '?' && (isNaN(number) || number < 1 || number > 45));
             });
         }
     });
@@ -293,8 +292,8 @@ function handlePurchaseButtonClick() {
         return;
     }
 
-    //회차 타이머에서 draw no 가져와서 세팅
-    $('#draw-no').val(drawNo);
+    //회차를 즉석에서 계산해서 세팅
+    $('#draw-no').val(calcDrawNo());
 
 
     // 각 .game-numbers 요소에 대해 반복합니다.
@@ -342,9 +341,9 @@ purchaseConfirmButton.addEventListener('click', function () {
     for (let i = 1; i <= 5; i++) {
         const game = document.getElementById('game' + i);
         if (game.value !== '') {
-            // 정규식 패턴: 1부터 45까지의 숫자 6개가 쉼표로 구분된 문자열
+            //정규식 패턴: 1부터 45까지의 숫자 6개가 쉼표로 구분된 문자열 (자동을 의미하는 '?' 포함)
             //개발자도구로 숫자 변조를 파악
-            const pattern = /^(?:[1-9]|[1-3][0-9]|4[0-5])(?:,(?:[1-9]|[1-3][0-9]|4[0-5])){5}$/;
+            const pattern = /^(?:\?|[1-9]|[1-3][0-9]|4[0-5])(?:,(?:\?|[1-9]|[1-3][0-9]|4[0-5])){5}$/;
             isError |= !pattern.test(game.value); //정규식 test 실패 시, isError 는 true
         }
     }
@@ -355,8 +354,8 @@ purchaseConfirmButton.addEventListener('click', function () {
         return;
     }
 
-    //변조 가능성이 있으므로 submit 직전 회차 타이머에서 draw no 가져와서 세팅
-    $('#draw-no').val(drawNo);
+    //변조 가능성이 있으므로 submit 직전 회차를 즉석에서 계산해서 세팅
+    $('#draw-no').val(calcDrawNo());
 
     keyDownPrevent = true;
     purchaseSpinner.style.display = 'flex';
@@ -385,13 +384,39 @@ function clearNumbers(buttonElement) {
 
     // .ball 요소의 텍스트 지우기
     for (let i = 0; i < balls.length; i++) {
-        balls[i].classList.remove(getNumberClass(balls[i].textContent));
-        balls[i].classList.add('ball');
-
+        balls[i].classList.remove(balls[i].classList.item(1));
         balls[i].textContent = '';
     }
 
     gameCount--;
 
     buttonElement.disabled = true;
+}
+
+//////////////////////////////
+
+/**
+ * 현재 일시에 따른 회차 계산 처리
+ * @returns {number} 현재 회차
+ */
+function calcDrawNo() {
+    const currentDate = new Date(); //현재
+    const startDate = new Date('2002-11-30'); //시작 날짜 설정
+    startDate.setHours(23, 59, 59, 999);
+
+    const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000; //1주일에 해당하는 밀리초
+
+    //현재 날짜와 시작 날짜 사이의 주차 계산
+    let drawNo = Math.ceil((currentDate - startDate) / millisecondsPerWeek);
+
+    const dayOfWeek = currentDate.getDay();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+
+    //추첨 완료(매주 토요일 20시 40분)인 경우 회차를 하나 증가시킴
+    if (dayOfWeek === 6 && hours >= 20 && minutes >= 40) {
+        drawNo += 1;
+    }
+
+    return drawNo;
 }

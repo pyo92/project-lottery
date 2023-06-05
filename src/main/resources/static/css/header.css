@@ -80,6 +80,14 @@
     color: #fbc400;
 }
 
+.kakao-login, .kakao-logout {
+    background: #fce333;
+}
+
+.fa-comment, .fa-right-from-bracket {
+    color: #171602;
+}
+
 @media (max-width: 768px) {
     .desktop-menu-inner {
         justify-content: center;

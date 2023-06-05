@@ -57,12 +57,22 @@ const timerTimes = [
 
 // 로또 관련 타이머 문구 설정
 const timerTexts = ['판매 시작까지', '판매 마감까지', '추첨 시작까지', '추첨중', '신규 발행까지'];
-const timerRemains = ['05:59:59', '6D 13:59:59', '00:34:59', '00:04:59', '03:19:59'];
+const timerRemains = [
+    {day: 0, hour: 5, min: 59, sec:59},
+    {day: 6, hour: 13, min: 59, sec:59},
+    {day: 0, hour: 0, min: 34, sec:59},
+    {day: 0, hour: 0, min: 4, sec:59},
+    {day: 0, hour: 3, min: 19, sec:59},
+];
 
 const progressBar = document.querySelector('.progress-bar');
 const timerDrawNo = document.querySelector('.timer-draw-no');
 const timerText = document.querySelector('.timer-text');
-const timerRemain = document.querySelector('.timer-remain');
+
+const timerDay = document.querySelector('.timer-day');
+const timerHour = document.querySelector('.timer-hour');
+const timerMin = document.querySelector('.timer-min');
+const timerSec = document.querySelector('.timer-sec');
 
 const timerProgress = document.querySelector('.timer-progress');
 
@@ -139,7 +149,12 @@ function updateTimer() {
         const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-        timerRemain.textContent = (days > 0 ? days.toString() + 'D ' : '') + hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+
+        timerDay.textContent = days.toString();
+        timerHour.textContent = hours.toString().padStart(2, '0');
+        timerMin.textContent = minutes.toString().padStart(2, '0');
+        timerSec.textContent = seconds.toString().padStart(2, '0');
+
     } else {
         currentRangeIndex++;
         currentRangeIndex %= timerTimes.length;
@@ -147,11 +162,14 @@ function updateTimer() {
         setProgress(100);
 
         timerText.textContent = timerTexts[currentRangeIndex];
-        timerRemain.textContent = timerRemains[currentRangeIndex];
+
+        timerDay.textContent = timerRemains[currentRangeIndex].day.toString();
+        timerHour.textContent = timerRemains[currentRangeIndex].hour.toString().padStart(2, '0');
+        timerMin.textContent = timerRemains[currentRangeIndex].min.toString().padStart(2, '0');
+        timerSec.textContent = timerRemains[currentRangeIndex].sec.toString().padStart(2, '0');
     }
 
-    drawNo = calcDrawNo(currentDate); //현재 회차 계산
-    timerDrawNo.textContent = (currentRangeIndex < 4 ? drawNo : drawNo + 1) + '회'; //현재회차 추첨종료 시, 다음회차번호 표시
+    timerDrawNo.textContent = calcDrawNo(currentDate) + '회'; //회차 표시
 }
 
 /**
@@ -160,11 +178,24 @@ function updateTimer() {
  * @returns {number} 현재 회차
  */
 function calcDrawNo(currentDate) {
-    const startDate = new Date('2002-12-01'); // 시작 날짜 설정
-    const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000; // 1주일에 해당하는 밀리초
+    const startDate = new Date('2002-11-30'); //시작 날짜 설정
+    startDate.setHours(23, 59, 59, 999);
 
-    // 현재 날짜와 시작 날짜 사이의 주차 계산
-    return Math.ceil((currentDate - startDate) / millisecondsPerWeek);
+    const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000; //1주일에 해당하는 밀리초
+
+    //현재 날짜와 시작 날짜 사이의 주차 계산
+    let drawNo = Math.ceil((currentDate - startDate) / millisecondsPerWeek);
+
+    const dayOfWeek = currentDate.getDay();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+
+    //추첨 완료(매주 토요일 20시 40분)인 경우 회차를 하나 증가시킴
+    if (dayOfWeek === 6 && hours >= 20 && minutes >= 40) {
+        drawNo += 1;
+    }
+
+    return drawNo;
 }
 
 /**
@@ -248,3 +279,17 @@ function resizeProgressBar() {
 }
 
 window.addEventListener('resize', resizeProgressBar);
+
+//////////////////////////////
+
+/**
+ * load event handler
+ */
+window.addEventListener('load', function () {
+    //구매 직후 페이지 넘어온 경우 alert message 표시
+    const authAlert = document.querySelector('.alert.alert-danger');
+    if (authAlert != null) {
+        alert(authAlert.textContent.trim());
+        authAlert.remove();
+    }
+});

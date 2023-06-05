@@ -151,6 +151,19 @@ button {
     cursor: pointer;
 }
 
+.tab-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+
+.btn-success {
+    margin-left: auto;
+    color: white;
+}
+
 @media screen and (max-width: 768px) {
     .lotto-purchase {
         flex-direction: column;
