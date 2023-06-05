@@ -2,4 +2,22 @@
 <thlogic>
     <attr sel="#header" th:replace="~{header :: header}"/>
     <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel="#fixed-number-content">
+        <attr sel=".number-grid">
+            <attr sel=".check-cell" th:each="n : ${#numbers.sequence(1, 45)}">
+                <attr sel="input" th:name="'fixed-number' + ${n}" th:id="'fixed-number' + ${n}" th:value="${n}"/>
+                <attr sel="label" th:for="'fixed-number' + ${n}" th:text="${n}"/>
+            </attr>
+        </attr>
+    </attr>
+    
+    <attr sel="#negative-number-content">
+        <attr sel=".number-grid">
+            <attr sel=".check-cell" th:each="n : ${#numbers.sequence(1, 45)}">
+                <attr sel="input" th:name="'negative-number' + ${n}" th:id="'negative-number' + ${n}" th:value="${n}"/>
+                <attr sel="label" th:for="'negative-number' + ${n}" th:text="${n}"/>
+            </attr>
+        </attr>
+    </attr>
 </thlogic>

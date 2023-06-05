@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<thlogic>
+    <attr sel="#header" th:replace="~{header :: header}"/>
+    <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel=".alert-danger" th:if="${#strings.equals(combinationNoneAlert, 'show')}">
+        <attr sel="span" th:text="'조합 생성 내역이 없습니다.'"/>
+    </attr>
+
+    <attr sel="#combination-draw-no" th:remove="all-but-first">
+        <attr sel="option[0]"
+              th:each="drawNo : ${drawNos}"
+              th:value="${drawNo}"
+              th:text="${drawNo} + '회'"
+              th:selected="${#strings.equals(param.drawNo, drawNo)}"/>
+    </attr>
+
+    <attr sel="#draw-no" th:if="${drawNo}" th:text="${drawNo} + '회'"/>
+
+    <attr sel="#combination-none" th:classappend="${combinationResult.size() == 0 ? '' : 'display-none'}"/>
+
+    <attr sel=".game"
+          th:each="game, stat: ${combinationResult}"
+          th:classappend="${game.rank == null ? '' :
+                            (game.rank == 1 ? 'win-first' :
+                            (game.rank == 2 ? 'win-second' :
+                            (game.rank == 3 ? 'win-third' : '')))}">
+        <attr sel=".game-numbers">
+            <attr sel=".game-header">
+                <attr sel="span[0]" th:text="'Game' + ${stat.index + 1}"/>
+                <attr sel="span[1]" th:text="${game.combinationType.description}"/>
+            </attr>
+            <attr sel="span[0]"
+                  th:text="${game.number1}"
+                  th:classappend="${game.number1 <= 10 ? 'n0' : (game.number1 <= 20 ? 'n1' : (game.number1 <= 30 ? 'n2' : (game.number1 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[1]"
+                  th:text="${game.number2}"
+                  th:classappend="${game.number2 <= 10 ? 'n0' : (game.number2 <= 20 ? 'n1' : (game.number2 <= 30 ? 'n2' : (game.number2 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[2]"
+                  th:text="${game.number3}"
+                  th:classappend="${game.number3 <= 10 ? 'n0' : (game.number3 <= 20 ? 'n1' : (game.number3 <= 30 ? 'n2' : (game.number3 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[3]"
+                  th:text="${game.number4}"
+                  th:classappend="${game.number4 <= 10 ? 'n0' : (game.number4 <= 20 ? 'n1' : (game.number4 <= 30 ? 'n2' : (game.number4 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[4]"
+                  th:text="${game.number5}"
+                  th:classappend="${game.number5 <= 10 ? 'n0' : (game.number5 <= 20 ? 'n1' : (game.number5 <= 30 ? 'n2' : (game.number5 <= 40 ? 'n3' : 'n4')))}"/>
+            <attr sel="span[5]"
+                  th:text="${game.number6}"
+                  th:classappend="${game.number6 <= 10 ? 'n0' : (game.number6 <= 20 ? 'n1' : (game.number6 <= 30 ? 'n2' : (game.number6 <= 40 ? 'n3' : 'n4')))}"/>
+        </attr>
+        <attr sel=".game-time">
+            <attr sel="span[1]" th:text="${game.toStringCreatedAt}"/>
+        </attr>
+        <attr sel=".game-result">
+            <attr sel="span[0]"
+                  th:classappend="${game.rank == null ? 'fa-circle-question' : (game.rank == 0 ? 'fa-circle-xmark' : 'fa-medal')}"/>
+            <attr sel="span[1]"
+                  th:text="${game.rank == null ? '미추첨' : (game.rank == 0 ? '낙첨' : game.rank + '등 당첨')}"/>
+        </attr>
+    </attr>
+</thlogic>

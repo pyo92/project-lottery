@@ -1,22 +1,13 @@
-.nav-link  {
-    color: white;
-}
-
-.tab-content {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.tab-pane {
-    width: 450px;
+.search-group {
+    width: 400px;
     max-width: 90%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
-.tab-content-inner {
-    width: 100%;
+.combination-group {
+    width: 400px;
+    max-width: 90%;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
@@ -24,58 +15,28 @@
     padding: 10px;
 }
 
-.omr-check-wrapper {
-    border: red 1px solid;
-}
-
-.number-grid {
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    grid-template-columns: repeat(7, 1fr);
-    grid-gap: 5px;
-    margin: 0 auto;
-    padding: 5px;
-    max-width: 600px;
-}
-
-.check-cell {
+.combination-number-wrapper {
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     align-content: center;
-    justify-content: center;
-    width: 20px;
-    height: 27px;
-    margin: 5px;
-    padding: 0;
-    border: 1px solid red;
 }
 
-.check-cell-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 7px;
-    margin: 1px -5px;
-    background: white;
-}
-
-.check-cell-inner label {
-    text-align: center;
-    cursor: pointer;
-    font-size: 14px;
-    width: 18px;
-    color: red;
-    background-color: white;
-}
-
-.check-cell input[type="checkbox"] {
+.display-none {
     display: none;
 }
 
-.check-cell input[type="checkbox"]:checked + label {
-    color: white;
-    background-color: black;
+#draw-no {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.game-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 5px;
 }
 
 .game-grid-header {
@@ -87,45 +48,52 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 10px;
 }
 
 .game-grid-header span {
     color: white;
 }
 
-.game-grid {
+.game {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-top: 5px;
-}
-
-.game-numbers {
-    width: 100%;
+    justify-items: center;
+    justify-content: center;
+    gap: 10px;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     padding: 10px;
+    border: none;
+}
+
+.win-first {
+    background: rgba(253, 223, 174, 0.8);
+}
+
+.win-second {
+    background: rgba(196, 196, 196, 0.8);
+}
+
+.win-third {
+    background: rgba(255, 226, 217, 0.76);
+}
+
+.game-numbers {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr;
-    align-items: center;
-    align-content: center;
-    justify-items: center;
     gap: 5px;
-}
-
-.game-numbers .label-mini-title {
-    width: 42px;
-    display: flex;
+    align-content: center;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    margin: 0;
 }
 
-.game-numbers .label-mini-title:last-child {
-    width: 100%;
-    text-align: right;
+.game-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-header span:nth-child(2) {
+    color: red;
 }
 
 .ball {
@@ -143,8 +111,42 @@
     text-align: center;
 }
 
-button {
+.game-time {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.game-time span {
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.game-result {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.game-result span {
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.no-margin-hr {
+    margin: 0;
 }
 
 .fa-heart {
@@ -152,10 +154,6 @@ button {
 }
 
 @media screen and (max-width: 768px) {
-    .lotto-purchase {
-        flex-direction: column;
-    }
-
     .ball {
         width: 29px;
         height: 29px;
