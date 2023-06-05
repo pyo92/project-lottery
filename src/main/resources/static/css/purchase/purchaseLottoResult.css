@@ -1,3 +1,10 @@
+.search-group {
+    width: 400px;
+    max-width: 90%;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .purchased-group {
     width: 400px;
     max-width: 90%;
@@ -16,6 +23,10 @@
     align-content: center;
 }
 
+.display-none {
+    display: none;
+}
+
 #draw-no {
     color: red;
     margin-bottom: 10px;
@@ -26,32 +37,63 @@
     flex-direction: column;
     padding: 5px;
     gap: 5px;
-    border: black 1px solid;
+}
+
+.game-grid-header {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: #434348;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.game-grid-header span {
+    color: white;
+}
+
+.game {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border: none;
+}
+
+.win-first {
+    background: rgba(253, 223, 174, 0.8);
+}
+
+.win-second {
+    background: rgba(196, 196, 196, 0.8);
+}
+
+.win-third {
+    background: rgba(255, 226, 217, 0.76);
 }
 
 .game-numbers {
-    width: 100%;
-    border: none;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    align-items: center;
-    align-content: center;
-    justify-items: center;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr 1fr 0.6fr;
     gap: 5px;
-}
-
-.game-grid > .game-numbers:not(:last-child) {
-    border-bottom: 1px solid #eeeeee;
-    padding-bottom: 5px;
-}
-
-.game-numbers .label-mini-title {
-    width: 42px;
-    display: flex;
+    align-content: center;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    margin: 0;
+}
+
+.game-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-header span:nth-child(2) {
+    color: red;
 }
 
 .ball {
@@ -69,9 +111,46 @@
     text-align: center;
 }
 
-#confirm-btn {
+.game-time {
     width: 100%;
-    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.game-time span {
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.game-result {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.game-result span {
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.no-margin-hr {
+    margin: 0;
+}
+
+.fa-heart {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

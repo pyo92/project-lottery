@@ -1,5 +1,6 @@
 package com.example.projectlottery.api.service;
 
+import com.example.projectlottery.domain.type.LottoPurchaseType;
 import com.example.projectlottery.dto.request.DhLoginRequest;
 import com.example.projectlottery.dto.request.DhLottoPurchaseRequest;
 import com.example.projectlottery.dto.response.DhDepositResponse;
@@ -14,9 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -205,7 +204,7 @@ public class PurchaseLotteryService {
         //로그인 처리 + 로그인 후에 구매를 진행해야 하므로 web driver 를 닫지 않는다.
         DhLoginResponse dhLoginResponse = loginDhLottery(dhLoginRequest, false);
 
-        int[][] games = gameTokenizer(request);
+        Integer[][] games = gameTokenizer(request);
 
         //구매 직전에 다시 한 번, 예치금과 구매가능 횟수를 체크한다.
         Long deposit = dhLoginResponse.deposit();
@@ -238,12 +237,21 @@ public class PurchaseLotteryService {
         String js;
 
         //사용자가 요청한 번호를 그대로 입력해서 구매를 진행한다.
-        for (int[] game : games) {
-            for (int i : game) {
+        for (Integer[] game : games) {
+            for (Integer i : game) {
+                if (i == null) {
+                    //번호가 없다면, 자동 선택이므로, 자동을 선택하고 loop 탈출
+                    js = "$('#checkAutoSelect').click();";
+                    seleniumPurchaseService.procJavaScript(js, 200);
+                    break;
+                }
+
+                //선택한 번호 클릭
                 js = "$('#check645num" + i + "').click();";
                 seleniumPurchaseService.procJavaScript(js, 200);
             }
 
+            //게임 추가 버튼 클릭
             js = "$('#btnSelectNum').click();";
             seleniumPurchaseService.procJavaScript(js, 200);
         }
@@ -261,20 +269,49 @@ public class PurchaseLotteryService {
         WebElement purchaseResultElement = seleniumPurchaseService.getElementByCssSelector(css);
         String display = purchaseResultElement.getCssValue("display");
 
-        boolean purchaseOk;
-        String errorMessage = null;
+        DhLottoPurchaseResponse result = null;
         if (display.equals("none")) { //예치금부족 혹은 구매한도 초과로 인한 구매내역 확인 레이어가 뜨지 않은 경우, 오류 메시지 반환
             css = "#popupLayerAlert > div > div.noti > span";
             WebElement popupAlertElement = seleniumPurchaseService.getElementByCssSelector(css);
-            purchaseOk = false;
-            errorMessage = popupAlertElement.getText();
+
+            result = DhLottoPurchaseResponse.of(false, popupAlertElement.getText());
         } else { //구매 성공
-            purchaseOk = true;
+            //구매 내역 scrap (구매타입 + 번호)
+            Map<String, LottoPurchaseType> lottoPurchaseTypeMap = new HashMap<>();
+            Map<String, List<Integer>> lottoGameMap = new HashMap<>();
+
+            css = "#reportRow > li";
+            List<WebElement> gameElements = seleniumPurchaseService.getElementsByCssSelector(css);
+            for (WebElement game : gameElements) {
+                //map key
+                String mapKey = game.findElement(By.cssSelector("strong > span:nth-child(1)")).getText();
+
+                //구매 타입
+                String purchaseType = game.findElement(By.cssSelector("strong > span:nth-child(2)")).getText();
+                LottoPurchaseType lottoPurchaseType =
+                        purchaseType.startsWith("자") ? LottoPurchaseType.AUTO :
+                                (purchaseType.startsWith("수") ? LottoPurchaseType.MANUAL : LottoPurchaseType.MIX);
+
+                lottoPurchaseTypeMap.put(mapKey, lottoPurchaseType);
+
+                //구매 번호
+                List<Integer> lottoGameNumbers = new ArrayList<>();
+                lottoGameNumbers.add(Integer.parseInt(game.findElement(By.cssSelector("div.nums > span:nth-child(1)")).getText()));
+                lottoGameNumbers.add(Integer.parseInt(game.findElement(By.cssSelector("div.nums > span:nth-child(2)")).getText()));
+                lottoGameNumbers.add(Integer.parseInt(game.findElement(By.cssSelector("div.nums > span:nth-child(3)")).getText()));
+                lottoGameNumbers.add(Integer.parseInt(game.findElement(By.cssSelector("div.nums > span:nth-child(4)")).getText()));
+                lottoGameNumbers.add(Integer.parseInt(game.findElement(By.cssSelector("div.nums > span:nth-child(5)")).getText()));
+                lottoGameNumbers.add(Integer.parseInt(game.findElement(By.cssSelector("div.nums > span:nth-child(6)")).getText()));
+
+                lottoGameMap.put(mapKey, lottoGameNumbers);
+            }
+
+            result = DhLottoPurchaseResponse.of(true, null, lottoPurchaseTypeMap, lottoGameMap);
         }
 
         seleniumPurchaseService.closeWebDriver();
 
-        return DhLottoPurchaseResponse.of(purchaseOk, errorMessage);
+        return result;
     }
 
     /**
@@ -283,7 +320,7 @@ public class PurchaseLotteryService {
      * @param request 구분자로 구분된 로또 게임 문자열 정보 dto
      * @return parsing 완료된 로또 게임 리스트
      */
-    private int[][] gameTokenizer(DhLottoPurchaseRequest request) {
+    private Integer[][] gameTokenizer(DhLottoPurchaseRequest request) {
         List<String> games = new ArrayList<>();
         if (!StringUtils.isNullOrEmpty(request.game1())) games.add(request.game1());
         if (!StringUtils.isNullOrEmpty(request.game2())) games.add(request.game2());
@@ -291,7 +328,7 @@ public class PurchaseLotteryService {
         if (!StringUtils.isNullOrEmpty(request.game4())) games.add(request.game4());
         if (!StringUtils.isNullOrEmpty(request.game5())) games.add(request.game5());
 
-        int[][] result = new int[games.size()][6];
+        Integer[][] result = new Integer[games.size()][6];
 
         for (int i = 0; i < games.size(); i++) {
             result[i] = stringTokenizer(games.get(i));
@@ -306,14 +343,17 @@ public class PurchaseLotteryService {
      * @param game 각 게임별 문자열
      * @return parsing 완료된 로또 게임
      */
-    private int[] stringTokenizer(String game) {
-        int[] result = new int[6];
+    private Integer[] stringTokenizer(String game) {
+        Integer[] result = new Integer[6];
 
         StringTokenizer st = new StringTokenizer(game, ",");
 
         int index = 0;
         while (st.hasMoreTokens()) {
-            result[index++] = Integer.parseInt(st.nextToken());
+            String token = st.nextToken();
+            if (!token.equals("?")) {
+                result[index++] = Integer.parseInt(token);
+            }
         }
 
         return result;
