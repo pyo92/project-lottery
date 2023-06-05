@@ -62,14 +62,35 @@
     text-align: center;
     width: 100%;
     color: #6c6c6c;
+    margin-bottom: 10px;
+}
+
+.timer-remain-group {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.timer-remain-group div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
 }
 
 .timer-remain {
     font-size: 45px;
     font-weight: bold;
     text-align: center;
-    width: 100%;
-    color: #333;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: black;
+    color: white;
+    padding: 0 10px;
 }
 
 @media screen and (max-width: 768px) {

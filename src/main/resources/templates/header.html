@@ -24,9 +24,14 @@
                 <a href="/shop/ranking">로또명당</a>
                 <a href="/L645">로또추첨결과</a>
                 <a href="/purchase/dh/login">로또구매</a>
-                <a href="/L645/tool">로또도구</a>
-                <a href="/L645/analysis">로또통계</a>
-                <a class="btn btn-primary" href="/user/login">로그인</a>
+                <a href="/L645/tool">로또조합</a>
+                <a href="/L645/analysis">로또분석</a>
+                <a class="kakao-login label-mini-title btn btn-warning" href="/oauth2/authorization/kakao">
+                    <i class="fas fa-comment">&nbsp;로그인</i>
+                </a>
+                <a class="kakao-logout label-mini-title btn btn-warning" href="/user/logout">
+                    <i class="fas fa-right-from-bracket">&nbsp;로그아웃</i>
+                </a>
             </div>
         </div>
         <hr>
@@ -36,9 +41,11 @@
     <div class="offcanvas offcanvas-end" tabindex="-1" id="menu-bar" aria-labelledby="menu-bar-label">
         <div class="offcanvas-header">
             <div class="mobile-menu-link-vertical" id="menu-bar-label">
-                <a class="label-title" href="/user/login">
-                    <i class="fas fa-power-off"></i>
-                    <span>로그인</span>
+                <a class="kakao-login label-mini-title btn btn-warning" href="/oauth2/authorization/kakao">
+                    <i class="fas fa-comment">&nbsp;로그인</i>
+                </a>
+                <a class="kakao-logout label-mini-title btn btn-warning" href="/user/logout">
+                    <i class="fas fa-right-from-bracket">&nbsp;로그아웃</i>
                 </a>
             </div>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -70,10 +77,20 @@
                     <i class="fas fa-wallet"></i>
                     <span>로또구매</span>
                 </a>
+                <br>
+                <a class="label-text" href="/purchase/dh/L645/result">
+                    <span>&nbsp;&nbsp;&nbsp;-</span>
+                    <span>로또구매내역</span>
+                </a>
                 <hr>
                 <a class="label-text" href="/L645/tool">
                     <i class="fas fa-screwdriver-wrench"></i>
-                    <span>로또도구</span>
+                    <span>로또조합</span>
+                </a>
+                <br>
+                <a class="label-text" href="/L645/tool/result">
+                    <span>&nbsp;&nbsp;&nbsp;-</span>
+                    <span>로또조합내역</span>
                 </a>
                 <hr>
                 <a class="label-text" href="/L645/analysis">
