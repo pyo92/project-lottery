@@ -7,10 +7,10 @@
     <meta name="author" charset="PARK GI-PYO">
     <title>project-lottery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/common.css?v=20230525" rel="stylesheet">
-    <link href="/css/header.css?v=20230525" rel="stylesheet">
-    <link href="/css/footer.css?v=20230525" rel="stylesheet">
-    <link href="/css/lotto/lottoAnalysis.css?v=20230525" rel="stylesheet">
+    <link href="/css/common.css?v=20230531" rel="stylesheet">
+    <link href="/css/header.css?v=20230531" rel="stylesheet">
+    <link href="/css/footer.css?v=20230531" rel="stylesheet">
+    <link href="/css/lotto/lottoAnalysis.css?v=20230531" rel="stylesheet">
 </head>
 <body>
 <header id="header">
@@ -19,14 +19,303 @@
 </header>
 <main class="container">
     <div class="content-group">
+        <ul class="nav nav-pills" id="tool-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text active" id="analysis-tab-ac" data-bs-toggle="pill" data-bs-target="#analysis-content-ac" type="button" role="tab" aria-controls="analysis-content-ac" aria-selected="true">
+                    AC
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="analysis-tab-sum" data-bs-toggle="pill" data-bs-target="#analysis-content-sum" type="button" role="tab" aria-controls="analysis-content-sum" aria-selected="false">
+                    총합
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="analysis-tab-nhc" data-bs-toggle="pill" data-bs-target="#analysis-content-nhc" type="button" role="tab" aria-controls="analysis-content-nhc" aria-selected="false">
+                    출현
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="analysis-tab-nrhc" data-bs-toggle="pill" data-bs-target="#analysis-content-nrhc" type="button" role="tab" aria-controls="analysis-content-nrhc" aria-selected="false">
+                    색상
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="analysis-tab-nmc" data-bs-toggle="pill" data-bs-target="#analysis-content-nmc" type="button" role="tab" aria-controls="analysis-content-nmc" aria-selected="false">
+                    미출현
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="analysis-content-ac" role="tabpanel" aria-labelledby="analysis-tab-ac">
+                <div class="tab-content-inner">
+                    <span class="label-title">AC</span>
+                    <br>
+                    <span class="label-mini-title">회차별 AC(Arithmetic Complexity) 값을 분석합니다.</span>
+                    <hr>
+                    <div class="analysis-wrapper">
+                        <div class="search-grid">
+                            <div class="search-group">
+                                <select class="form-select label-mini-title" name="startDrawNo" id="start-draw-no-ac">
+                                    <option>0회</option>
+                                </select>
+                                <span class="label-mini-title">~</span>
+                                <select class="form-select label-mini-title" name="endDrawNo" id="end-draw-no-ac">
+                                    <option>0회</option>
+                                </select>
+                                <button class="btn btn-primary label-mini-title" id="btn-analysis-ac">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="fn-group">
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-all-ac">전체</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest5-ac">최근 5주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest10-ac">최근 10주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest15-ac">최근 15주</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <canvas id="line-chart-ac"></canvas>
+                        <hr>
+                        <div class="win-grid">
+                            <div class="win-info-header">
+                                <span class="label-mini-title">회차</span>
+                                <span class="label-mini-title">당첨번호</span>
+                                <span class="label-mini-title">AC</span>
+                            </div>
+                            <div class="win-info-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="analysis-content-sum" role="tabpanel" aria-labelledby="analysis-tab-sum">
+                <div class="tab-content-inner">
+                    <span class="label-title">총합</span>
+                    <br>
+                    <span class="label-mini-title">회차별 당첨번호 합계 값을 분석합니다.</span>
+                    <hr>
+                    <div class="analysis-wrapper">
+                        <div class="search-grid">
+                            <div class="search-group">
+                                <select class="form-select label-mini-title" name="startDrawNo" id="start-draw-no-sum">
+                                    <option>0회</option>
+                                </select>
+                                <span class="label-mini-title">~</span>
+                                <select class="form-select label-mini-title" name="endDrawNo" id="end-draw-no-sum">
+                                    <option>0회</option>
+                                </select>
+                                <button class="btn btn-primary label-mini-title" id="btn-analysis-sum">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="fn-group">
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-all-sum">전체</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest5-sum">최근 5주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest10-sum">최근 10주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest15-sum">최근 15주</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <canvas id="line-chart-sum"></canvas>
+                        <hr>
+                        <div class="win-grid">
+                            <div class="win-info-header">
+                                <span class="label-mini-title">회차</span>
+                                <span class="label-mini-title">당첨번호</span>
+                                <span class="label-mini-title">합계</span>
+                            </div>
+                            <div class="win-info-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="analysis-content-nhc" role="tabpanel" aria-labelledby="analysis-tab-nhc">
+                <div class="tab-content-inner">
+                    <span class="label-title">출현</span>
+                    <br>
+                    <span class="label-mini-title">번호별 출현 횟수를 분석합니다.</span>
+                    <hr>
+                    <div class="analysis-wrapper">
+                        <div class="search-grid">
+                            <div class="search-sub-group">
+                                <input type="checkbox" name="bonus-yn" id="bonus-yn-nhc">
+                                <label class="label-mini-title" for="bonus-yn-nhc">보너스번호 포함</label>
+                            </div>
+                            <div class="search-group">
+                                <select class="form-select label-mini-title" name="startDrawNo" id="start-draw-no-nhc">
+                                    <option>0회</option>
+                                </select>
+                                <span class="label-mini-title">~</span>
+                                <select class="form-select label-mini-title" name="endDrawNo" id="end-draw-no-nhc">
+                                    <option>0회</option>
+                                </select>
+                                <button class="btn btn-primary label-mini-title" id="btn-analysis-nhc">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="fn-group">
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-all-nhc">전체</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest5-nhc">최근 5주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest10-nhc">최근 10주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest15-nhc">최근 15주</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="legend">
+                            <div class="legend-fill">
+                                <div></div>
+                                <span class="label-mini-title">1~10</span>
+                                <div></div>
+                                <span class="label-mini-title">11~20</span>
+                                <div></div>
+                                <span class="label-mini-title">21~30</span>
+                                <div></div>
+                                <span class="label-mini-title">31~40</span>
+                                <div></div>
+                                <span class="label-mini-title">41~45</span>
+                                <div></div>
+                                <span class="label-mini-title">보너스번호</span>
+                            </div>
+                        </div>
+                        <div class="ball-grid">
+                            <div class="ball-info-header">
+                                <span class="label-mini-title">번호</span>
+                                <span class="label-mini-title">출현</span>
+                            </div>
+                            <div class="ball-info-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="analysis-content-nrhc" role="tabpanel" aria-labelledby="analysis-tab-nrhc">
+                <div class="tab-content-inner">
+                    <span class="label-title">색상</span>
+                    <br>
+                    <span class="label-mini-title">번호 색상별 출현 횟수를 분석합니다.</span>
+                    <hr>
+                    <div class="analysis-wrapper">
+                        <div class="search-grid">
+                            <div class="search-sub-group">
+                                <input type="checkbox" name="bonus-yn" id="bonus-yn-nrhc">
+                                <label class="label-mini-title" for="bonus-yn-nrhc">보너스번호 포함</label>
+                            </div>
+                            <div class="search-group">
+                                <select class="form-select label-mini-title" name="startDrawNo" id="start-draw-no-nrhc">
+                                    <option>0회</option>
+                                </select>
+                                <span class="label-mini-title">~</span>
+                                <select class="form-select label-mini-title" name="endDrawNo" id="end-draw-no-nrhc">
+                                    <option>0회</option>
+                                </select>
+                                <button class="btn btn-primary label-mini-title" id="btn-analysis-nrhc">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="fn-group">
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-all-nrhc">전체</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest5-nrhc">최근 5주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest10-nrhc">최근 10주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest15-nrhc">최근 15주</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="legend">
+                            <div class="legend-fill">
+                                <div></div>
+                                <span class="label-mini-title">1~10</span>
+                                <div></div>
+                                <span class="label-mini-title">11~20</span>
+                                <div></div>
+                                <span class="label-mini-title">21~30</span>
+                                <div></div>
+                                <span class="label-mini-title">31~40</span>
+                                <div></div>
+                                <span class="label-mini-title">41~45</span>
+                                <div></div>
+                                <span class="label-mini-title">보너스번호</span>
+                            </div>
+                        </div>
+                        <div class="ball-grid">
+                            <div class="ball-info-header">
+                                <span class="label-mini-title">색상</span>
+                                <span class="label-mini-title">출현</span>
+                            </div>
+                            <div class="ball-info-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="analysis-content-nmc" role="tabpanel" aria-labelledby="analysis-tab-nmc">
+                <div class="tab-content-inner">
+                    <span class="label-title">미출현</span>
+                    <br>
+                    <span class="label-mini-title">번호별 미출현 기간을 분석합니다.</span>
+                    <hr>
+                    <div class="analysis-wrapper">
+                        <div class="search-grid">
+                            <div class="search-sub-group">
+                                <input type="checkbox" name="bonus-yn" id="bonus-yn-nmc">
+                                <label class="label-mini-title" for="bonus-yn-nmc">보너스번호 포함</label>
+                            </div>
+                            <div class="search-group">
+                                <select class="form-select label-mini-title" name="startDrawNo" id="start-draw-no-nmc">
+                                    <option>0회</option>
+                                </select>
+                                <span class="label-mini-title">~</span>
+                                <select class="form-select label-mini-title" name="endDrawNo" id="end-draw-no-nmc">
+                                    <option>0회</option>
+                                </select>
+                                <button class="btn btn-primary label-mini-title" id="btn-analysis-nmc">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="fn-group">
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-all-nmc">전체</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest5-nmc">최근 5주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest10-nmc">최근 10주</button>
+                                <button class="btn btn-secondary label-mini-title" id="btn-analysis-latest15-nmc">최근 15주</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="legend">
+                            <div class="legend-fill">
+                                <div></div>
+                                <span class="label-mini-title">1~10</span>
+                                <div></div>
+                                <span class="label-mini-title">11~20</span>
+                                <div></div>
+                                <span class="label-mini-title">21~30</span>
+                                <div></div>
+                                <span class="label-mini-title">31~40</span>
+                                <div></div>
+                                <span class="label-mini-title">41~45</span>
+                                <div></div>
+                                <span class="label-mini-title">보너스번호</span>
+                            </div>
+                        </div>
+                        <div class="ball-grid">
+                            <div class="ball-info-header">
+                                <span class="label-mini-title">번호</span>
+                                <span class="label-mini-title">미출현</span>
+                            </div>
+                            <div class="ball-info-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <script src="https://kit.fontawesome.com/9f7c487e95.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/js/lotto/lottoAnalysis.js?v=20230525"></script>
-<script type="text/javascript" src="/js/footer.js?v=20230525"></script>
-<script type="text/javascript" src="/js/header.js?v=20230525"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<script type="text/javascript" src="/js/lotto/lottoAnalysis.js?v=20230531"></script>
+<script type="text/javascript" src="/js/footer.js?v=20230531"></script>
+<script type="text/javascript" src="/js/header.js?v=20230531"></script>
 <footer id="footer">
     <hr>
     footer 삽입부

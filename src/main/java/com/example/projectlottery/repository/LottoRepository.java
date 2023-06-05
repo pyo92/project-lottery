@@ -9,7 +9,7 @@ public interface LottoRepository extends JpaRepository<Lotto, Long>, LottoReposi
 
     /**
      * 가장 최근 회차 번호 조회 (for 로또추첨결과 페이지 회차 selector 생성용)
-     * @return
+     * @return 최근 회차
      */
     @Query("select max(l.drawNo) from Lotto l")
     Long getLatestDrawNo();
