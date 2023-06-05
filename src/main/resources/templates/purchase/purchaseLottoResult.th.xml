@@ -3,108 +3,64 @@
     <attr sel="#header" th:replace="~{header :: header}"/>
     <attr sel="#footer" th:replace="~{footer :: footer}"/>
 
+    <attr sel=".alert-danger" th:if="${#strings.equals(purchasedNoneAlert, 'show')}">
+        <attr sel="span" th:text="'구매 내역이 없습니다.'"/>
+    </attr>
+
+    <attr sel=".alert-success" th:if="${#strings.equals(purchaseAlert, 'show')}">
+        <attr sel="span" th:text="'정상적으로 구매되었습니다.'"/>
+    </attr>
+
+    <attr sel="#purchase-draw-no" th:remove="all-but-first">
+        <attr sel="option[0]"
+              th:each="drawNo : ${drawNos}"
+              th:value="${drawNo}"
+              th:text="${drawNo} + '회'"
+              th:selected="${#strings.equals(param.drawNo, drawNo)}"/>
+    </attr>
+
     <attr sel="#draw-no" th:if="${drawNo}" th:text="${drawNo} + '회'"/>
 
-    <attr sel=".game-grid">
-        <attr sel="div[0]" th:if="${game1}">
-            <attr sel="span[0]" 
-                  th:text="${game1[0]}" 
-                  th:classappend="${game1[0] <= 10 ? 'n0' : (game1[0] <= 20 ? 'n1' : (game1[0] <= 30 ? 'n2' : (game1[0] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[1]"
-                  th:text="${game1[1]}"
-                  th:classappend="${game1[1] <= 10 ? 'n0' : (game1[1] <= 20 ? 'n1' : (game1[1] <= 30 ? 'n2' : (game1[1] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[2]"
-                  th:text="${game1[2]}"
-                  th:classappend="${game1[2] <= 10 ? 'n0' : (game1[2] <= 20 ? 'n1' : (game1[2] <= 30 ? 'n2' : (game1[2] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[3]"
-                  th:text="${game1[3]}"
-                  th:classappend="${game1[3] <= 10 ? 'n0' : (game1[3] <= 20 ? 'n1' : (game1[3] <= 30 ? 'n2' : (game1[3] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[4]"
-                  th:text="${game1[4]}"
-                  th:classappend="${game1[4] <= 10 ? 'n0' : (game1[4] <= 20 ? 'n1' : (game1[4] <= 30 ? 'n2' : (game1[4] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[5]"
-                  th:text="${game1[5]}"
-                  th:classappend="${game1[5] <= 10 ? 'n0' : (game1[5] <= 20 ? 'n1' : (game1[5] <= 30 ? 'n2' : (game1[5] <= 40 ? 'n3' : 'n4')))}"/>
-        </attr>
-        <attr sel="div[1]" th:if="${game2}">
+    <attr sel="#purchased-none" th:classappend="${purchaseResult.size() == 0 ? '' : 'display-none'}"/>
+
+    <attr sel=".game"
+          th:each="game, stat: ${purchaseResult}"
+          th:classappend="${game.rank == null ? '' :
+                            (game.rank == 1 ? 'win-first' :
+                            (game.rank == 2 ? 'win-second' :
+                            (game.rank == 3 ? 'win-third' : '')))}">
+        <attr sel=".game-numbers">
+            <attr sel=".game-header">
+                <attr sel="span[0]" th:text="'Game' + ${stat.index + 1}"/>
+                <attr sel="span[1]" th:text="${game.lottoPurchaseType.description}"/>
+            </attr>
             <attr sel="span[0]"
-                  th:text="${game2[0]}"
-                  th:classappend="${game2[0] <= 10 ? 'n0' : (game2[0] <= 20 ? 'n1' : (game2[0] <= 30 ? 'n2' : (game2[0] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.number1}"
+                  th:classappend="${game.number1 <= 10 ? 'n0' : (game.number1 <= 20 ? 'n1' : (game.number1 <= 30 ? 'n2' : (game.number1 <= 40 ? 'n3' : 'n4')))}"/>
             <attr sel="span[1]"
-                  th:text="${game2[1]}"
-                  th:classappend="${game2[1] <= 10 ? 'n0' : (game2[1] <= 20 ? 'n1' : (game2[1] <= 30 ? 'n2' : (game2[1] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.number2}"
+                  th:classappend="${game.number2 <= 10 ? 'n0' : (game.number2 <= 20 ? 'n1' : (game.number2 <= 30 ? 'n2' : (game.number2 <= 40 ? 'n3' : 'n4')))}"/>
             <attr sel="span[2]"
-                  th:text="${game2[2]}"
-                  th:classappend="${game2[2] <= 10 ? 'n0' : (game2[2] <= 20 ? 'n1' : (game2[2] <= 30 ? 'n2' : (game2[2] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.number3}"
+                  th:classappend="${game.number3 <= 10 ? 'n0' : (game.number3 <= 20 ? 'n1' : (game.number3 <= 30 ? 'n2' : (game.number3 <= 40 ? 'n3' : 'n4')))}"/>
             <attr sel="span[3]"
-                  th:text="${game2[3]}"
-                  th:classappend="${game2[3] <= 10 ? 'n0' : (game2[3] <= 20 ? 'n1' : (game2[3] <= 30 ? 'n2' : (game2[3] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.number4}"
+                  th:classappend="${game.number4 <= 10 ? 'n0' : (game.number4 <= 20 ? 'n1' : (game.number4 <= 30 ? 'n2' : (game.number4 <= 40 ? 'n3' : 'n4')))}"/>
             <attr sel="span[4]"
-                  th:text="${game2[4]}"
-                  th:classappend="${game2[4] <= 10 ? 'n0' : (game2[4] <= 20 ? 'n1' : (game2[4] <= 30 ? 'n2' : (game2[4] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.number5}"
+                  th:classappend="${game.number5 <= 10 ? 'n0' : (game.number5 <= 20 ? 'n1' : (game.number5 <= 30 ? 'n2' : (game.number5 <= 40 ? 'n3' : 'n4')))}"/>
             <attr sel="span[5]"
-                  th:text="${game2[5]}"
-                  th:classappend="${game2[5] <= 10 ? 'n0' : (game2[5] <= 20 ? 'n1' : (game2[5] <= 30 ? 'n2' : (game2[5] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.number6}"
+                  th:classappend="${game.number6 <= 10 ? 'n0' : (game.number6 <= 20 ? 'n1' : (game.number6 <= 30 ? 'n2' : (game.number6 <= 40 ? 'n3' : 'n4')))}"/>
         </attr>
-        <attr sel="div[2]" th:if="${game3}">
-            <attr sel="span[0]"
-                  th:text="${game3[0]}"
-                  th:classappend="${game3[0] <= 10 ? 'n0' : (game3[0] <= 20 ? 'n1' : (game3[0] <= 30 ? 'n2' : (game3[0] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[1]"
-                  th:text="${game3[1]}"
-                  th:classappend="${game3[1] <= 10 ? 'n0' : (game3[1] <= 20 ? 'n1' : (game3[1] <= 30 ? 'n2' : (game3[1] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[2]"
-                  th:text="${game3[2]}"
-                  th:classappend="${game3[2] <= 10 ? 'n0' : (game3[2] <= 20 ? 'n1' : (game3[2] <= 30 ? 'n2' : (game3[2] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[3]"
-                  th:text="${game3[3]}"
-                  th:classappend="${game3[3] <= 10 ? 'n0' : (game3[3] <= 20 ? 'n1' : (game3[3] <= 30 ? 'n2' : (game3[3] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[4]"
-                  th:text="${game3[4]}"
-                  th:classappend="${game3[4] <= 10 ? 'n0' : (game3[4] <= 20 ? 'n1' : (game3[4] <= 30 ? 'n2' : (game3[4] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[5]"
-                  th:text="${game3[5]}"
-                  th:classappend="${game3[5] <= 10 ? 'n0' : (game3[5] <= 20 ? 'n1' : (game3[5] <= 30 ? 'n2' : (game3[5] <= 40 ? 'n3' : 'n4')))}"/>
+        <attr sel=".game-time">
+            <attr sel="span[1]" th:text="${game.toStringPurchasedAt}"/>
         </attr>
-        <attr sel="div[3]" th:if="${game4}">
+        <attr sel=".game-result">
             <attr sel="span[0]"
-                  th:text="${game4[0]}"
-                  th:classappend="${game4[0] <= 10 ? 'n0' : (game4[0] <= 20 ? 'n1' : (game4[0] <= 30 ? 'n2' : (game4[0] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:classappend="${game.rank == null ? 'fa-circle-question' : (game.rank == 0 ? 'fa-circle-xmark' : 'fa-medal')}"/>
             <attr sel="span[1]"
-                  th:text="${game4[1]}"
-                  th:classappend="${game4[1] <= 10 ? 'n0' : (game4[1] <= 20 ? 'n1' : (game4[1] <= 30 ? 'n2' : (game4[1] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[2]"
-                  th:text="${game4[2]}"
-                  th:classappend="${game4[2] <= 10 ? 'n0' : (game4[2] <= 20 ? 'n1' : (game4[2] <= 30 ? 'n2' : (game4[2] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[3]"
-                  th:text="${game4[3]}"
-                  th:classappend="${game4[3] <= 10 ? 'n0' : (game4[3] <= 20 ? 'n1' : (game4[3] <= 30 ? 'n2' : (game4[3] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[4]"
-                  th:text="${game4[4]}"
-                  th:classappend="${game4[4] <= 10 ? 'n0' : (game4[4] <= 20 ? 'n1' : (game4[4] <= 30 ? 'n2' : (game4[4] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[5]"
-                  th:text="${game4[5]}"
-                  th:classappend="${game4[5] <= 10 ? 'n0' : (game4[5] <= 20 ? 'n1' : (game4[5] <= 30 ? 'n2' : (game4[5] <= 40 ? 'n3' : 'n4')))}"/>
-        </attr>
-        <attr sel="div[4]" th:if="${game5}">
-            <attr sel="span[0]"
-                  th:text="${game5[0]}"
-                  th:classappend="${game5[0] <= 10 ? 'n0' : (game5[0] <= 20 ? 'n1' : (game5[0] <= 30 ? 'n2' : (game5[0] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[1]"
-                  th:text="${game5[1]}"
-                  th:classappend="${game5[1] <= 10 ? 'n0' : (game5[1] <= 20 ? 'n1' : (game5[1] <= 30 ? 'n2' : (game5[1] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[2]"
-                  th:text="${game5[2]}"
-                  th:classappend="${game5[2] <= 10 ? 'n0' : (game5[2] <= 20 ? 'n1' : (game5[2] <= 30 ? 'n2' : (game5[2] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[3]"
-                  th:text="${game5[3]}"
-                  th:classappend="${game5[3] <= 10 ? 'n0' : (game5[3] <= 20 ? 'n1' : (game5[3] <= 30 ? 'n2' : (game5[3] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[4]"
-                  th:text="${game5[4]}"
-                  th:classappend="${game5[4] <= 10 ? 'n0' : (game5[4] <= 20 ? 'n1' : (game5[4] <= 30 ? 'n2' : (game5[4] <= 40 ? 'n3' : 'n4')))}"/>
-            <attr sel="span[5]"
-                  th:text="${game5[5]}"
-                  th:classappend="${game5[5] <= 10 ? 'n0' : (game5[5] <= 20 ? 'n1' : (game5[5] <= 30 ? 'n2' : (game5[5] <= 40 ? 'n3' : 'n4')))}"/>
+                  th:text="${game.rank == null ? '미추첨' : (game.rank == 0 ? '낙첨' : game.rank + '등 당첨')}"/>
         </attr>
     </attr>
 </thlogic>

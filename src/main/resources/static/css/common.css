@@ -63,6 +63,10 @@ body {
     background-color: #b0d840;
 }
 
+.ball.na {
+    background-color: #333333;
+}
+
 .ico {
     width: 25px;
     margin: -4px 3px 0 5px;
