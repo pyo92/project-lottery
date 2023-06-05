@@ -26,20 +26,55 @@ public class ScrapLotteryWinService {
     private final LottoService lottoService;
     private final LottoPrizeService lottoPrizeService;
 
+    private final PurchaseResultService purchaseResultService;
+    private final UserCombinationService userCombinationService;
+
     private final RedisTemplateService redisTemplateService;
 
     /**
-     * 로또 6/45 회차별 당첨 번호 + 등위별 당첨 금액 스크랩핑
+     * 로또 6/45 회차별 당첨 번호 스크랩핑
      *
      * @param start 시작 회차
      * @param end   종료 회차
      */
-    public void getResultsL645(long start, long end) {
+    public void getWinNumbersL645(long start, long end) {
         seleniumScrapService.openWebDriver();
         seleniumScrapService.openUrl(URL_RESULT_LOTTO, 200);
 
         for (long i = start; i <= end; i++) {
             getNumbersL645(i);
+
+            //당첨번호 scrap 후, 당첨번호를 가져온다. (for 구매내역과 조합내역에 대한 등위 업데이트 처리)
+            LottoDto lotto = lottoService.getLotto(i);
+            List<Integer> winNumber = new ArrayList<>();
+            winNumber.add(lotto.number1());
+            winNumber.add(lotto.number2());
+            winNumber.add(lotto.number3());
+            winNumber.add(lotto.number4());
+            winNumber.add(lotto.number5());
+            winNumber.add(lotto.number6());
+
+            //구매내역과 조합내역에 대한 등위 업데이트 처리
+            purchaseResultService.updatePurchasedWin(i, winNumber, lotto.numberB());
+        }
+
+        //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
+        redisTemplateService.flushAllCache();
+
+        seleniumScrapService.closeWebDriver();
+    }
+
+    /**
+     * 로또 6/45 회차별 등위별 당첨 금액 스크랩핑
+     *
+     * @param start 시작 회차
+     * @param end   종료 회차
+     */
+    public void getWinPrizesL645(long start, long end) {
+        seleniumScrapService.openWebDriver();
+        seleniumScrapService.openUrl(URL_RESULT_LOTTO, 200);
+
+        for (long i = start; i <= end; i++) {
             getPrizesL645(i);
         }
 
