@@ -39,21 +39,40 @@ public class ScrapController {
 
     /**
      * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
-     * 동행복권 로또 추첨 결과 정보 scrap 호출 api
+     * 동행복권 로또 추첨 결과 당첨 번호 scrap 호출 api
      * @param start 시작 회차 번호
      * @param end 종료 회차 번호
      * @return scrap 결과 message
      */
-    @GetMapping("/L645/win")
-    public String scrapLotto(@RequestParam Long start, @RequestParam(required = false) Long end) {
+    @GetMapping("/L645/win/number")
+    public String scrapLottoNumber(@RequestParam Long start, @RequestParam(required = false) Long end) {
         if (Objects.isNull(end)) end = start;
         try {
-            scrapLotteryWinService.getResultsL645(start, end);
+            scrapLotteryWinService.getWinNumbersL645(start, end);
         } catch (Exception e) {
             return e.getMessage();
         }
 
-        return "[scrapLotto() - success] start = " + start + ", end = " + end;
+        return "[scrapLottoNumber() - success] start = " + start + ", end = " + end;
+    }
+
+    /**
+     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
+     * 동행복권 로또 추첨 결과 당첨 등위별 상세 정보 scrap 호출 api
+     * @param start 시작 회차 번호
+     * @param end 종료 회차 번호
+     * @return scrap 결과 message
+     */
+    @GetMapping("/L645/win/prize")
+    public String scrapLottoPrize(@RequestParam Long start, @RequestParam(required = false) Long end) {
+        if (Objects.isNull(end)) end = start;
+        try {
+            scrapLotteryWinService.getWinPrizesL645(start, end);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+        return "[scrapLottoPrize() - success] start = " + start + ", end = " + end;
     }
 
     /**
@@ -63,7 +82,7 @@ public class ScrapController {
      * @param end 종료 회차 번호
      * @return scrap 결과 message
      */
-    @GetMapping("/L645/shop/win")
+    @GetMapping("/L645/win/shop/")
     public String scrapLottoWinShop(@RequestParam Long start, @RequestParam(required = false) Long end) {
         if (Objects.isNull(end)) end = start;
         try {
