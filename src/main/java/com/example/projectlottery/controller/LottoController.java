@@ -6,6 +6,7 @@ import com.example.projectlottery.dto.request.UserCombinationRequest;
 import com.example.projectlottery.dto.response.LottoGameResponse;
 import com.example.projectlottery.dto.response.LottoResponse;
 import com.example.projectlottery.dto.response.UserCombinationResponse;
+import com.example.projectlottery.dto.response.analysis.*;
 import com.example.projectlottery.service.LottoService;
 import com.example.projectlottery.service.UserCombinationService;
 import lombok.RequiredArgsConstructor;
@@ -208,5 +209,113 @@ public class LottoController {
         ));
 
         return LottoGameResponse.of(gameSet);
+    }
+
+    /**
+     * 로또 분석 - 회차별 AC 통계 post 처리
+     * @param startDrawNo 시작 회차
+     * @param endDrawNo 종료 회차
+     * @return 로또 분석 - 회차별 AC 통계 response dto
+     */
+    @ResponseBody
+    @PostMapping("/analysis/number-arithmetic-complexity")
+    public List<NumberAcAnalysisResponse> lottoNumberAcAnalysis(Long startDrawNo, Long endDrawNo) {
+        Long latestDrawNo = lottoService.getLatestDrawNo();
+        if (startDrawNo == null || startDrawNo < 1L || startDrawNo > latestDrawNo) {
+            startDrawNo = 1L;
+        }
+
+        if (endDrawNo == null || endDrawNo < 1L || endDrawNo > latestDrawNo) {
+            endDrawNo = latestDrawNo;
+        }
+
+        return lottoService.getLottoNumberAcAnalysis(startDrawNo, endDrawNo);
+    }
+
+    /**
+     * 로또 분석 - 회차별 총합 통계 post 처리
+     * @param startDrawNo 시작 회차
+     * @param endDrawNo 종료 회차
+     * @return 로또 분석 - 회차별 총합 통계 response dto
+     */
+    @ResponseBody
+    @PostMapping("/analysis/number-sum")
+    public List<NumberSumAnalysisResponse> lottoNumberSumAnalysis(Long startDrawNo, Long endDrawNo) {
+        Long latestDrawNo = lottoService.getLatestDrawNo();
+        if (startDrawNo == null || startDrawNo < 1L || startDrawNo > latestDrawNo) {
+            startDrawNo = 1L;
+        }
+
+        if (endDrawNo == null || endDrawNo < 1L || endDrawNo > latestDrawNo) {
+            endDrawNo = latestDrawNo;
+        }
+
+        return lottoService.getLottoNumberSumAnalysis(startDrawNo, endDrawNo);
+    }
+
+    /**
+     * 로또 분석 - 번호별 출현 횟수 post 처리
+     * @param startDrawNo 시작 회차
+     * @param endDrawNo 종료 회차
+     * @param bonus 보너스 번호 포함 여부
+     * @return 로또 분석 - 번호별 출현 횟수 response dto
+     */
+    @ResponseBody
+    @PostMapping("/analysis/number-hit-count")
+    public List<NumberHitCountWithBonusAnalysisResponse> lottoNumberHitCountAnalysis(Long startDrawNo, Long endDrawNo, Boolean bonus) {
+        Long latestDrawNo = lottoService.getLatestDrawNo();
+        if (startDrawNo == null || startDrawNo < 1L || startDrawNo > latestDrawNo) {
+            startDrawNo = 1L;
+        }
+
+        if (endDrawNo == null || endDrawNo < 1L || endDrawNo > latestDrawNo) {
+            endDrawNo = latestDrawNo;
+        }
+
+        return lottoService.getLottoNumberHitCountAnalysis(startDrawNo, endDrawNo, bonus);
+    }
+
+    /**
+     * 로또 분석 - 번호 대역별 색상 통계 post 처리
+     * @param startDrawNo 시작 회차
+     * @param endDrawNo 종료 회차
+     * @param bonus 보너스 번호 포함 여부
+     * @return 로또 분석 - 번호별 색상 통계 response dto
+     */
+    @ResponseBody
+    @PostMapping("/analysis/number-range-hit-count")
+    public List<NumberRangeHitCountAnalysisResponse> lottoNumberRangeHitCountAnalysis(Long startDrawNo, Long endDrawNo, Boolean bonus) {
+        Long latestDrawNo = lottoService.getLatestDrawNo();
+        if (startDrawNo == null || startDrawNo < 1L || startDrawNo > latestDrawNo) {
+            startDrawNo = 1L;
+        }
+
+        if (endDrawNo == null || endDrawNo < 1L || endDrawNo > latestDrawNo) {
+            endDrawNo = latestDrawNo;
+        }
+
+        return lottoService.getLottoNumberRangeHitCountAnalysis(startDrawNo, endDrawNo, bonus);
+    }
+
+    /**
+     * 로또 분석 - 번호별 미출현 기간 post 처리
+     * @param startDrawNo 시작 회차
+     * @param endDrawNo 종료 회차
+     * @param bonus 보너스 번호 포함 여부
+     * @return 로또 분석 - 번호별 미출현 기간 response dto
+     */
+    @ResponseBody
+    @PostMapping("/analysis/number-miss-count")
+    public List<NumberMissCountAnalysisResponse> lottoNumberMissCountAnalysis(Long startDrawNo, Long endDrawNo, Boolean bonus) {
+        Long latestDrawNo = lottoService.getLatestDrawNo();
+        if (startDrawNo == null || startDrawNo < 1L || startDrawNo > latestDrawNo) {
+            startDrawNo = 1L;
+        }
+
+        if (endDrawNo == null || endDrawNo < 1L || endDrawNo > latestDrawNo) {
+            endDrawNo = latestDrawNo;
+        }
+
+        return lottoService.getLottoNumberMissCountAnalysis(startDrawNo, endDrawNo, bonus);
     }
 }

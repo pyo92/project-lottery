@@ -26,11 +26,11 @@ import static com.example.projectlottery.util.StringUtils.isNullOrEmpty;
 
 public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implements ShopRepositoryCustom {
 
-    private QShop shop;
-    private QRegion region;
-    private QLottoPrize lottoPrize;
-    private QLottoWinShop lottoWinShop;
-    private QLottoWinShop lottoWinShopAnother;
+    private final QShop shop;
+    private final QRegion region;
+    private final QLottoPrize lottoPrize;
+    private final QLottoWinShop lottoWinShop;
+    private final QLottoWinShop lottoWinShopAnother;
 
     public ShopRepositoryCustomImpl() {
         super(Shop.class);
