@@ -1,0 +1,368 @@
+.nav-link  {
+    color: white;
+}
+
+.tab-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-pane {
+    width: 500px;
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-content-inner {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 10px;
+}
+
+.search-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.search-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.search-group select {
+    width: 100px;
+}
+
+.search-sub-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.fn-group {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: flex-end;
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.legend div {
+    display: flex;
+    flex-direction: row;
+}
+
+.legend-fill {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.legend-fill div:nth-child(1) {
+    border-radius: 5px;
+    background: #fbc400;
+    width: 15px;
+}
+
+.legend-fill div:nth-child(3) {
+    border-radius: 5px;
+    background: #69c8f2;
+    width: 15px;
+}
+
+.legend-fill div:nth-child(5) {
+    border-radius: 5px;
+    background: #ff7272;
+    width: 15px;
+}
+
+.legend-fill div:nth-child(7) {
+    border-radius: 5px;
+    background: #aaaaaa;
+    width: 15px;
+}
+
+.legend-fill div:nth-child(9) {
+    border-radius: 5px;
+    background: #b0d840;
+    width: 15px;
+}
+
+.legend-fill div:nth-child(11) {
+    border-radius: 5px;
+    background: #473bc7;
+    width: 15px;
+}
+
+.ball-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ball-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ball-info-header {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: #434348;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.ball-info-header span {
+    color: white;
+}
+
+.ball-info {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.ball {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.ball-count-bar {
+    width: calc(100% - 30px);
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.bar-fill {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#analysis-content-nmc .bar-fill {
+    flex-direction: column;
+}
+
+.bar-fill-count {
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.bar-fill-count.label-mini-title {
+    color: white;
+    padding-right: 2px;
+    text-align: right;
+    font-size: 6px;
+    font-weight: lighter;
+}
+
+.bar-fill-count.n0 {
+    background-color: #fbc400;
+}
+
+.bar-fill-count.n1 {
+    background-color: #69c8f2;
+}
+
+.bar-fill-count.n2 {
+    background-color: #ff7272;
+}
+
+.bar-fill-count.n3 {
+    background-color: #aaaaaa;
+}
+
+.bar-fill-count.n4 {
+    background-color: #b0d840;
+}
+
+.bar-fill-bonus {
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background-color: #473bc7;
+}
+
+.bar-fill-bonus.label-mini-title {
+    color: white;
+    padding-right: 2px;
+    text-align: right;
+    font-size: 6px;
+    font-weight: lighter;
+}
+
+.bar-label {
+    width: 50px;
+    margin-left: auto;
+    text-align: right;
+}
+
+.btn.label-mini-title {
+    color: white;
+}
+
+.win-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.win-info-header {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: #434348;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.win-info-header span {
+    color: white;
+}
+
+.win-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.win-info {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    display: grid;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.win-info span:first-child {
+    width: 100%;
+    text-align: left;
+}
+
+.win-info span:last-child {
+    width: 100%;
+    text-align: right;
+    padding-right: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .legend {
+        align-items: normal;
+    }
+
+    .ball {
+        width: 29px;
+        height: 29px;
+        line-height: 29px;
+        font-size: 15px;
+    }
+
+    .ball-count-bar {
+        width: calc(100% - 29px);
+        height: 29px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ball {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+    }
+
+    .ball-count-bar {
+        width: calc(100% - 28px);
+        height: 28px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .ball {
+        width: 27px;
+        height: 27px;
+        line-height: 27px;
+        font-size: 14px;
+    }
+
+    .ball-count-bar {
+        width: calc(100% - 27px);
+        height: 27px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .ball {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+        font-size: 13px;
+    }
+
+    .ball-count-bar {
+        width: calc(100% - 26px);
+        height: 26px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .ball {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 13px;
+    }
+
+    .ball-count-bar {
+        width: calc(100% - 25px);
+        height: 25px;
+    }
+}
