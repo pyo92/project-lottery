@@ -4,7 +4,6 @@ import com.example.projectlottery.api.service.ScrapLotteryShopService;
 import com.example.projectlottery.api.service.ScrapLotteryWinService;
 import com.example.projectlottery.api.service.ScrapLotteryWinShopService;
 import com.example.projectlottery.service.LottoService;
-import com.example.projectlottery.service.RedisTemplateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +22,10 @@ public class ScrapScheduler {
     private final ScrapLotteryWinService scrapLotteryWinService;
     private final ScrapLotteryWinShopService scrapLotteryWinShopService;
 
-    @Scheduled(cron = "0 0 3 * * SAT", zone = "Asia/Seoul") //매주 토요일 3시에 실행 (로또 6/45 판매점)
+    /**
+     * 매주 토요일 3시에 실행 (로또 6/45 판매점)
+     */
+    @Scheduled(cron = "0 0 3 * * SAT", zone = "Asia/Seoul")
     public void scrapShopL645() {
         log.info("=== Started scrapShopL645() : {}", LocalDateTime.now());
 
@@ -37,21 +39,44 @@ public class ScrapScheduler {
         log.info("=== Success scrapShopL645() : {}", LocalDateTime.now());
     }
 
-    @Scheduled(cron = "0 0 21 * * SAT", zone = "Asia/Seoul") //매주 토요일 21시에 실행 (로또 6/45 추첨 결과)
-    public void scrapWinL645() {
-        log.info("=== Started scrapWinL645() : {}", LocalDateTime.now());
+    /**
+     * 매주 토요일 20시 45분에 실행 (로또 6/45 추첨 결과 - 당첨 번호)
+     */
+    @Scheduled(cron = "0 45 20 * * SAT", zone = "Asia/Seoul")
+    public void scrapWinNumberL645() {
+        log.info("=== Started scrapWinNumberL645() : {}", LocalDateTime.now());
 
         try {
-            Long drawNo = lottoService.getLatestDrawNo() + 1;
-            scrapLotteryWinService.getResultsL645(drawNo, drawNo);
+            long drawNo = lottoService.getLatestDrawNo() + 1;
+            scrapLotteryWinService.getWinNumbersL645(drawNo, drawNo);
         } catch (Exception e) {
-            log.error("=== Failed scrapWinL645() : {}", LocalDateTime.now());
+            log.error("=== Failed scrapWinNumberL645() : {}", LocalDateTime.now());
         }
 
-        log.info("=== Success scrapWinL645() : {}", LocalDateTime.now());
+        log.info("=== Success scrapWinNumberL645() : {}", LocalDateTime.now());
     }
 
-    @Scheduled(cron = "0 0 22 * * SAT", zone = "Asia/Seoul") //매주 토요일 22시에 실행 (로또 6/45 당첨 판매점 결과)
+    /**
+     * 매주 토요일 21시에 실행 (로또 6/45 추첨 결과 - 등위별 상세 정보)
+     */
+    @Scheduled(cron = "0 0 21 * * SAT", zone = "Asia/Seoul")
+    public void scrapWinPrizeL645() {
+        log.info("=== Started scrapWinPrizeL645() : {}", LocalDateTime.now());
+
+        try {
+            Long drawNo = lottoService.getLatestDrawNo();
+            scrapLotteryWinService.getWinPrizesL645(drawNo, drawNo);
+        } catch (Exception e) {
+            log.error("=== Failed scrapWinPrizeL645() : {}", LocalDateTime.now());
+        }
+
+        log.info("=== Success scrapWinPrizeL645() : {}", LocalDateTime.now());
+    }
+
+    /**
+     * 매주 토요일 21시 10분에 실행 (로또 6/45 당첨 판매점 결과)
+     */
+    @Scheduled(cron = "0 10 21 * * SAT", zone = "Asia/Seoul")
     public void scrapWinL645Shop() {
         log.info("=== Started scrapWinL645Shop() : {}", LocalDateTime.now());
 
