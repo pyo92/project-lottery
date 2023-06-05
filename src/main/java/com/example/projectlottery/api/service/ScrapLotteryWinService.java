@@ -2,9 +2,7 @@ package com.example.projectlottery.api.service;
 
 import com.example.projectlottery.dto.LottoDto;
 import com.example.projectlottery.dto.LottoPrizeDto;
-import com.example.projectlottery.service.LottoService;
-import com.example.projectlottery.service.LottoPrizeService;
-import com.example.projectlottery.service.RedisTemplateService;
+import com.example.projectlottery.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
@@ -12,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,6 +55,7 @@ public class ScrapLotteryWinService {
 
             //구매내역과 조합내역에 대한 등위 업데이트 처리
             purchaseResultService.updatePurchasedWin(i, winNumber, lotto.numberB());
+            userCombinationService.updateCombinationWin(i, winNumber, lotto.numberB());
         }
 
         //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
