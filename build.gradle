@@ -56,6 +56,12 @@ dependencies {
     //testcontainers
     testImplementation 'org.testcontainers:spock:1.17.6'
     testImplementation 'org.testcontainers:mariadb:1.17.6'
+
+    //spring security 관련 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
