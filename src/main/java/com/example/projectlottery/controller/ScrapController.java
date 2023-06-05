@@ -82,7 +82,7 @@ public class ScrapController {
      * @param end 종료 회차 번호
      * @return scrap 결과 message
      */
-    @GetMapping("/L645/win/shop/")
+    @GetMapping("/L645/win/shop")
     public String scrapLottoWinShop(@RequestParam Long start, @RequestParam(required = false) Long end) {
         if (Objects.isNull(end)) end = start;
         try {
