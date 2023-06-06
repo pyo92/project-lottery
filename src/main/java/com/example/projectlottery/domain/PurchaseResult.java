@@ -12,6 +12,10 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(columnList = "userId, drawNo"),
+        @Index(columnList = "userId, drawNo, purchaseType")
+})
 @Entity
 public class PurchaseResult extends AuditingFields {
 
