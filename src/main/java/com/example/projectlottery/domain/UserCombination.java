@@ -11,6 +11,10 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(columnList = "userId, drawNo"),
+        @Index(columnList = "userId, drawNo, combinationType")
+})
 @Entity
 public class UserCombination extends AuditingFields {
 
@@ -26,7 +30,7 @@ public class UserCombination extends AuditingFields {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private UserCombinationType combinationType; //조합타
+    private UserCombinationType combinationType; //조합타입
 
     @Column
     private Integer number1; //번호1

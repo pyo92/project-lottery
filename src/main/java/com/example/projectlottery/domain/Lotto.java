@@ -14,6 +14,17 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(columnList = "number1"),
+        @Index(columnList = "number2"),
+        @Index(columnList = "number3"),
+        @Index(columnList = "number4"),
+        @Index(columnList = "number5"),
+        @Index(columnList = "number6"),
+        @Index(columnList = "numberb"),
+        @Index(columnList = "number1, number2, number3, number4, number5, number6"),
+        @Index(columnList = "number1, number2, number3, number4, number5, number6, numberb")
+})
 @Entity
 public class Lotto extends AuditingFields {
 

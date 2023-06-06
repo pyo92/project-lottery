@@ -1,10 +1,7 @@
 package com.example.projectlottery.domain;
 
 import com.example.projectlottery.domain.auditing.AuditingFields;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,6 +12,16 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(columnList = "address"),
+        @Index(columnList = "name"),
+        @Index(columnList = "longitude"),
+        @Index(columnList = "latitude"),
+        @Index(columnList = "l645YN"),
+        @Index(columnList = "longitude, latitude"),
+        @Index(columnList = "state1, state2, state3"),
+        @Index(columnList = "l645YN, scrapedDt")
+})
 @Entity
 public class Shop extends AuditingFields {
 

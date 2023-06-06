@@ -34,7 +34,16 @@ CREATE TABLE `lotto` (
   `number5` int(11) NOT NULL,
   `number6` int(11) NOT NULL,
   `numberb` int(11) NOT NULL,
-  PRIMARY KEY (`draw_no`)
+  PRIMARY KEY (`draw_no`),
+  KEY `IDXsyv9nm64upw4gujdb3mc7baig` (`number1`,`number2`,`number3`,`number4`,`number5`,`number6`),
+  KEY `IDXptd241lp236s6q9tuhccx7rac` (`number1`,`number2`,`number3`,`number4`,`number5`,`number6`,`numberb`),
+  KEY `IDX2ddu6idaofgw7hg9l7qq3rk6w` (`number1`),
+  KEY `IDXl1br8xshdob182rsou9sj07bg` (`number2`),
+  KEY `IDXprkug026i2b3s9eojqgr2i2` (`number3`),
+  KEY `IDXngln38wnnrpdc7p52f8mir221` (`number4`),
+  KEY `IDXsec3ss5mvl0c0ml99g7fbf8sl` (`number5`),
+  KEY `IDX7ayrcyh5asyky4bmxkuxsg2rf` (`number6`),
+  KEY `IDX98d1v7cr3ly54n67ynen9wbg` (`numberb`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1127,4 +1136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-05 23:46:39
+-- Dump completed on 2023-06-06 15:47:41
