@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.11.2-MariaDB, for debian-linux-gnu (aarch64)
+-- MariaDB dump 10.19  Distrib 10.11.3-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: lottery
 -- ------------------------------------------------------
--- Server version	10.11.2-MariaDB-1:10.11.2+maria~ubu2204
+-- Server version	10.11.3-MariaDB-1:10.11.3+maria~ubu2204
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-06 15:48:15
+-- Dump completed on 2023-06-10 21:21:26
