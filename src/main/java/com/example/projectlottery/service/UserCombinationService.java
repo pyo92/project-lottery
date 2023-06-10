@@ -36,9 +36,7 @@ public class UserCombinationService {
      * @param bonusNumber 보너스 번호 목록
      */
     public void updateCombinationWin(Long drawNo, List<Integer> winNumber, Integer bonusNumber) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        List<UserCombination> userCombinations = userCombinationRepository.findByUserIdAndDrawNo(userId, drawNo);
+        List<UserCombination> userCombinations = userCombinationRepository.findByDrawNo(drawNo);
         for (UserCombination u : userCombinations) {
             int rank = 0;
             int matched = 0;
