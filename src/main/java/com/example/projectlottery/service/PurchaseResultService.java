@@ -53,9 +53,7 @@ public class PurchaseResultService {
      * @param bonusNumber 보너스 번호 목록
      */
     public void updatePurchasedWin(Long drawNo, List<Integer> winNumber, Integer bonusNumber) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        List<PurchaseResult> purchaseResults = purchaseResultRepository.findByUserIdAndDrawNo(userId, drawNo);
+        List<PurchaseResult> purchaseResults = purchaseResultRepository.findByDrawNo(drawNo);
         for (PurchaseResult r : purchaseResults) {
             int rank = 0;
             int matched = 0;
