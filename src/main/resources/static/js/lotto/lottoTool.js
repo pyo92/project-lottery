@@ -373,10 +373,9 @@ function calcDrawNo() {
 
     const dayOfWeek = currentDate.getDay();
     const hours = currentDate.getHours();
-    const minutes = currentDate.getMinutes();
 
-    //추첨 완료(매주 토요일 20시 40분)인 경우 회차를 하나 증가시킴
-    if (dayOfWeek === 6 && hours >= 20 && minutes >= 40) {
+    //판매 완료(매주 토요일 20시)인 경우 회차를 하나 증가시킴
+    if (dayOfWeek === 6 && hours >= 20) {
         drawNo += 1;
     }
 
