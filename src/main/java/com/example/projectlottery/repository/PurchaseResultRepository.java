@@ -18,6 +18,13 @@ public interface PurchaseResultRepository extends JpaRepository<PurchaseResult, 
 
     /**
      * 회차별 구매내역 조회
+     * @param drawNo 회차 번호
+     * @return 회차별 구매내역
+     */
+    List<PurchaseResult> findByDrawNo(Long drawNo);
+
+    /**
+     * 회차별 구매내역 조회
      * @param userId 사용자 id
      * @param drawNo 회차 번호
      * @return 회차별 구매내역

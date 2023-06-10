@@ -23,6 +23,8 @@
 
     <attr sel="#purchased-none" th:classappend="${purchaseResult.size() == 0 ? '' : 'display-none'}"/>
 
+    <attr sel=".game-grid-header" th:classappend="${purchaseResult.size() == 0 ? 'display-none' : ''}"/>
+
     <attr sel=".game"
           th:each="game, stat: ${purchaseResult}"
           th:classappend="${game.rank == null ? '' :

@@ -49,6 +49,10 @@
     justify-content: space-between;
 }
 
+.game-grid-header.display-none {
+    display: none;
+}
+
 .game-grid-header span {
     color: white;
 }
@@ -150,6 +154,11 @@
 
 .fa-heart {
     cursor: pointer;
+    color: #cccccc;
+}
+
+.fas.fa-heart.liked {
+    color: #ff7272;
 }
 
 .group-header {

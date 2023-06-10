@@ -19,6 +19,13 @@ public interface UserCombinationRepository extends JpaRepository<UserCombination
 
     /**
      * 회차별 번호 조합 생성 내역 조회
+     * @param drawNo 회차 번호
+     * @return 회차별 번호 조합 생성 내역
+     */
+    List<UserCombination> findByDrawNo(Long drawNo);
+
+    /**
+     * 회차별 번호 조합 생성 내역 조회
      * @param userId 사용자 id
      * @param drawNo 회차 번호
      * @return 회차별 번호 조합 생성 내역

@@ -19,6 +19,8 @@
 
     <attr sel="#combination-none" th:classappend="${combinationResult.size() == 0 ? '' : 'display-none'}"/>
 
+    <attr sel=".game-grid-header" th:classappend="${combinationResult.size() == 0 ? 'display-none' : ''}"/>
+
     <attr sel=".game"
           th:each="game, stat: ${combinationResult}"
           th:classappend="${game.rank == null ? '' :
