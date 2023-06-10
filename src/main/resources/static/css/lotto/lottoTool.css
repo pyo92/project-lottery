@@ -149,6 +149,11 @@ button {
 
 .fa-heart {
     cursor: pointer;
+    color: #cccccc;
+}
+
+.fas.fa-heart.liked {
+    color: #ff7272;
 }
 
 .tab-header {
