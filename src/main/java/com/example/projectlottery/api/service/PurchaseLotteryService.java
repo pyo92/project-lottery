@@ -165,7 +165,11 @@ public class PurchaseLotteryService {
         //로그인이 선행되어서 driver 가 열린 상태이므로 열어줄 필요가 없다.
         seleniumPurchaseService.openUrl(URL_DH_DEPOSIT, 500);
 
-        String css = "#Amt";
+        //고정 가상계좌 입금을 선택한다. (2023.09.02 추가)
+        String css = "#boxTabContent > h5.tab_box2 > a";
+        seleniumPurchaseService.getElementByCssSelector(css).click();
+
+        css = "#Amt";
         Select amountSelect = new Select(seleniumPurchaseService.getElementByCssSelector(css));
         amountSelect.selectByValue("5000"); //회차당 구매가능 게임이 5게임이므로 5000원으로 고정한다.
 
