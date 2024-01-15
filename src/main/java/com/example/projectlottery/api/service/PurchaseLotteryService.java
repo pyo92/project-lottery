@@ -70,8 +70,8 @@ public class PurchaseLotteryService {
         //로그인 성공 시, 메인 화면으로 이동
         seleniumPurchaseService.openUrl(URL_DH_MAIN, 200);
 
-        //이름 스크랩
-        css = "body > div:nth-child(1) > header > div.header_con > div.top_menu > form > div > ul.information > li:nth-child(1) > span > strong > a";
+        //이름 스크랩 (2024.01.15 수정)
+        css = "body > div:nth-child(1) > header > div.header_con > div.top_menu > form > div > ul.information > li:nth-child(1) > span > strong";
         String name = seleniumPurchaseService.getElementByCssSelector(css).getText();
         name = name.substring(0, name.length() - 1);
 
