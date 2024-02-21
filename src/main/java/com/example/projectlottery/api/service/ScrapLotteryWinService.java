@@ -116,6 +116,12 @@ public class ScrapLotteryWinService {
     }
 
     private void getPrizesL645(long drawNo) {
+        Select select = new Select(seleniumScrapService.getElementById("dwrNoList"));
+        select.selectByValue(String.valueOf(drawNo)); //회차 변경
+
+        String js = "document.getElementById('searchBtn').click();";
+        seleniumScrapService.procJavaScript(js, 200); //회차 조회
+
         for (int i = 1; i <= 5; i++) {
             //등위별 당첨자 수 + 당첨 금액
             String css = "#article > div:nth-child(2) > div > table > tbody > tr:nth-child(" + i + ") > td";
