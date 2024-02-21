@@ -16,34 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `purchase`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `purchase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `user_id` varchar(255) NOT NULL,
+CREATE TABLE `purchase` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` datetime(6) NOT NULL,
   `modified_at` datetime(6) NOT NULL,
-  `user_role_type` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  `draw_no` bigint(20) DEFAULT NULL,
+  `number1` int(11) DEFAULT NULL,
+  `number2` int(11) DEFAULT NULL,
+  `number3` int(11) DEFAULT NULL,
+  `number4` int(11) DEFAULT NULL,
+  `number5` int(11) DEFAULT NULL,
+  `number6` int(11) DEFAULT NULL,
+  `user_dh_lottery_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `purchase`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES
-('k_2811950709','2023-06-05 21:57:56.361291','2023-06-05 21:57:56.361291','ROLE_ADMIN'),
-('k_2821613849','2023-06-06 10:33:42.038335','2023-06-06 10:33:42.038335','ROLE_USER'),
-('k_2847343728','2023-09-09 05:18:42.724878','2023-09-09 05:18:42.724878','ROLE_USER'),
-('k_2958199540','2023-09-10 00:51:29.993407','2023-09-10 00:51:29.993407','ROLE_USER'),
-('k_3049285170','2023-10-04 14:06:37.749865','2023-10-04 14:06:37.749865','ROLE_USER');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `purchase` WRITE;
+/*!40000 ALTER TABLE `purchase` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchase` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 10:54:59
+-- Dump completed on 2024-02-21 10:54:20
