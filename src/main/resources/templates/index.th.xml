@@ -2,4 +2,8 @@
 <thlogic>
     <attr sel="#header" th:replace="~{header :: header}"/>
     <attr sel="#footer" th:replace="~{footer :: footer}"/>
+
+    <attr sel=".alert-danger" th:if="${isDenied}">
+        <attr sel="span" th:class="'fas fa-circle-exclamation'" th:text="'관리자 권한이 필요합니다.'"/>
+    </attr>
 </thlogic>

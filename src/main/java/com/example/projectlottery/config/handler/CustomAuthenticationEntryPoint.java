@@ -11,10 +11,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     /**
      * Spring security filter's exception handler
-     * HTTP 401, 403, 404 error 등 예외 발생 시, 해당 핸들러에 전달되며, HomeController 로 redirect 처리한다.
+     * HTTP 404 error 같이 올바르지 않은 경로 요청 시, 해당 핸들러에 전달되며, SecurityController (auth) 로 redirect 처리한다.
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.sendRedirect("/security");
+        response.sendRedirect("/security/auth");
     }
 }

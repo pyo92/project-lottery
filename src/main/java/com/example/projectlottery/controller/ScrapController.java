@@ -21,7 +21,6 @@ public class ScrapController {
     private final ScrapLotteryWinShopService scrapLotteryWinShopService;
 
     /**
-     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
      * 동행복권 로또 판매점 정보 scrap 호출 api
      * @param state 지역
      * @return scrap 결과 message
@@ -38,7 +37,6 @@ public class ScrapController {
     }
 
     /**
-     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
      * 동행복권 로또 추첨 결과 당첨 번호 scrap 호출 api
      * @param start 시작 회차 번호
      * @param end 종료 회차 번호
@@ -57,7 +55,6 @@ public class ScrapController {
     }
 
     /**
-     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
      * 동행복권 로또 추첨 결과 당첨 등위별 상세 정보 scrap 호출 api
      * @param start 시작 회차 번호
      * @param end 종료 회차 번호
@@ -76,7 +73,6 @@ public class ScrapController {
     }
 
     /**
-     * TODO: 관리자 외에는 접근할 수 없도록 spring security 처리 (after 회원가입, 로그인 기능 개발)
      * 동행복권 로또 당첨 판매점 정보 scrap 호출 api
      * @param start 시작 회차 번호
      * @param end 종료 회차 번호
