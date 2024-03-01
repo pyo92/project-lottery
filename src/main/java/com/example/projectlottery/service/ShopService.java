@@ -120,12 +120,29 @@ public class ShopService {
      */
     @Transactional(readOnly = true)
     public List<QShopSummary> getShopRankingResponse() {
-        List<QShopSummary> shopRankingResponses = redisTemplateService.getAllShopRanking(); //redis cache
+        List<QShopSummary> shopRankingResponses = redisTemplateService.getAllShopRanking(false); //redis cache
 
         if (shopRankingResponses.isEmpty()) { //redis 조회 실패 시, redis 갱신
             shopRankingResponses = shopRepository.getShopSummaryResponseForRanking();
 
-            redisTemplateService.saveShopRanking(shopRankingResponses); //redis cache
+            redisTemplateService.saveShopRanking(false, shopRankingResponses); //redis cache
+        }
+
+        return shopRankingResponses;
+    }
+
+    /**
+     * 신흥명당 목록 조회 - 최근 52주 (for view)
+     * @return 신흥명당 - 최근 52주
+     */
+    @Transactional(readOnly = true)
+    public List<QShopSummary> getShopRecentRankingResponse() {
+        List<QShopSummary> shopRankingResponses = redisTemplateService.getAllShopRanking(true); //redis cache
+
+        if (shopRankingResponses.isEmpty()) { //redis 조회 실패 시, redis 갱신
+            shopRankingResponses = shopRepository.getShopSummaryResponseForRecentRanking();
+
+            redisTemplateService.saveShopRanking(true, shopRankingResponses); //redis cache
         }
 
         return shopRankingResponses;

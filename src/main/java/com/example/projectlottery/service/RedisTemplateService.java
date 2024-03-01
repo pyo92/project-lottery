@@ -29,6 +29,7 @@ public class RedisTemplateService {
     private static final String CACHE_WIN_DETAIL_KEY = "L645_WIN_DETAIL";
     private static final String CACHE_SHOP_DETAIL_KEY = "L645_SHOP_DETAIL";
     private static final String CACHE_SHOP_RANKING_KEY = "L645_SHOP_RANKING";
+    private static final String CACHE_SHOP_RECENT_RANKING_KEY = "L645_SHOP_RECENT_RANKING";
 
     private static final String REDIS_KEY_DH_LOGIN_INFO = "DH_LOGIN_INFO";
 
@@ -178,9 +179,12 @@ public class RedisTemplateService {
 
     /**
      * redis cache save - 로또명당 view response dto
+     * @param recentYn 신흥명당 (최근 52주) 여부
      * @param shopRankingResponses 로또명당 view response dto
      */
-    public void saveShopRanking(List<QShopSummary> shopRankingResponses) {
+    public void saveShopRanking(boolean recentYn, List<QShopSummary> shopRankingResponses) {
+        String key = recentYn ? CACHE_SHOP_RECENT_RANKING_KEY : CACHE_SHOP_RANKING_KEY;
+
         for (QShopSummary dto : shopRankingResponses) {
             if (Objects.isNull(dto) || Objects.isNull(dto.id())) {
                 log.error("Required values must not be null");
@@ -191,10 +195,10 @@ public class RedisTemplateService {
                 //dto serialized 값을 value 로 사용
                 //score 는 정렬 로직(1등, 2등 배출 내림차순)에 따라 가중치 계산한 값을 사용 (1등.desc, 2등.desc, id.asc)
                 double score = (dto.firstPrizeWinCount() * 100000D) + (dto.secondPrizeWinCount() * 1D) + (1 - dto.id() / 100000000D);
-                zSetOperations.add(CACHE_SHOP_RANKING_KEY, serializeResponseDto(dto), score);
-                log.info("[RedisTemplateService saveShopRanking() success] shopId: {}, score: {}", dto.id(), score);
+                zSetOperations.add(key, serializeResponseDto(dto), score);
+                log.info("[RedisTemplateService saveShopRanking() success] cachedKey: {}, shopId: {}, score: {}", key, dto.id(), score);
             } catch (Exception e) {
-                log.error("[RedisTemplateService saveShopRanking() failed]: {}", e.getMessage());
+                log.error("[RedisTemplateService saveShopRanking() failed] cachedKey: {} - {}", key, e.getMessage());
             }
         }
     }
@@ -205,18 +209,23 @@ public class RedisTemplateService {
     public void deleteAllShopRanking() {
         try {
             redisTemplate.delete(CACHE_SHOP_RANKING_KEY);
-            log.info("[RedisTemplateService deleteALlShopRanking() success]");
+            log.info("[RedisTemplateService deleteAllShopRanking() success] cachedKey: CACHE_SHOP_RANKING_KEY");
+            redisTemplate.delete(CACHE_SHOP_RECENT_RANKING_KEY);
+            log.info("[RedisTemplateService deleteAllShopRanking() success] cachedKey: CACHE_SHOP_RECENT_RANKING_KEY");
         } catch (Exception e) {
-            log.error("[RedisTemplateService deleteALlShopRanking() failed]: {}", e.getMessage());
+            log.error("[RedisTemplateService deleteAllShopRanking() failed] : {}", e.getMessage());
         }
     }
 
     /**
      * redis cache hit - 로또명당 view response dto
+     * @param recentYn 신흥명당 (최근 52주) 여부
      */
-    public List<QShopSummary> getAllShopRanking() {
+    public List<QShopSummary> getAllShopRanking(boolean recentYn) {
+        String key = recentYn ? CACHE_SHOP_RECENT_RANKING_KEY : CACHE_SHOP_RANKING_KEY;
+
         try {
-            return zSetOperations.reverseRange(CACHE_SHOP_RANKING_KEY, 0, 99).stream().map((o -> {
+            return zSetOperations.reverseRange(key, 0, 99).stream().map((o -> {
                 try {
                     return deserializeResponseDto(o.toString(), QShopSummary.class);
                 } catch (JsonProcessingException e) {
@@ -224,7 +233,7 @@ public class RedisTemplateService {
                 }
             })).toList();
         } catch (Exception e) {
-            log.info("[RedisTemplateService getAllShopRanking() failed]");
+            log.info("[RedisTemplateService getAllShopRanking() failed] cachedKey: {} - {}", key, e.getMessage());
             return Collections.emptyList();
         }
     }
