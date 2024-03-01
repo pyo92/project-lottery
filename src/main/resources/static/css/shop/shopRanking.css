@@ -1,3 +1,21 @@
+.nav-link  {
+    color: white;
+}
+
+.tab-header {
+    text-align: right;
+}
+
+.label-white {
+    color: white;
+}
+
+.tab-content {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+}
+
 .accordion {
     width: 100%;
 }

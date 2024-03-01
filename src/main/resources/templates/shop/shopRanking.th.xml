@@ -4,7 +4,7 @@
     <attr sel="#footer" th:replace="~{footer :: footer}"/>
 
     <attr sel="#lotto-shop-ranking1"
-          th:each="shop, stat : ${chucked1}"
+          th:each="shop, stat : ${total1}"
           th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
         <attr sel=".card-header">
             <attr sel=".shop-info">
@@ -22,7 +22,7 @@
     </attr>
 
     <attr sel="#lotto-shop-ranking2"
-          th:each="shop, stat : ${chucked2}"
+          th:each="shop, stat : ${total2}"
           th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
         <attr sel=".card-header" th:classappend="'card-header-silver'">
             <attr sel=".shop-info">
@@ -40,7 +40,7 @@
     </attr>
 
     <attr sel="#lotto-shop-ranking3"
-          th:each="shop, stat : ${chucked3}"
+          th:each="shop, stat : ${total3}"
           th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
         <attr sel=".card-header" th:classappend="'card-header-silver'">
             <attr sel=".shop-info">
@@ -58,7 +58,79 @@
     </attr>
 
     <attr sel="#lotto-shop-ranking4"
-          th:each="shop, stat : ${chucked4}"
+          th:each="shop, stat : ${total4}"
+          th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel=".card-header" th:classappend="'card-header-silver'">
+            <attr sel=".shop-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (stat.index + 51) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${shop.name}"/>
+            </attr>
+            <attr sel=".shop-win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+            </attr>
+        </attr>
+        <attr sel=".card-body" th:classappend="'card-body-silver'">
+            <attr sel="span[0]" th:text="${shop.address}"/>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-shop-recent-ranking1"
+          th:each="shop, stat : ${recent1}"
+          th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel=".card-header">
+            <attr sel=".shop-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (stat.index + 1) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${shop.name}"/>
+            </attr>
+            <attr sel=".shop-win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+            </attr>
+        </attr>
+        <attr sel=".card-body">
+            <attr sel="span[0]" th:text="${shop.address}"/>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-shop-recent-ranking2"
+          th:each="shop, stat : ${recent2}"
+          th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel=".card-header" th:classappend="'card-header-silver'">
+            <attr sel=".shop-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (stat.index + 11) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${shop.name}"/>
+            </attr>
+            <attr sel=".shop-win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+            </attr>
+        </attr>
+        <attr sel=".card-body" th:classappend="'card-body-silver'">
+            <attr sel="span[0]" th:text="${shop.address}"/>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-shop-recent-ranking3"
+          th:each="shop, stat : ${recent3}"
+          th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
+        <attr sel=".card-header" th:classappend="'card-header-silver'">
+            <attr sel=".shop-info">
+                <attr sel="div[0]/span[0]" th:text="${'[' + (stat.index + 31) + ']'}"/>
+                <attr sel="div[0]/span[1]" th:text="${shop.name}"/>
+            </attr>
+            <attr sel=".shop-win-count-inner">
+                <attr sel="span[0]" th:text="${#numbers.formatInteger(shop.firstPrizeWinCount, 0, 'COMMA')}"/>
+                <attr sel="span[1]" th:text="${#numbers.formatInteger(shop.secondPrizeWinCount, 0, 'COMMA')}"/>
+            </attr>
+        </attr>
+        <attr sel=".card-body" th:classappend="'card-body-silver'">
+            <attr sel="span[0]" th:text="${shop.address}"/>
+        </attr>
+    </attr>
+
+    <attr sel="#lotto-shop-recent-ranking4"
+          th:each="shop, stat : ${recent4}"
           th:onclick="|location.href='@{/shop(shopId=${shop.id})}'|">
         <attr sel=".card-header" th:classappend="'card-header-silver'">
             <attr sel=".shop-info">
