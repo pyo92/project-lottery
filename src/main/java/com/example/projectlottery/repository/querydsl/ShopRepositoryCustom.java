@@ -38,6 +38,12 @@ public interface ShopRepositoryCustom {
     List<QShopSummary> getShopSummaryResponseForRanking();
 
     /**
+     * 로또 명당 페이지 - 신흥 명당 목록 조회 (최근 52주)
+     * @return 로또 명당 목록
+     */
+    List<QShopSummary> getShopSummaryResponseForRecentRanking();
+
+    /**
      * 로또판매점 상세 페이지 - 상단 1, 2등 당첨 집계 요약 조회
      * @param shopId 판매점 id
      * @return 1, 2등 당첨 집계 요약

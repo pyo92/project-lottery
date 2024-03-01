@@ -83,13 +83,23 @@ public class ShopController {
      */
     @GetMapping("/ranking")
     public String ranking(ModelMap map) {
+        //로또 명당 목록
         List<QShopSummary> ranking = shopService.getShopRankingResponse();
 
         //리스트를 4개의 조각으로 나눠서 map binding
-        map.addAttribute("chucked1", ranking.subList(0, 10));
-        map.addAttribute("chucked2", ranking.subList(10, 30));
-        map.addAttribute("chucked3", ranking.subList(30, 50));
-        map.addAttribute("chucked4", ranking.subList(50, 100));
+        map.addAttribute("total1", ranking.subList(0, 10));
+        map.addAttribute("total2", ranking.subList(10, 30));
+        map.addAttribute("total3", ranking.subList(30, 50));
+        map.addAttribute("total4", ranking.subList(50, 100));
+
+        //신흥 명당 목록
+        List<QShopSummary> recentRanking = shopService.getShopRecentRankingResponse();
+
+        //리스트를 4개의 조각으로 나눠서 map binding
+        map.addAttribute("recent1", recentRanking.subList(0, 10));
+        map.addAttribute("recent2", recentRanking.subList(10, 30));
+        map.addAttribute("recent3", recentRanking.subList(30, 50));
+        map.addAttribute("recent4", recentRanking.subList(50, 100));
 
         return "shop/shopRanking";
     }

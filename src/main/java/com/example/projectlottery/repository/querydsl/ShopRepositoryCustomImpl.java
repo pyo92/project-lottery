@@ -141,6 +141,51 @@ public class ShopRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     /**
+     * 로또 명당 페이지 - 신흥 명당 목록 조회 (최근 52주)
+     * @return 신흥 명당 목록 (최근 52주)
+     */
+    @Override
+    public List<QShopSummary> getShopSummaryResponseForRecentRanking() {
+        //현재 회차 조회
+        Long latestDrawNo = from(lottoPrize)
+                .where(lottoPrize.rank.eq(1))
+                .select(lottoPrize.lotto.drawNo)
+                .orderBy(lottoPrize.lotto.drawNo.desc())
+                .limit(1)
+                .fetch()
+                .get(0);
+
+        //최근 52회차 내 당첨 판매점 id 조회
+        List<Long> shopIds = from(lottoWinShop)
+                .where(lottoWinShop.shop.l645YN.eq(true), lottoWinShop.lotto.drawNo.gt(latestDrawNo - 52))
+                .groupBy(lottoWinShop.shop.id)
+                .select(lottoWinShop.shop.id)
+                .orderBy(new CaseBuilder().when(lottoWinShop.rank.eq(1)).then(1000000).otherwise(1).sum().desc())
+                .limit(100)
+                .fetch();
+
+        JPQLQuery<QShopSummary> query = from(shop)
+                .where(shop.id.in(shopIds))
+                .select(Projections.constructor(QShopSummary.class,
+                        shop.id,
+                        shop.name,
+                        shop.address,
+                        Expressions.asString("-"),
+                        JPAExpressions.select(lottoWinShopAnother.count())
+                                .from(lottoWinShopAnother)
+                                .where(lottoWinShopAnother.shop.id.eq(shop.id), lottoWinShopAnother.lotto.drawNo.gt(latestDrawNo - 52), lottoWinShopAnother.rank.eq(1)),
+                        JPAExpressions.select(lottoWinShopAnother.count())
+                                .from(lottoWinShopAnother)
+                                .where(lottoWinShopAnother.shop.id.eq(shop.id), lottoWinShopAnother.lotto.drawNo.gt(latestDrawNo - 52), lottoWinShopAnother.rank.eq(2))));
+
+        query.orderBy(new OrderSpecifier<>(Order.DESC, Expressions.constant(4L))); //1등.DESC
+        query.orderBy(new OrderSpecifier<>(Order.DESC, Expressions.constant(5L))); //2등.DESC
+        query.orderBy(new OrderSpecifier<>(Order.ASC, Expressions.constant(1L))); //id.ASC
+
+        return query.fetch();
+    }
+
+    /**
      * 로또판매점 상세 페이지 - 상단 1, 2등 당첨 집계 요약 조회
      * @param shopId 판매점 id
      * @return 상단 1, 2등 당첨 집계 요약
