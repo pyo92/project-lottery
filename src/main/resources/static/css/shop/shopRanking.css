@@ -12,8 +12,12 @@
 
 .tab-content {
     display: grid;
-    gap: 10px;
     width: 100%;
+}
+
+.tab-content-inner {
+    display: grid;
+    gap: 5px;
 }
 
 .accordion {
@@ -31,7 +35,6 @@
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    margin-top: 5px;
     transition: all 0.1s ease-in-out;
 }
 
