@@ -16,9 +16,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -32,6 +30,10 @@ public class RedisTemplateService {
     private static final String CACHE_SHOP_RECENT_RANKING_KEY = "L645_SHOP_RECENT_RANKING";
 
     private static final String REDIS_KEY_DH_LOGIN_INFO = "DH_LOGIN_INFO";
+
+    private static final String REDIS_KEY_SCRAP_RUNNING_URL = "SCRAP_RUNNING_URL";
+    private static final String REDIS_KEY_SCRAP_RUNNING_PARAM1 = "SCRAP_RUNNING_PARAM1";
+    private static final String REDIS_KEY_SCRAP_RUNNING_PARAM2 = "SCRAP_RUNNING_PARAM2";
 
     private final EncryptionUtils encryptionUtils;
 
@@ -51,6 +53,74 @@ public class RedisTemplateService {
 
         //동행복권 로그인정보는 30분 뒤에 자동으로 파기된다.
         redisTemplate.expire(REDIS_KEY_DH_LOGIN_INFO, 30, TimeUnit.MINUTES);
+    }
+
+    /**
+     * redis cache save - scrap 동작 여부
+     * @param url scrap url
+     * @param param1 scrap query param1
+     */
+    public void saveScrapRunningInfo(String url, Object param1) {
+        //scrap 동작 중일 때, 다른 scrap 동작 수행을 막기 위해 redis 에 저장해두고 판단한다.
+        if (Objects.isNull(url)) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_URL, url);
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_PARAM1, param1);
+        log.info("[RedisTemplateService saveScrapRunningInfo() success] running url: {}, param1: {}", url, param1);
+    }
+
+
+    /**
+     * redis cache save - scrap 동작 여부
+     * @param url scrap url
+     * @param param1 scrap query param1
+     * @param param2 scrap query param1
+     */
+    public void saveScrapRunningInfo(String url, Object param1, Object param2) {
+        //scrap 동작 중일 때, 다른 scrap 동작 수행을 막기 위해 redis 에 저장해두고 판단한다.
+        if (Objects.isNull(url)) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_URL, url);
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_PARAM1, param1);
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_PARAM2, param2);
+        log.info("[RedisTemplateService saveScrapRunningInfo() success] running url: {}, param1: {}, param2: {}", url, param1, param2);
+    }
+
+    /**
+     * redis cache clear - scrap 동작 여부
+     */
+    public void deleteScrapRunningInfo() {
+        try {
+            redisTemplate.delete(REDIS_KEY_SCRAP_RUNNING_URL);
+            redisTemplate.delete(REDIS_KEY_SCRAP_RUNNING_PARAM1);
+            redisTemplate.delete(REDIS_KEY_SCRAP_RUNNING_PARAM2);
+            log.info("[RedisTemplateService deleteScrapRunningInfo() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deleteScrapRunningInfo() failed]: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * redis cache hit - scrap 동작 여부
+     */
+    public Map<String, Object> getScrapRunningInfo() {
+        try {
+            Map<String, Object> result = new HashMap<>();
+            result.put("url", valueOperations.get(REDIS_KEY_SCRAP_RUNNING_URL));
+            result.put("param1", valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM1));
+            result.put("param2", valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM2));
+            return result;
+
+        } catch (Exception e) {
+            log.error("[RedisTemplateService getScrapRunningInfo() failed]: {}", e.getMessage());
+            return null;
+        }
     }
 
     /**
