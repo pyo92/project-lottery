@@ -1,0 +1,124 @@
+.nav-link  {
+    color: white;
+}
+
+.tab-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-pane {
+    width: 500px;
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-content-inner {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 10px;
+}
+
+.admin-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.admin-grid-header {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: #434348;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.admin-grid-header span {
+    color: white;
+}
+
+.admin-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0;
+    gap: 5px;
+}
+
+.api {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border: none;
+}
+
+.api-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.api-url-with-param {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.api-params {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.param {
+    display: flex;
+    flex-direction: row;
+}
+
+.param input {
+    width: 60px;
+    height: 20px;
+}
+
+.no-margin-hr {
+    margin: 0;
+}
+
+.api-time {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.api-time span {
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.label-white {
+    color: white;
+}

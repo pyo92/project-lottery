@@ -49,7 +49,7 @@ public class SecurityConfig {
                                         //간편 로그인 페이지에 대한 접근 허용
                                         .requestMatchers("/oauth2/authorization/kakao").permitAll()
                                         //scrap rest api 에 대한 접근 관리자만 허용
-                                        .requestMatchers("/scrap/**").hasRole("ADMIN")
+                                        .requestMatchers("/admin/**", "/scrap/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                                         //security 예외 핸들러를 등록해 예외 처리
                                         .and()
