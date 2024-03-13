@@ -51,6 +51,10 @@ document.addEventListener("DOMContentLoaded", function() {
             activeMenuIco.classList.add('fa-chart-simple');
             activeMenuLabel.textContent = '로또분석';
             break;
+        case '/admin':
+            activeMenuIco.classList.add('fa-user-secret');
+            activeMenuLabel.textContent = '관리자페이지';
+            break;
         default:
             activeMenuLabel.textContent = '';
             break;

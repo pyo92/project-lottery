@@ -2,4 +2,6 @@
 <thlogic>
     <attr sel=".kakao-login" sec:authorize="!isAuthenticated()"/>
     <attr sel=".kakao-logout" sec:authorize="isAuthenticated()"/>
+    <attr sel=".role-admin" sec:authorize="hasRole('ADMIN')"/>
+    <attr sel=".role-user" sec:authorize="hasAnyRole('ADMIN', 'USER')"/>
 </thlogic>

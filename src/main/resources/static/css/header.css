@@ -1,5 +1,5 @@
 .offcanvas {
-    width: 60% !important;
+    width: 50% !important;
     max-width: 220px !important;
     background: #434348;
     z-index: 9999;
@@ -8,7 +8,7 @@
 .mobile-menu-link-vertical {
     display: flex;
     flex-direction: column;
-    padding: 10px 20px;
+    padding: 5px 10px;
     justify-content: space-between;
 }
 
@@ -19,6 +19,12 @@
     flex-direction: row;
     align-content: center;
     align-items: center;
+    gap: 10px;
+}
+
+.sub-menu-set {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -80,8 +86,8 @@
     color: #fbc400;
 }
 
-.kakao-login, .kakao-logout {
-    background: #fce333;
+.kakao-login i, .kakao-login span, .kakao-logout i, .kakao-logout span {
+    color: #fce333;
 }
 
 .fa-comment, .fa-right-from-bracket {
