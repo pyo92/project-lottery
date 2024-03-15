@@ -51,10 +51,10 @@
     display: flex;
     flex-direction: column;
     padding: 5px 0;
-    gap: 5px;
+    gap: 10px;
 }
 
-.api {
+.api, .user {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -67,7 +67,7 @@
     border: none;
 }
 
-.api-info {
+.api-info, .user-info {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -76,21 +76,28 @@
     justify-content: space-between;
 }
 
-.api-url-with-param {
+.api-url-with-param, .user-info-detail {
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-content: center;
+    justify-content: center;
 }
 
 .api-params {
     width: 100%;
+    height: 24px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    align-content: center;
 }
 
 .param {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    align-content: center;
 }
 
 .param input {
@@ -102,7 +109,7 @@
     margin: 0;
 }
 
-.api-time {
+.api-time, .user-modified-at {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -110,7 +117,7 @@
     justify-items: center;
 }
 
-.api-time span {
+.api-time span, .user-modified-at span {
     color: #666666;
     display: flex;
     justify-content: center;
@@ -121,4 +128,71 @@
 
 .label-white {
     color: white;
+}
+
+.user-info-detail-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-info-detail-header-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.user-id {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.user-created-at {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.user-roles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    justify-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgb(64, 135, 216);
+    padding: 10px;
+    border: none;
+}
+
+.user-role {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.user-role:nth-child(1) label {
+    color: red;
+}
+
+.form-check-input {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+}
+
+.form-check-label {
+    align-items: center;
+    align-content: center;
 }

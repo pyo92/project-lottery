@@ -1,6 +1,5 @@
 package com.example.projectlottery.dto.auth;
 
-import com.example.projectlottery.domain.type.UserRoleType;
 import com.example.projectlottery.dto.response.UserResponse;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,17 +19,23 @@ public record CustomUserDetails(
         Map<String, Object> oAuth2Attribute
 ) implements UserDetails, OAuth2User {
 
-    public static CustomUserDetails of(String userId, UserRoleType userRoleType) {
+    public static CustomUserDetails of(String userId, List<SimpleGrantedAuthority> userAuthorities) {
         return new CustomUserDetails(
                 userId,
-                List.of(new SimpleGrantedAuthority(userRoleType.toString())),
+                userAuthorities,
                 Map.of());
     }
 
     public static CustomUserDetails from(UserResponse dto) {
         return CustomUserDetails.of(
                 dto.userId(),
-                dto.userRoleType()
+                //userRoleType Enum
+                // -> [ROLE_%s] string 만 추출해 SimpleGrantedAuthority 리스트로 만들어 넘긴다.
+                dto.userRoleTypes()
+                        .stream()
+                        .map(Enum::toString)
+                        .map(SimpleGrantedAuthority::new)
+                        .toList()
         );
     }
 

@@ -8,6 +8,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentUri = window.location.pathname;
 
     switch (currentUri) {
+        case '/L645':
+            const queryParams = new URLSearchParams(window.location.search);
+            const drawNo = queryParams.get("drawNo");
+            activeMenuIco.classList.add('fa-medal');
+            activeMenuLabel.textContent = '로또추첨결과 > ' + drawNo + '회';
+            break;
         case '/shop':
             const shopName = document.getElementById('shop-name');
             activeMenuIco.classList.add('fa-map-location-dot');
@@ -21,30 +27,24 @@ document.addEventListener("DOMContentLoaded", function() {
             activeMenuIco.classList.add('fa-trophy');
             activeMenuLabel.textContent = '로또명당';
             break;
-        case '/L645':
-            const queryParams = new URLSearchParams(window.location.search);
-            const drawNo = queryParams.get("drawNo");
-            activeMenuIco.classList.add('fa-medal');
-            activeMenuLabel.textContent = '로또추첨결과 > ' + drawNo + '회';
-            break;
         case '/purchase/dh/login':
-            activeMenuIco.classList.add('fa-wallet');
+            activeMenuIco.classList.add('fa-won-sign');
             activeMenuLabel.textContent = '로또구매 > 동행복권로그인';
             break;
         case '/purchase/dh/L645':
-            activeMenuIco.classList.add('fa-wallet');
+            activeMenuIco.classList.add('fa-won-sign');
             activeMenuLabel.textContent = '로또구매 > 로또번호선택';
             break;
         case '/purchase/dh/L645/result':
-            activeMenuIco.classList.add('fa-wallet');
+            activeMenuIco.classList.add('fa-won-sign');
             activeMenuLabel.textContent = '로또구매 > 로또구매내역';
             break;
         case '/L645/tool':
-            activeMenuIco.classList.add('fa-screwdriver-wrench');
+            activeMenuIco.classList.add('fa-shuffle');
             activeMenuLabel.textContent = '로또조합';
             break;
         case '/L645/tool/result':
-            activeMenuIco.classList.add('fa-screwdriver-wrench');
+            activeMenuIco.classList.add('fa-shuffle');
             activeMenuLabel.textContent = '로또조합> 로또조합내역';
             break;
         case '/L645/analysis':
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
             activeMenuLabel.textContent = '로또분석';
             break;
         case '/admin':
-            activeMenuIco.classList.add('fa-user-secret');
+            activeMenuIco.classList.add('fa-screwdriver-wrench');
             activeMenuLabel.textContent = '관리자페이지';
             break;
         default:
