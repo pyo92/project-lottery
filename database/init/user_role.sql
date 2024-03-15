@@ -16,34 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `user_id` varchar(255) NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `modified_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`user_id`)
+CREATE TABLE `user_role` (
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `ord` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `user_role`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES
-('k_2811950709','2023-06-05 21:57:56.361291','2023-06-05 21:57:56.361291'),
-('k_2821613849','2023-06-06 10:33:42.038335','2023-06-06 10:33:42.038335'),
-('k_2847343728','2023-09-09 05:18:42.724878','2023-09-09 05:18:42.724878'),
-('k_2958199540','2023-09-10 00:51:29.993407','2023-09-10 00:51:29.993407'),
-('k_3049285170','2023-10-04 14:06:37.749865','2023-10-04 14:06:37.749865'),
-('k_3372210200','2024-03-03 16:38:37.537565','2024-03-03 16:38:37.537565');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` VALUES
+('ROLE_ADMIN','관리자',0),
+('ROLE_ANALYSIS','로또분석',7),
+('ROLE_COMBINATION','로또조합',6),
+('ROLE_PURCHASE','로또구매',5),
+('ROLE_RANKING','로또명당',4),
+('ROLE_SHOP','로또판매점',3),
+('ROLE_USER','사용자',1),
+('ROLE_WIN','로또추첨결과',2);
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-15 16:02:20
+-- Dump completed on 2024-03-15 17:17:33
