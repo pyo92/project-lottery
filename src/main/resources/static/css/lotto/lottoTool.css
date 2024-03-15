@@ -94,13 +94,6 @@
     color: white;
 }
 
-.game-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 5px;
-}
-
 .game-numbers {
     width: 100%;
     border-radius: 5px;
@@ -112,6 +105,7 @@
     align-content: center;
     justify-items: center;
     gap: 5px;
+    margin: 5px 0;
 }
 
 .game-numbers .label-mini-title {
