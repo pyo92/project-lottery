@@ -21,23 +21,71 @@
     <div class="content-group">
         <ul class="nav nav-pills" id="admin-tab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link label-text active" id="admin-tab-api" data-bs-toggle="pill" data-bs-target="#admin-content-api" type="button" role="tab" aria-controls="admin-content-api" aria-selected="true">
+                <button class="nav-link label-text active" id="admin-tab-user" data-bs-toggle="pill" data-bs-target="#admin-content-user" type="button" role="tab" aria-controls="admin-content-user" aria-selected="false">
+                    사용자
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="admin-tab-api" data-bs-toggle="pill" data-bs-target="#admin-content-api" type="button" role="tab" aria-controls="admin-content-api" aria-selected="true">
                     API
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link label-text" id="admin-tab-db" data-bs-toggle="pill" data-bs-target="#admin-content-db" type="button" role="tab" aria-controls="admin-content-table" aria-selected="false">
-                    DB
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link label-text" id="admin-tab-user" data-bs-toggle="pill" data-bs-target="#admin-content-user" type="button" role="tab" aria-controls="admin-content-user" aria-selected="false">
-                    회원
                 </button>
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="admin-content-api" role="tabpanel" aria-labelledby="admin-tab-api">
+            <!-- 사용자 탭 START -->
+            <div class="tab-pane fade show active" id="admin-content-user" role="tabpanel" aria-labelledby="admin-tab-user">
+                <div class="tab-content-inner">
+                    <span class="label-title">사용자</span>
+                    <br>
+                    <span class="label-mini-title">사용자 목록과 권한을 모니터링하고 관리합니다.</span>
+                    <hr>
+                    <div class="admin-wrapper">
+                        <span class="label-mini-title" id="user-count">&#128101 0명</span>
+                        <div class="admin-grid-header">
+                            <span class="label-mini-title">ID</span>
+                            <span class="label-mini-title">최종 업데이트</span>
+                            <span class="label-mini-title">작업</span>
+                        </div>
+                        <div class="admin-grid">
+                            <div class="user">
+                                <div class="user-info">
+                                    <div class="user-info-detail">
+                                        <div class="user-info-detail-header">
+                                            <div  class="user-info-detail-header-wrapper">
+                                                <div class="user-id">
+                                                    <span class="label-mini-title">[1]&nbsp;</span>
+                                                    <span class="label-bold-ellipsis-text">k_2811950709</span>
+                                                    <span class="label-mini-title">&nbsp;(관리자)</span>
+                                                </div>
+                                                <div class="user-created-at">
+                                                    <span class="label-mini-title">&#9654;&nbsp; 1990-01-01 가입</span>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-success label-mini-title label-white">저장</button>
+                                        </div>
+                                        <span class="label-mini-title">&#9654;&nbsp; 권한</span>
+                                        <div class="user-roles">
+                                            <div class="user-role">
+                                                <input class="form-check-input" type="checkbox">
+                                                <label class="form-check-label label-mini-title">&nbsp;ROLE_ADMIN</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="no-margin-hr">
+                                <div class="user-modified-at">
+                                    <span class="label-text fas fa-clock">&nbsp;</span>
+                                    <span class="label-mini-title">1900-01-01 00:00:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 사용자 탭 END -->
+
+            <!-- API 탭 START -->
+            <div class="tab-pane fade" id="admin-content-api" role="tabpanel" aria-labelledby="admin-tab-api">
                 <div class="tab-content-inner">
                     <span class="label-title">API</span>
                     <br>
@@ -55,12 +103,12 @@
                                 <div class="api-info">
                                     <div class="api-url-with-param">
                                         <div class="api-url">
+                                            <span class="label-mini-title">[1]</span>
                                             <span class="label-bold-ellipsis-text">/scrap/L645/win/number</span>
                                         </div>
                                         <div class="api-params">
-                                            <span class="label-mini-title">&#9654;&nbsp;</span>
                                             <div class="param" id="param1">
-                                                <span class="label-mini-title">start=&nbsp;</span>
+                                                <span class="label-mini-title">&#9654;&nbsp; start=&nbsp;</span>
                                                 <input class="form-control label-mini-title" type="text">
                                             </div>
                                             <div class="param" id="param2">
@@ -70,7 +118,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn">시작</button>
+                                    <button class="btn">실행</button>
                                 </div>
                                 <hr class="no-margin-hr">
                                 <div class="api-time">
@@ -82,6 +130,7 @@
                     </div>
                 </div>
             </div>
+            <!-- API 탭 END -->
         </div>
     </div>
 </main>

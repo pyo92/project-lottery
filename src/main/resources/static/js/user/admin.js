@@ -16,7 +16,7 @@ apiRun1Button.addEventListener('click', function () {
         return;
     }
 
-    if (!confirm('해당 작업을 실행하시겠습니까?'))
+    if (!confirm('작업을 실행하시겠습니까?'))
         return;
 
     apiStatus.innerHTML = '&#8987 작업중 - ' + apiUrl1.textContent;
@@ -34,8 +34,8 @@ apiRun1Button.addEventListener('click', function () {
         data: {
             state: api1Param1.value
         },
-        success: function (data) {
-            alert(apiUrl2.textContent + '?start=' + api2Param1.value + '&end=' + api2Param2.value + ' 완료!');
+        success: function () {
+            alert('정상 처리되었습니다.');
             location.reload();
         }
     });
@@ -71,7 +71,7 @@ apiRun2Button.addEventListener('click', function () {
         return;
     }
 
-    if (api2Param1.value > api2Param2.value) {
+    if (parseInt(api2Param1.value) > parseInt(api2Param2.value)) {
         alert('[start]는 [end]보다 클 수 없습니다.');
         api2Param1.value = '';
         api2Param2.value = '';
@@ -96,8 +96,8 @@ apiRun2Button.addEventListener('click', function () {
             start: api2Param1.value,
             end: api2Param2.value
         },
-        success: function (data) {
-            alert(apiUrl2.textContent + '?start=' + api2Param1.value + '&end=' + api2Param2.value + ' 완료!');
+        success: function () {
+            alert('정상 처리되었습니다.');
             location.reload();
         }
     });
@@ -133,7 +133,7 @@ apiRun3Button.addEventListener('click', function () {
         return;
     }
 
-    if (api3Param1.value > api3Param2.value) {
+    if (parseInt(api3Param1.value) > parseInt(api3Param2.value)) {
         alert('[start]는 [end]보다 클 수 없습니다.');
         api3Param1.value = '';
         api3Param2.value = '';
@@ -158,8 +158,8 @@ apiRun3Button.addEventListener('click', function () {
             start: api3Param1.value,
             end: api3Param2.value
         },
-        success: function (data) {
-            alert(apiUrl3.textContent + '?start=' + api3Param1.value + '&end=' + api3Param2.value + ' 완료!');
+        success: function () {
+            alert('정상 처리되었습니다.');
             location.reload();
         }
     });
@@ -195,7 +195,7 @@ apiRun4Button.addEventListener('click', function () {
         return;
     }
 
-    if (api4Param1.value > api4Param2.value) {
+    if (parseInt(api4Param1.value) > parseInt(api4Param2.value)) {
         alert('[start]는 [end]보다 클 수 없습니다.');
         api4Param1.value = '';
         api4Param2.value = '';
@@ -220,8 +220,8 @@ apiRun4Button.addEventListener('click', function () {
             start: api4Param1.value,
             end: api4Param2.value
         },
-        success: function (data) {
-            alert('[' + apiUrl4.textContent + '?start=' + api4Param1.value + '&end=' + api4Param2.value + '] 작업 완료!');
+        success: function () {
+            alert('정상 처리되었습니다.');
             location.reload();
         }
     });
@@ -237,4 +237,37 @@ function regexDigit(param) {
 function regexUpperCase(param) {
     const regex = /^[A-Z]*$/;
     return regex.test(param);
+}
+
+///
+
+function saveUser(idx) {
+    let roles = [];
+
+    let i = 0;
+    for (i; i<8; i++) {
+        const e = document.getElementById('chk-' + idx + '-' + i);
+        if (e.checked) {
+            const l = document.getElementById('lbl-' + idx + '-' + i);
+            roles.push(l.textContent.trim());
+        }
+    }
+
+    const id = document.getElementById('user-id-' + idx);
+
+    $.ajax({
+        type: 'POST',
+        url: '/admin/user',
+        data: JSON.stringify({
+            userId: id.textContent,
+            userRoles: roles
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function () {
+            alert('저장되었습니다.');
+        },
+        error: function() {
+            alert('저장 중 오류가 발생했습니다.');
+        }
+    });
 }
