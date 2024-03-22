@@ -54,7 +54,7 @@
     gap: 10px;
 }
 
-.api, .user {
+.api, .user, .selenium {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -67,7 +67,7 @@
     border: none;
 }
 
-.api-info, .user-info {
+.api-info, .user-info, .selenium-info {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -76,7 +76,7 @@
     justify-content: space-between;
 }
 
-.api-url-with-param, .user-info-detail {
+.api-url-with-param, .user-info-detail, .selenium-info-detail {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -109,7 +109,7 @@
     margin: 0;
 }
 
-.api-time, .user-modified-at {
+.api-time, .user-modified-at, .selenium-status {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -195,4 +195,24 @@
 .form-check-label {
     align-items: center;
     align-content: center;
+}
+
+.header-status {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-refresh {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-refresh {
+    margin: 0;
 }

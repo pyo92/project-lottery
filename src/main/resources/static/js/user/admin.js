@@ -1,3 +1,40 @@
+/**
+ * 사용자 탭 관련
+ */
+
+function saveUser(idx) {
+    let roles = [];
+
+    let i = 0;
+    for (i; i<8; i++) {
+        const e = document.getElementById('chk-' + idx + '-' + i);
+        if (e.checked) {
+            const l = document.getElementById('lbl-' + idx + '-' + i);
+            roles.push(l.textContent.trim());
+        }
+    }
+
+    const id = document.getElementById('user-id-' + idx);
+
+    $.ajax({
+        type: 'POST',
+        url: '/admin/user',
+        data: JSON.stringify({
+            userId: id.textContent,
+            userRoles: roles
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function () {
+            alert('저장되었습니다.');
+        },
+        error: function() {
+            alert('저장 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+///
+
 const apiStatus = document.getElementById('api-status');
 
 const apiRun1Button = document.getElementById('btnApiRun1');
@@ -104,6 +141,10 @@ apiRun2Button.addEventListener('click', function () {
 });
 
 ///
+
+/**
+ * API 탭 관련
+ */
 
 const apiRun3Button = document.getElementById('btnApiRun3');
 const apiUrl3 = document.getElementById('apiUrl3');
@@ -227,7 +268,7 @@ apiRun4Button.addEventListener('click', function () {
     });
 });
 
-///
+//TODO: api 탭을 refresh 하는 함수를 만들어서 해당 탭에서도 편하게 쓰고, selenium 탭에서도 쓰자.
 
 function regexDigit(param) {
     const regex = /^[0-9]*$/;
@@ -241,33 +282,45 @@ function regexUpperCase(param) {
 
 ///
 
-function saveUser(idx) {
-    let roles = [];
+/**
+ * Selenium 탭 관련
+ */
 
-    let i = 0;
-    for (i; i<8; i++) {
-        const e = document.getElementById('chk-' + idx + '-' + i);
-        if (e.checked) {
-            const l = document.getElementById('lbl-' + idx + '-' + i);
-            roles.push(l.textContent.trim());
-        }
-    }
-
-    const id = document.getElementById('user-id-' + idx);
-
+const btnRefreshSeleniumTab = document.getElementById('btn-refresh-selenium-tab');
+btnRefreshSeleniumTab.addEventListener('click', refreshSeleniumTab);
+function refreshSeleniumTab() { //해당 method 는 다른 탭에서 재사용하기 위해 분리시켜 놓았다.
     $.ajax({
-        type: 'POST',
-        url: '/admin/user',
-        data: JSON.stringify({
-            userId: id.textContent,
-            userRoles: roles
-        }),
-        contentType: 'application/json; charset=utf-8',
-        success: function () {
-            alert('저장되었습니다.');
-        },
-        error: function() {
-            alert('저장 중 오류가 발생했습니다.');
+        type: 'GET',
+        url: '/admin/selenium',
+        success: function (data) {
+            $.each(data, function(index, item) {
+                const btn = document.getElementById('btnSelenium' + (index + 1));
+                btn.style.display = item.isRunning ? 'block' : 'none';
+
+                const status = document.getElementById('lblSeleniumStatus' + (index + 1));
+                status.innerHTML = item.isRunning ? '&#8987;&nbsp;작업중' : '&#128164;&nbsp;유휴 상태';
+            });
         }
     });
+}
+
+const usages = ['scrap', 'purchase'];
+
+function suspendSeleniumProcess(idx) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/selenium',
+        data: {
+            usage: usages[idx]
+        },
+        success: function () {
+            alert('정상적으로 중지되었습니다.');
+        },
+        error: function () {
+            alert('작업중 오류가 발생했습니다.');
+        }
+    });
+
+    refreshSeleniumTab();
+    //TODO: api 탭 새로고침 method 분리하면, 그때 여기 동작시키도록 한다. (둘은 서로 유기적 관계)
 }

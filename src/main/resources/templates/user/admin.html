@@ -30,6 +30,11 @@
                     API
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="admin-tab-selenium" data-bs-toggle="pill" data-bs-target="#admin-content-selenium" type="button" role="tab" aria-controls="admin-content-selenium" aria-selected="true">
+                    Selenium
+                </button>
+            </li>
         </ul>
         <div class="tab-content">
             <!-- 사용자 탭 START -->
@@ -89,10 +94,15 @@
                 <div class="tab-content-inner">
                     <span class="label-title">API</span>
                     <br>
-                    <span class="label-mini-title">API 상태를 모니터링하고 관리합니다.</span>
+                    <span class="label-mini-title">Scrap API 상태를 모니터링하고 관리합니다.</span>
                     <hr>
                     <div class="admin-wrapper">
-                        <span class="label-mini-title" id="api-status">&#9989 작업 가능</span>
+                        <div class="header-status">
+                            <span class="label-mini-title" id="api-status">&#9989 작업 가능</span>
+                            <btn class="btn btn-primary btn-refresh" id="btn-refresh-api-tab">
+                                <span class="fas fa-refresh label-mini-title label-white"></span>
+                            </btn>
+                        </div>
                         <div class="admin-grid-header">
                             <span class="label-mini-title">URL</span>
                             <span class="label-mini-title">최종 업데이트</span>
@@ -131,6 +141,47 @@
                 </div>
             </div>
             <!-- API 탭 END -->
+
+            <!-- Selenium 탭 START -->
+            <div class="tab-pane fade" id="admin-content-selenium" role="tabpanel" aria-labelledby="admin-tab-selenium">
+                <div class="tab-content-inner">
+                    <span class="label-title">Selenium</span>
+                    <br>
+                    <span class="label-mini-title">Chrome driver 상태를 모니터링하고 관리합니다.</span>
+                    <hr>
+                    <div class="admin-wrapper">
+                        <div class="header-status">
+                            <span class="label-mini-title" id="selenium-cnt">&#9989 0개</span>
+                            <btn class="btn btn-primary btn-refresh" id="btn-refresh-selenium-tab">
+                                <span class="fas fa-refresh label-mini-title label-white"></span>
+                            </btn>
+                        </div>
+                        <div class="admin-grid-header">
+                            <span class="label-mini-title">ID</span>
+                            <span class="label-mini-title">현재 상태</span>
+                            <span class="label-mini-title">작업</span>
+                        </div>
+                        <div class="admin-grid">
+                            <div class="selenium">
+                                <div class="selenium-info">
+                                    <div class="selenium-info-detail">
+                                        <div class="selenium-name">
+                                            <span class="label-mini-title">[1]</span>
+                                            <span class="label-bold-ellipsis-text">Selenium-for-scrap</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger label-mini-title label-white">중지</button>
+                                </div>
+                                <hr class="no-margin-hr">
+                                <div class="selenium-status">
+                                    <span class="label-mini-title">&#128164;&nbsp;유휴 상태</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Selenium 탭 END -->
         </div>
     </div>
 </main>
