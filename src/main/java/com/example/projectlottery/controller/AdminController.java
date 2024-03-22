@@ -1,7 +1,10 @@
 package com.example.projectlottery.controller;
 
+import com.example.projectlottery.api.service.SeleniumPurchaseService;
+import com.example.projectlottery.api.service.SeleniumScrapService;
 import com.example.projectlottery.domain.type.UserRoleType;
 import com.example.projectlottery.dto.request.AdminUserRequest;
+import com.example.projectlottery.dto.response.SeleniumResponse;
 import com.example.projectlottery.dto.response.UserResponse;
 import com.example.projectlottery.service.AdminService;
 import com.example.projectlottery.service.RedisTemplateService;
@@ -21,6 +24,9 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    private final SeleniumScrapService seleniumScrapService;
+    private final SeleniumPurchaseService seleniumPurchaseService;
+
     private final RedisTemplateService redisTemplateService;
 
     @GetMapping
@@ -39,9 +45,19 @@ public class AdminController {
         map.addAttribute("userCnt", users.size());
         map.addAttribute("userRoleTypes", UserRoleType.values());
 
+        //Selenium 탭
+        List<SeleniumResponse> seleniumList = adminService.getAllSeleniumChromeDriverList();
+        map.addAttribute("seleniumList", seleniumList);
+        map.addAttribute("seleniumCnt", seleniumList.size());
+
         return "/user/admin";
     }
 
+    /**
+     * 사용자 탭 사용자 권한 정보 저장용 POST method (개별)
+     * @param request 사용자 권한 정보 JSON 객체
+     * @return 빈 Response entity 객체 (http status)
+     */
     @ResponseBody
     @PostMapping("/user")
     public ResponseEntity<?> saveUser(@RequestBody AdminUserRequest request) {
@@ -53,5 +69,50 @@ public class AdminController {
         }
 
         return ResponseEntity.ok().body(null);
+    }
+
+    //TODO: API 탭 역시 새로고침을 위한 GET method 를 하나 추가해 준다.
+
+    /**
+     * Selenium 탭 새로고침용 GET method
+     * @return Selenium 정보를 포함한 Response entity 객체
+     */
+    @ResponseBody
+    @GetMapping("/selenium")
+    public ResponseEntity<?> getSelenium() {
+        try {
+            List<SeleniumResponse> result = adminService.getAllSeleniumChromeDriverList();
+            return ResponseEntity.ok(result);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    /**
+     * Selenium chrome driver 중지를 위한 POST method
+     * @param usage chrome driver 용도
+     * @return 빈 Response entity 객체 (http status)
+     */
+    @ResponseBody
+    @PostMapping("/selenium")
+    public ResponseEntity<?> suspendSelenium(String usage) {
+        try {
+            if (usage.equals("scrap")) {
+                //scrap driver 를 멈추고, redis 에서 정보를 삭제한다.
+                seleniumScrapService.closeWebDriver();
+                redisTemplateService.deleteScrapRunningInfo();
+
+            } else {
+                //purchase driver 를 멈추고, redis 에서 정보를 삭제한다.
+                seleniumPurchaseService.closeWebDriver();
+                redisTemplateService.deletePurchaseWorkerInfo();
+            }
+
+            return ResponseEntity.ok().body(null);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }

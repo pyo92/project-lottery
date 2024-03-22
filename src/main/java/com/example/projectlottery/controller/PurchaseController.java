@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -55,20 +56,31 @@ public class PurchaseController {
      */
     @PostMapping("login")
     public String dhLogin(DhLoginRequest request, HttpSession session) {
-        //동행복권 로그인 처리
-        DhLoginResponse response = purchaseLotteryService.loginDhLottery(request, true);
+        String worker = SecurityContextHolder.getContext().getAuthentication().getName();
+        redisTemplateService.savePurchaseWorkerInfo(worker);
 
-        //response dto 를 session attribute binding
-        session.setAttribute("dhLoginResponse", response);
+        try {
+            //동행복권 로그인 처리
+            DhLoginResponse response = purchaseLotteryService.loginDhLottery(request, true);
 
-        if (response.loginOk()) {
-            if (response.purchasableCount() == 0) { //구매 가능이 0이면, 로그인 페이지로 이동
+            //response dto 를 session attribute binding
+            session.setAttribute("dhLoginResponse", response);
+
+            if (response.loginOk()) {
+                if (response.purchasableCount() == 0) { //구매 가능이 0이면, 로그인 페이지로 이동
+                    return "redirect:/purchase/dh/login";
+                } else {
+                    return "redirect:/purchase/dh/L645";
+                }
+            } else { //로그인 실패 시, 로그인 페이지로 이동
                 return "redirect:/purchase/dh/login";
-            } else {
-                return "redirect:/purchase/dh/L645";
             }
-        } else { //로그인 실패 시, 로그인 페이지로 이동
+
+        } catch (Exception ignored) {
             return "redirect:/purchase/dh/login";
+
+        } finally {
+            redisTemplateService.deletePurchaseWorkerInfo();
         }
     }
 

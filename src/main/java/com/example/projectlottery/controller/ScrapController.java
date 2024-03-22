@@ -3,7 +3,6 @@ package com.example.projectlottery.controller;
 import com.example.projectlottery.api.service.ScrapLotteryShopService;
 import com.example.projectlottery.api.service.ScrapLotteryWinService;
 import com.example.projectlottery.api.service.ScrapLotteryWinShopService;
-import com.example.projectlottery.api.service.SeleniumScrapService;
 import com.example.projectlottery.service.RedisTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,21 +17,13 @@ import java.util.Objects;
 @RestController
 public class ScrapController {
 
-    private final SeleniumScrapService seleniumScrapService;
-
     private final ScrapLotteryShopService scrapLotteryShopService;
     private final ScrapLotteryWinService scrapLotteryWinService;
     private final ScrapLotteryWinShopService scrapLotteryWinShopService;
 
     private final RedisTemplateService redisTemplateService;
 
-    @GetMapping("kill")
-    public String killScrap() {
-        //TODO: web driver 실행중인지 체크하는 로직 추가 (redis key 활용)
-        seleniumScrapService.closeWebDriver();
-
-        return "[killScrap() - success] Selenium session for scraping is killed.";
-    }
+    //TODO: 각 scrap 함수들 return 을 ResponseEntity 타입으로 바꾸기. (status)
 
     /**
      * 동행복권 로또 판매점 정보 scrap 호출 api
