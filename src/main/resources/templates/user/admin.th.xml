@@ -94,4 +94,31 @@
     </attr>
 
     <!-- API 탭 END -->
+
+    <!-- Selenium 탭 START -->
+    <attr sel="#selenium-cnt"
+          th:text="${'&#9989 ' + seleniumCnt + '개'}"/>
+
+    <attr sel=".selenium"
+          th:each="selenium, idx: ${seleniumList}">
+        <attr sel=".selenium-info">
+            <attr sel=".selenium-name">
+                <attr sel="span[0]"
+                      th:text="${'[' + (idx.index + 1) + '] '}"/>
+                <attr sel="span[1]"
+                      th:text="${selenium.name}"/>
+            </attr>
+            <attr sel="button"
+                  th:id="${'btnSelenium' + (idx.index + 1)}"
+                  th:style="${#bools.isTrue(selenium.isRunning) ? 'display: block;' : 'display: none;'}"
+                  th:onclick="'suspendSeleniumProcess(' + ${idx.index} + ');'"/>
+        </attr>
+        <attr sel=".selenium-status">
+            <attr sel="span"
+                  th:id="${'lblSeleniumStatus' + (idx.index + 1)}"
+                  th:text="${#bools.isTrue(selenium.isRunning) ? '&#8987;&nbsp;작업중' : '&#128164;&nbsp;유휴 상태'}"/>
+        </attr>
+    </attr>
+
+    <!-- Selenium 탭 END -->
 </thlogic>

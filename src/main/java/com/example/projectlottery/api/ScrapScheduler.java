@@ -34,6 +34,9 @@ public class ScrapScheduler {
             scrapLotteryShopService.getShopL645(scrapState);
         } catch (Exception e) {
             log.error("=== Failed scrapShopL645() : {}", LocalDateTime.now());
+            log.error(e.getMessage());
+            log.error("=== Failed scrapShopL645() END");
+            return;
         }
 
         log.info("=== Success scrapShopL645() : {}", LocalDateTime.now());
@@ -51,6 +54,9 @@ public class ScrapScheduler {
             scrapLotteryWinService.getWinNumbersL645(drawNo, drawNo);
         } catch (Exception e) {
             log.error("=== Failed scrapWinNumberL645() : {}", LocalDateTime.now());
+            log.error(e.getMessage());
+            log.error("=== Failed scrapWinNumberL645() END");
+            return;
         }
 
         log.info("=== Success scrapWinNumberL645() : {}", LocalDateTime.now());
@@ -68,15 +74,18 @@ public class ScrapScheduler {
             scrapLotteryWinService.getWinPrizesL645(drawNo, drawNo);
         } catch (Exception e) {
             log.error("=== Failed scrapWinPrizeL645() : {}", LocalDateTime.now());
+            log.error(e.getMessage());
+            log.error("=== Failed scrapWinPrizeL645() END");
+            return;
         }
 
         log.info("=== Success scrapWinPrizeL645() : {}", LocalDateTime.now());
     }
 
     /**
-     * 매주 토요일 21시 10분에 실행 (로또 6/45 당첨 판매점 결과)
+     * 매주 토요일 21시 15분에 실행 (로또 6/45 당첨 판매점 결과)
      */
-    @Scheduled(cron = "0 10 21 * * SAT", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 15 21 * * SAT", zone = "Asia/Seoul")
     public void scrapWinL645Shop() {
         log.info("=== Started scrapWinL645Shop() : {}", LocalDateTime.now());
 
@@ -85,6 +94,9 @@ public class ScrapScheduler {
             scrapLotteryWinShopService.getWinShopL645(drawNo, drawNo);
         } catch (Exception e) {
             log.error("=== Failed scrapWinL645Shop() : {}", LocalDateTime.now());
+            log.error(e.getMessage());
+            log.error("=== Failed scrapWinL645Shop() END");
+            return;
         }
 
         log.info("=== Success scrapWinL645Shop() : {}", LocalDateTime.now());

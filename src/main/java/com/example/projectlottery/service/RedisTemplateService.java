@@ -35,6 +35,8 @@ public class RedisTemplateService {
     private static final String REDIS_KEY_SCRAP_RUNNING_PARAM1 = "SCRAP_RUNNING_PARAM1";
     private static final String REDIS_KEY_SCRAP_RUNNING_PARAM2 = "SCRAP_RUNNING_PARAM2";
 
+    private static final String REDIS_KEY_PURCHASE_WORKER = "PURCHASE_WORKER";
+
     private final EncryptionUtils encryptionUtils;
 
     private final RedisTemplate<String, Object> redisTemplate;
@@ -53,6 +55,45 @@ public class RedisTemplateService {
 
         //동행복권 로그인정보는 30분 뒤에 자동으로 파기된다.
         redisTemplate.expire(REDIS_KEY_DH_LOGIN_INFO, 30, TimeUnit.MINUTES);
+    }
+
+    /**
+     * redis cache save - purchase 작업자
+     * @param worker 작업자
+     */
+    public void savePurchaseWorkerInfo(String worker) {
+        if (Objects.isNull(worker)) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        valueOperations.set(REDIS_KEY_PURCHASE_WORKER, worker);
+        log.info("[RedisTemplateService savePurchaseWorkerInfo() success] worker: {}", worker);
+    }
+
+    /**
+     * redis cache clear - purchase 작업자
+     */
+    public void deletePurchaseWorkerInfo() {
+        try {
+            redisTemplate.delete(REDIS_KEY_PURCHASE_WORKER);
+            log.info("[RedisTemplateService deletePurchaseWorkerInfo() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deletePurchaseWorkerInfo() failed]: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * redis cache hit - purchase 작업자
+     */
+    public Object getPurchaseWorkerInfo() {
+        try {
+            return valueOperations.get(REDIS_KEY_PURCHASE_WORKER);
+
+        } catch (Exception e) {
+            log.error("[RedisTemplateService getPurchaseWorkerInfo() failed]: {}", e.getMessage());
+            return null;
+        }
     }
 
     /**
