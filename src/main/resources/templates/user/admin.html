@@ -35,6 +35,11 @@
                     Selenium
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link label-text" id="admin-tab-redis" data-bs-toggle="pill" data-bs-target="#admin-content-redis" type="button" role="tab" aria-controls="admin-content-redis" aria-selected="true">
+                    Redis
+                </button>
+            </li>
         </ul>
         <div class="tab-content">
             <!-- 사용자 탭 START -->
@@ -56,18 +61,14 @@
                                 <div class="user-info">
                                     <div class="user-info-detail">
                                         <div class="user-info-detail-header">
-                                            <div  class="user-info-detail-header-wrapper">
-                                                <div class="user-id">
-                                                    <span class="label-mini-title">[1]&nbsp;</span>
-                                                    <span class="label-bold-ellipsis-text">k_2811950709</span>
-                                                    <span class="label-mini-title">&nbsp;(관리자)</span>
-                                                </div>
-                                                <div class="user-created-at">
-                                                    <span class="label-mini-title">&#9654;&nbsp; 1990-01-01 가입</span>
-                                                </div>
+                                            <div class="user-id">
+                                                <span class="label-mini-title">[1]&nbsp;</span>
+                                                <span class="label-bold-ellipsis-text">k_2811950709</span>
+                                                <span class="label-mini-title">&nbsp;(관리자)</span>
                                             </div>
                                             <button class="btn btn-success label-mini-title label-white">저장</button>
                                         </div>
+                                        <span class="label-mini-title user-created-at">&#9654;&nbsp; 1990-01-01 가입</span>
                                         <span class="label-mini-title">&#9654;&nbsp; 권한</span>
                                         <div class="user-roles">
                                             <div class="user-role">
@@ -111,24 +112,25 @@
                         <div class="admin-grid">
                             <div class="api">
                                 <div class="api-info">
-                                    <div class="api-url-with-param">
-                                        <div class="api-url">
-                                            <span class="label-mini-title">[1]</span>
-                                            <span class="label-bold-ellipsis-text">/scrap/L645/win/number</span>
-                                        </div>
-                                        <div class="api-params">
-                                            <div class="param" id="param1">
-                                                <span class="label-mini-title">&#9654;&nbsp; start=&nbsp;</span>
-                                                <input class="form-control label-mini-title" type="text">
+                                    <div class="api-info-detail">
+                                        <div class="api-info-detail-header">
+                                            <div class="api-url">
+                                                <span class="label-mini-title">[1]</span>
+                                                <span class="label-bold-ellipsis-text">/scrap/L645/win/number</span>
                                             </div>
-                                            <div class="param" id="param2">
-                                                <span class="label-mini-title">&nbsp;&&nbsp;</span>
-                                                <span class="label-mini-title">end=&nbsp;</span>
-                                                <input class="form-control label-mini-title" type="text">
-                                            </div>
+                                            <button class="btn">실행</button>
                                         </div>
                                     </div>
-                                    <button class="btn">실행</button>
+                                    <div class="api-params">
+                                        <div class="param" id="param1">
+                                            <span class="label-mini-title">&#9654;&nbsp;start=&nbsp;</span>
+                                            <input class="form-control label-mini-title" type="text">
+                                        </div>
+                                        <div class="param" id="param2">
+                                            <span class="label-mini-title">&#9654;&nbsp; end=&nbsp;</span>
+                                            <input class="form-control label-mini-title" type="text">
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr class="no-margin-hr">
                                 <div class="api-time">
@@ -161,16 +163,19 @@
                             <span class="label-mini-title">현재 상태</span>
                             <span class="label-mini-title">작업</span>
                         </div>
-                        <div class="admin-grid">
+                        <div class="admin-grid" id="selenium-grid">
                             <div class="selenium">
                                 <div class="selenium-info">
                                     <div class="selenium-info-detail">
-                                        <div class="selenium-name">
-                                            <span class="label-mini-title">[1]</span>
-                                            <span class="label-bold-ellipsis-text">Selenium-for-scrap</span>
+                                        <div class="selenium-info-detail-header">
+                                            <div class="selenium-name">
+                                                <span class="label-mini-title">[1]</span>
+                                                <span class="label-bold-ellipsis-text">Selenium-for-scrap</span>
+                                            </div>
+                                            <button class="btn btn-danger label-mini-title label-white">중지</button>
                                         </div>
+                                        <span class="label-mini-title selenium-description">&#9654;&nbsp; 동행복권 정보 스크랩핑</span>
                                     </div>
-                                    <button class="btn btn-danger label-mini-title label-white">중지</button>
                                 </div>
                                 <hr class="no-margin-hr">
                                 <div class="selenium-status">
@@ -182,6 +187,71 @@
                 </div>
             </div>
             <!-- Selenium 탭 END -->
+            
+            <!-- Redis 탭 START -->
+            <div class="tab-pane fade" id="admin-content-redis" role="tabpanel" aria-labelledby="admin-tab-redis">
+                <div class="tab-content-inner">
+                    <span class="label-title">Redis</span>
+                    <br>
+                    <span class="label-mini-title">Redis cache 목록을 모니터링하고 관리합니다.</span>
+                    <hr>
+                    <div class="admin-wrapper">
+                        <div class="header-status">
+                            <span class="label-mini-title" id="redis-cnt">&#128273 0개</span>
+                            <btn class="btn btn-primary btn-refresh" id="btn-refresh-redis-tab">
+                                <span class="fas fa-refresh label-mini-title label-white"></span>
+                            </btn>
+                        </div>
+                        <div class="admin-grid-header">
+                            <span class="label-mini-title">ID</span>
+                            <span class="label-mini-title">데이터 타입</span>
+                            <span class="label-mini-title">작업</span>
+                        </div>
+                        <div class="admin-grid" id="redis-grid">
+                            <div class="redis">
+                                <div class="redis-info">
+                                    <div class="redis-info-detail">
+                                        <div class="redis-info-detail-header">
+                                            <div class="redis-name">
+                                                <span class="label-mini-title">[1]</span>
+                                                <span class="label-bold-ellipsis-text">L645_SHOP_DETAIL</span>
+                                            </div>
+                                            <button class="btn btn-danger label-mini-title label-white">삭제</button>
+                                        </div>
+                                        <div class="redis-set-type">
+                                            <span class="label-mini-title">&#9654;&nbsp;&nbsp;value =&nbsp;</span>
+                                            <span class="label-mini-title label-special"></span>
+                                        </div>
+                                        <div class="redis-zset-type">
+                                            <span class="label-mini-title">&#9654;&nbsp;&nbsp;range =&nbsp;</span>
+                                            <span class="label-mini-title label-special"></span>
+                                        </div>
+                                        <div class="redis-hset-type">
+                                            <span class="label-mini-title">&#9654;&nbsp;&nbsp;fields&nbsp;</span>
+                                            <div class="hset-fields">
+                                                <div class="hset-field">
+                                                    <button class="btn btn-danger btn-delete">
+                                                        <span class="fas fa-trash label-mini-title label-white"></span>
+                                                    </button>
+                                                    <div class="field-name">
+                                                        <span class="label-mini-title label-special"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="no-margin-hr">
+                                <div class="redis-type">
+                                    <span class="label-text fas fa-database">&nbsp;</span>
+                                    <span class="label-mini-title">HSET</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Redis 탭 END -->
         </div>
     </div>
 </main>

@@ -54,7 +54,7 @@
     gap: 10px;
 }
 
-.api, .user, .selenium {
+.api, .user, .selenium, .redis {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -67,16 +67,7 @@
     border: none;
 }
 
-.api-info, .user-info, .selenium-info {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.api-url-with-param, .user-info-detail, .selenium-info-detail {
+.user-info-detail, .api-info-detail, .selenium-info-detail, .redis-info-detail {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -84,13 +75,25 @@
     justify-content: center;
 }
 
-.api-params {
+.user-info-detail-header, .api-info-detail-header, .selenium-info-detail-header, .redis-info-detail-header {
     width: 100%;
-    height: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: 30px;
+}
+
+.user-id, .api-url, .selenium-name, .redis-name {
     display: flex;
     flex-direction: row;
     align-items: center;
     align-content: center;
+}
+
+.api-params {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .param {
@@ -109,7 +112,7 @@
     margin: 0;
 }
 
-.api-time, .user-modified-at, .selenium-status {
+.api-time, .user-modified-at, .selenium-status, .redis-type {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -117,7 +120,7 @@
     justify-items: center;
 }
 
-.api-time span, .user-modified-at span {
+.api-time span, .user-modified-at, .selenium-status, .redis-type span {
     color: #666666;
     display: flex;
     justify-content: center;
@@ -130,36 +133,15 @@
     color: white;
 }
 
-.user-info-detail-header {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.label-special {
+    color: #4caf50;
 }
 
-.user-info-detail-header-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
+.label-red {
+    color: red;
 }
 
-.user-id {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-content: center;
-}
-
-.user-created-at {
-    width: 100%;
-    height: 24px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-content: center;
-}
-
-.user-roles {
+.user-roles, .hset-fields {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 5px;
@@ -168,10 +150,11 @@
     border-radius: 5px;
     box-shadow: 0 0 2px rgb(64, 135, 216);
     padding: 10px;
+    margin-top: 5px;
     border: none;
 }
 
-.user-role {
+.user-role, .hset-field {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -204,7 +187,7 @@
     align-items: center;
 }
 
-.btn-refresh {
+.btn-refresh, .btn-delete {
     width: 20px;
     height: 20px;
     padding: 0;
@@ -213,6 +196,12 @@
     justify-content: center;
 }
 
-.btn-refresh {
+.btn-refresh, .btn-delete {
     margin: 0;
+}
+
+.field-name {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
 }
