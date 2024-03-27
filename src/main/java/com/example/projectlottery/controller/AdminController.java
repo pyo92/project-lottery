@@ -3,7 +3,9 @@ package com.example.projectlottery.controller;
 import com.example.projectlottery.api.service.SeleniumPurchaseService;
 import com.example.projectlottery.api.service.SeleniumScrapService;
 import com.example.projectlottery.domain.type.UserRoleType;
+import com.example.projectlottery.dto.request.AdminRedisRequest;
 import com.example.projectlottery.dto.request.AdminUserRequest;
+import com.example.projectlottery.dto.response.RedisResponse;
 import com.example.projectlottery.dto.response.SeleniumResponse;
 import com.example.projectlottery.dto.response.UserResponse;
 import com.example.projectlottery.service.AdminService;
@@ -44,11 +46,6 @@ public class AdminController {
         map.addAttribute("users", users);
         map.addAttribute("userCnt", users.size());
         map.addAttribute("userRoleTypes", UserRoleType.values());
-
-        //Selenium 탭
-        List<SeleniumResponse> seleniumList = adminService.getAllSeleniumChromeDriverList();
-        map.addAttribute("seleniumList", seleniumList);
-        map.addAttribute("seleniumCnt", seleniumList.size());
 
         return "/user/admin";
     }
@@ -108,6 +105,39 @@ public class AdminController {
                 seleniumPurchaseService.closeWebDriver();
                 redisTemplateService.deletePurchaseWorkerInfo();
             }
+
+            return ResponseEntity.ok().body(null);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    /**
+     * Redis 탭 새로고침 용 GET method
+     * @return Redis 정보를 포함한 Response entity 객체
+     */
+    @ResponseBody
+    @GetMapping("/redis")
+    public ResponseEntity<?> getRedis() {
+        try {
+            List<RedisResponse> results = redisTemplateService.getAllRedisKeyInfo();
+            return ResponseEntity.ok(results);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/redis")
+    public ResponseEntity<?> deleteRedisKey(@RequestBody AdminRedisRequest request) {
+        try {
+            redisTemplateService.deleteByAdmin(
+                    request.type(),
+                    request.key(),
+                    request.field()
+            );
 
             return ResponseEntity.ok().body(null);
 
