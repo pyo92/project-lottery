@@ -19,15 +19,15 @@
                           th:id="${'user-id-' + idx.index}"
                           th:text="${user.userId}"/>
                     <attr sel="span[2]"
+                          th:classappend="${#strings.equals(user.toStringUserRole, '관리자') ? 'label-red' : ''}"
                           th:text="${'&nbsp;(' + user.toStringUserRole + ')'}"/>
-                </attr>
-                <attr sel=".user-created-at">
-                    <attr sel="span[0]"
-                          th:text="${'&#9654;&nbsp; ' + user.toStringCreatedAt + ' 가입'}"/>
                 </attr>
 
                 <attr sel="button"
                       th:onclick="'saveUser(' + ${idx.index} + ')'"/>
+
+                <attr sel=".user-created-at"
+                      th:text="${'&#9654;&nbsp; ' + user.toStringCreatedAt + ' 가입'}"/>
 
                 <attr sel=".user-role"
                       th:each="role: ${userRoleTypes}">
@@ -59,7 +59,7 @@
         <attr sel=".api-info">
             <attr sel=".api-url">
                 <attr sel="span[0]"
-                      th:text="${'[' + (idx.index + 1) + '] '}"/>
+                      th:text="${'[' + (idx.index + 1) + ']&nbsp;'}"/>
                 <attr sel="span[1]"
                       th:id="${'apiUrl' + (idx.index + 1)}"
                       th:text="${api.url}"/>
@@ -94,31 +94,4 @@
     </attr>
 
     <!-- API 탭 END -->
-
-    <!-- Selenium 탭 START -->
-    <attr sel="#selenium-cnt"
-          th:text="${'&#9989 ' + seleniumCnt + '개'}"/>
-
-    <attr sel=".selenium"
-          th:each="selenium, idx: ${seleniumList}">
-        <attr sel=".selenium-info">
-            <attr sel=".selenium-name">
-                <attr sel="span[0]"
-                      th:text="${'[' + (idx.index + 1) + '] '}"/>
-                <attr sel="span[1]"
-                      th:text="${selenium.name}"/>
-            </attr>
-            <attr sel="button"
-                  th:id="${'btnSelenium' + (idx.index + 1)}"
-                  th:style="${#bools.isTrue(selenium.isRunning) ? 'display: block;' : 'display: none;'}"
-                  th:onclick="'suspendSeleniumProcess(' + ${idx.index} + ');'"/>
-        </attr>
-        <attr sel=".selenium-status">
-            <attr sel="span"
-                  th:id="${'lblSeleniumStatus' + (idx.index + 1)}"
-                  th:text="${#bools.isTrue(selenium.isRunning) ? '&#8987;&nbsp;작업중' : '&#128164;&nbsp;유휴 상태'}"/>
-        </attr>
-    </attr>
-
-    <!-- Selenium 탭 END -->
 </thlogic>
