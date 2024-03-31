@@ -182,6 +182,7 @@ function makeAPITab(data) {
 
         const timeSpan1 = document.createElement('span');
         timeSpan1.classList.add('label-text', 'fas', 'fa-clock');
+        timeSpan1.innerHTML = '&nbsp;';
 
         const timeSpan2 = document.createElement('span');
         timeSpan2.className = 'label-mini-title';
@@ -189,6 +190,26 @@ function makeAPITab(data) {
 
         timeDiv.appendChild(timeSpan1);
         timeDiv.appendChild(timeSpan2);
+
+        const tableDiv = document.createElement('div');
+        tableDiv.className = 'api-table-info';
+        tableDiv.style.display = (index === 0 ? 'none' : '');
+
+        const tableSpan1 = document.createElement('span');
+        tableSpan1.classList.add('label-mini-title', 'label-text', 'fas', 'fa-database');
+        tableSpan1.innerHTML = '&nbsp;';
+
+        const tableSpan2 = document.createElement('span');
+        tableSpan2.className = 'label-mini-title';
+        tableSpan2.innerHTML = 'MAX(draw_no) =&nbsp;';
+
+        const tableSpan3 = document.createElement('span');
+        tableSpan3.classList.add('label-mini-title', 'label-special');
+        tableSpan3.textContent = item.maxDrawNo;
+
+        tableDiv.appendChild(tableSpan1);
+        tableDiv.appendChild(tableSpan2);
+        tableDiv.appendChild(tableSpan3);
 
         headerDiv.appendChild(urlDiv);
         headerDiv.appendChild(execBtn);
@@ -201,6 +222,7 @@ function makeAPITab(data) {
         unitDiv.appendChild(infoDiv);
         unitDiv.appendChild(hr);
         unitDiv.appendChild(timeDiv);
+        unitDiv.appendChild(tableDiv);
 
         grid.appendChild(unitDiv);
     });
