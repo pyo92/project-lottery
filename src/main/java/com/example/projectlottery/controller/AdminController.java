@@ -58,8 +58,6 @@ public class AdminController {
         return ResponseEntity.ok().body(null);
     }
 
-    //TODO: API 탭 역시 새로고침을 위한 GET method 를 하나 추가해 준다.
-
     /**
      * API 탭 새로고침용 GET method
      * @return API 정보를 포함한 Response entity 객체
