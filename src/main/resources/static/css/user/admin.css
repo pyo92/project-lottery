@@ -112,7 +112,7 @@
     margin: 0;
 }
 
-.api-time, .user-modified-at, .selenium-status, .redis-type {
+.user-modified-at, .api-time, .api-table-info, .selenium-status, .redis-type {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -120,7 +120,7 @@
     justify-items: center;
 }
 
-.api-time span, .user-modified-at, .selenium-status, .redis-type span {
+.user-modified-at, .api-time span, .selenium-status, .redis-type span {
     color: #666666;
     display: flex;
     justify-content: center;

@@ -47,8 +47,9 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                 Expressions.asString("shop"),
                                 Expressions.stringTemplate(
                                         "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
-                                        shop.modifiedAt.max()
-                                )))
+                                        shop.modifiedAt.max()),
+                                Expressions.nullExpression(Long.class) //shop 테이블은 null 값을 가져오도록 한다.
+                                ))
                         .fetch()
         );
 
@@ -59,8 +60,9 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                 Expressions.asString("lotto"),
                                 Expressions.stringTemplate(
                                         "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
-                                        lotto.modifiedAt.max()
-                                )))
+                                        lotto.modifiedAt.max()),
+                                lotto.drawNo.max()
+                        ))
                         .fetch()
         );
 
@@ -71,8 +73,9 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                 Expressions.asString("lotto_prize"),
                                 Expressions.stringTemplate(
                                         "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
-                                        lottoPrize.modifiedAt.max()
-                                )))
+                                        lottoPrize.modifiedAt.max()),
+                                lottoPrize.lotto.drawNo.max()
+                        ))
                         .fetch()
         );
 
@@ -83,8 +86,9 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                                 Expressions.asString("lotto_win_shop"),
                                 Expressions.stringTemplate(
                                         "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
-                                        lottoWinShop.modifiedAt.max()
-                                )))
+                                        lottoWinShop.modifiedAt.max()),
+                                lottoWinShop.lotto.drawNo.max()
+                        ))
                         .fetch()
         );
 
