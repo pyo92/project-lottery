@@ -5,9 +5,7 @@ import com.example.projectlottery.api.service.SeleniumScrapService;
 import com.example.projectlottery.domain.type.UserRoleType;
 import com.example.projectlottery.dto.request.AdminRedisRequest;
 import com.example.projectlottery.dto.request.AdminUserRequest;
-import com.example.projectlottery.dto.response.RedisResponse;
-import com.example.projectlottery.dto.response.SeleniumResponse;
-import com.example.projectlottery.dto.response.UserResponse;
+import com.example.projectlottery.dto.response.*;
 import com.example.projectlottery.service.AdminService;
 import com.example.projectlottery.service.RedisTemplateService;
 import lombok.RequiredArgsConstructor;
@@ -33,21 +31,13 @@ public class AdminController {
 
     @GetMapping
     public String admin(ModelMap map) {
-        //API 탭
-        map.addAttribute("apis", adminService.getAllAPIModifiedAt());
-        Map<String, Object> scrapRunningInfo = redisTemplateService.getScrapRunningInfo();
-        map.addAttribute("runningYn", scrapRunningInfo.get("url") != null);
-        map.addAttribute("runningUrl", scrapRunningInfo.get("url"));
-        map.addAttribute("runningParam1", scrapRunningInfo.get("param1"));
-        map.addAttribute("runningParam2", scrapRunningInfo.get("param2"));
-
         //사용자 탭
         List<UserResponse> users = adminService.getAllUserList();
         map.addAttribute("users", users);
         map.addAttribute("userCnt", users.size());
         map.addAttribute("userRoleTypes", UserRoleType.values());
 
-        return "/user/admin";
+        return "user/admin";
     }
 
     /**
@@ -69,6 +59,22 @@ public class AdminController {
     }
 
     //TODO: API 탭 역시 새로고침을 위한 GET method 를 하나 추가해 준다.
+
+    /**
+     * API 탭 새로고침용 GET method
+     * @return API 정보를 포함한 Response entity 객체
+     */
+    @ResponseBody
+    @GetMapping("/api")
+    public ResponseEntity<?> getScrapAPI() {
+        try {
+            APIWithRunningInfoResponse result = adminService.getAllAPI();
+            return ResponseEntity.ok(result);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 
     /**
      * Selenium 탭 새로고침용 GET method
