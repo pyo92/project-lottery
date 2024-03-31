@@ -1,6 +1,7 @@
 package com.example.projectlottery.service;
 
 import com.example.projectlottery.dto.request.DhLoginRequest;
+import com.example.projectlottery.dto.response.APIRunningInfoResponse;
 import com.example.projectlottery.dto.response.LottoResponse;
 import com.example.projectlottery.dto.response.RedisResponse;
 import com.example.projectlottery.dto.response.ShopResponse;
@@ -223,13 +224,13 @@ public class RedisTemplateService {
     /**
      * redis cache hit - scrap 동작 여부
      */
-    public Map<String, Object> getScrapRunningInfo() {
+    public APIRunningInfoResponse getScrapRunningInfo() {
         try {
-            Map<String, Object> result = new HashMap<>();
-            result.put("url", valueOperations.get(REDIS_KEY_SCRAP_RUNNING_URL));
-            result.put("param1", valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM1));
-            result.put("param2", valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM2));
-            return result;
+            return new APIRunningInfoResponse(
+                    valueOperations.get(REDIS_KEY_SCRAP_RUNNING_URL),
+                    valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM1),
+                    valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM2)
+            );
 
         } catch (Exception e) {
             log.error("[RedisTemplateService getScrapRunningInfo() failed]: {}", e.getMessage());

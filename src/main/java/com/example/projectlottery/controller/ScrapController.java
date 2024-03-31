@@ -32,7 +32,7 @@ public class ScrapController {
      */
     @GetMapping("/L645/shop")
     public String scrapShop(@RequestParam String state) {
-        if (redisTemplateService.getScrapRunningInfo().get("url") != null)
+        if (redisTemplateService.getScrapRunningInfo().url() != null)
             return "[scrapShop() - failed] Scraping is already running.";
 
         String url = "/scrap/L645/shop";
@@ -57,7 +57,7 @@ public class ScrapController {
      */
     @GetMapping("/L645/win/number")
     public String scrapLottoNumber(@RequestParam Long start, @RequestParam(required = false) Long end) {
-        if (redisTemplateService.getScrapRunningInfo().get("url") != null)
+        if (redisTemplateService.getScrapRunningInfo().url() != null)
             return "[scrapLottoNumber() - failed] Scraping is already running.";
 
         if (Objects.isNull(end)) end = start;
@@ -84,7 +84,7 @@ public class ScrapController {
      */
     @GetMapping("/L645/win/prize")
     public String scrapLottoPrize(@RequestParam Long start, @RequestParam(required = false) Long end) {
-        if (redisTemplateService.getScrapRunningInfo().get("url") != null)
+        if (redisTemplateService.getScrapRunningInfo().url() != null)
             return "[scrapLottoPrize() - failed] Scraping is already running.";
 
         if (Objects.isNull(end)) end = start;
@@ -111,7 +111,7 @@ public class ScrapController {
      */
     @GetMapping("/L645/win/shop")
     public String scrapLottoWinShop(@RequestParam Long start, @RequestParam(required = false) Long end) {
-        if (redisTemplateService.getScrapRunningInfo().get("url") != null)
+        if (redisTemplateService.getScrapRunningInfo().url() != null)
             return "[scrapLottoWinShop() - failed] Scraping is already running.";
 
         if (Objects.isNull(end)) end = start;

@@ -1,7 +1,7 @@
 package com.example.projectlottery.service;
 
 import com.example.projectlottery.domain.type.UserRoleType;
-import com.example.projectlottery.dto.response.APIResponse;
+import com.example.projectlottery.dto.response.APIWithRunningInfoResponse;
 import com.example.projectlottery.dto.response.SeleniumResponse;
 import com.example.projectlottery.dto.response.UserResponse;
 import com.example.projectlottery.repository.querydsl.AdminRepositoryCustom;
@@ -29,8 +29,11 @@ public class AdminService {
      * @return Scrap API 목록(+ 최종 업데이트)
      */
     @Transactional(readOnly = true)
-    public List<APIResponse> getAllAPIModifiedAt() {
-        return adminRepository.getAllAPIModifiedAt();
+    public APIWithRunningInfoResponse getAllAPI() {
+        return new APIWithRunningInfoResponse(
+                adminRepository.getAllAPIModifiedAt(),
+                redisTemplateService.getScrapRunningInfo()
+        );
     }
 
     /**
@@ -64,7 +67,7 @@ public class AdminService {
     public List<SeleniumResponse> getAllSeleniumChromeDriverList() {
         List<String> chromeDrivers = adminRepository.getAllSeleniumChromeDriver();
 
-        boolean isScrapRunning = redisTemplateService.getScrapRunningInfo().get("url") != null;
+        boolean isScrapRunning = redisTemplateService.getScrapRunningInfo().url() != null;
         boolean isPurchaseRunning = redisTemplateService.getPurchaseWorkerInfo() != null;
 
         return List.of(
