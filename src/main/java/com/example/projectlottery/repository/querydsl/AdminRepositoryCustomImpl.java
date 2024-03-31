@@ -45,7 +45,10 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                         .select(Projections.constructor(APIResponse.class,
                                 Expressions.asString("/scrap/L645/shop"),
                                 Expressions.asString("shop"),
-                                shop.modifiedAt.max()))
+                                Expressions.stringTemplate(
+                                        "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
+                                        shop.modifiedAt.max()
+                                )))
                         .fetch()
         );
 
@@ -54,7 +57,10 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                         .select(Projections.constructor(APIResponse.class,
                                 Expressions.asString("/scrap/L645/win/number"),
                                 Expressions.asString("lotto"),
-                                lotto.modifiedAt.max()))
+                                Expressions.stringTemplate(
+                                        "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
+                                        lotto.modifiedAt.max()
+                                )))
                         .fetch()
         );
 
@@ -63,7 +69,10 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                         .select(Projections.constructor(APIResponse.class,
                                 Expressions.asString("/scrap/L645/win/prize"),
                                 Expressions.asString("lotto_prize"),
-                                lottoPrize.modifiedAt.max()))
+                                Expressions.stringTemplate(
+                                        "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
+                                        lottoPrize.modifiedAt.max()
+                                )))
                         .fetch()
         );
 
@@ -72,7 +81,10 @@ public class AdminRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                         .select(Projections.constructor(APIResponse.class,
                                 Expressions.asString("/scrap/L645/win/shop"),
                                 Expressions.asString("lotto_win_shop"),
-                                lottoWinShop.modifiedAt.max()))
+                                Expressions.stringTemplate(
+                                        "DATE_FORMAT({0}, '%Y-%m-%d %H:%i:%s')",
+                                        lottoWinShop.modifiedAt.max()
+                                )))
                         .fetch()
         );
 
