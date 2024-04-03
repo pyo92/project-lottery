@@ -2,6 +2,151 @@
  * 사용자 탭 관련
  */
 
+const btnRefreshUserTab = document.getElementById('btn-refresh-user-tab');
+btnRefreshUserTab.addEventListener('click', refreshUserTab);
+
+/**
+ * 사용자 탭 새로고침 버튼 처리 method
+ */
+function refreshUserTab() {
+    $.ajax({
+        type: 'GET',
+        url: '/admin/user',
+        success: function (data) {
+            makeUserTab(data);
+        }
+    });
+}
+
+/**
+ * 사용자 탭 view 생성용 method
+ * @param data user 목록 정보 by ajax
+ */
+function makeUserTab(data) {
+    const cntSpan = document.getElementById('user-count');
+    cntSpan.innerHTML = '&#128101;&nbsp;' + data.users.length + '명';
+
+    const grid = document.getElementById('user-grid');
+    while (grid.firstChild) {
+        grid.removeChild(grid.firstChild); //기존의 하위 목록 삭제
+    }
+
+    $.each(data.users, function(index, item) {
+        const unitDiv = document.createElement('div');
+        unitDiv.className = 'user';
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'user-info';
+
+        const detailDiv = document.createElement('div');
+        detailDiv.className = 'user-info-detail';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'user-info-detail-header';
+
+        const idDiv = document.createElement('div');
+        idDiv.className = 'user-id';
+
+        const idxSpan = document.createElement('span');
+        idxSpan.className = 'label-mini-title';
+        idxSpan.innerHTML = '[' + (index + 1) + ']&nbsp;'
+
+        const idSpan = document.createElement('span');
+        idSpan.id = 'user-id-' + index;
+        idSpan.className = 'label-bold-ellipsis-text';
+        idSpan.textContent = item.userId;
+
+        const roleSpan = document.createElement('span');
+        roleSpan.className = 'label-mini-title';
+        roleSpan.innerHTML = '&nbsp;(사용자)';
+        if (item.userRoleTypes.includes('ROLE_ADMIN')) {
+            roleSpan.classList.add('label-red');
+            roleSpan.innerHTML = '&nbsp;(관리자)';
+        }
+
+        idDiv.appendChild(idxSpan);
+        idDiv.appendChild(idSpan);
+        idDiv.appendChild(roleSpan);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.classList.add('btn', 'btn-success', 'label-mini-title', 'label-white');
+        saveBtn.textContent = '저장';
+        saveBtn.onclick = () => {
+            saveUser(index);
+        }
+
+        headerDiv.appendChild(idDiv);
+        headerDiv.appendChild(saveBtn);
+
+        const regSpan = document.createElement('div');
+        regSpan.classList.add('label-mini-title', 'user-created-at');
+        regSpan.innerHTML = '&#9654;&nbsp; ' + item.createdAt + ' 가입';
+
+        const rolesSpan = document.createElement('div');
+        rolesSpan.className = 'label-mini-title';
+        rolesSpan.innerHTML = '&#9654;&nbsp; 권한';
+
+        const rolesDiv = document.createElement('div');
+        rolesDiv.className = 'user-roles';
+
+        $.each(data.roles, function(idx, itm) {
+            const roleDiv = document.createElement('div');
+            roleDiv.className = 'user-role';
+
+            const roleChk = document.createElement('input');
+            roleChk.id = 'chk-' + index + '-' + idx;
+            roleChk.className = 'form-check-input';
+            roleChk.type = 'checkbox';
+            roleChk.checked = (item.userRoleTypes.includes(itm));
+
+            const roleLbl = document.createElement('label');
+            roleLbl.id = 'lbl-' + index + '-' + idx;
+            roleLbl.classList.add('form-check-label', 'label-mini-title');
+            roleLbl.innerHTML = '&nbsp;' + itm;
+            roleLbl.for = 'chk-' + index + '-' + idx;
+
+            roleDiv.appendChild(roleChk);
+            roleDiv.appendChild(roleLbl);
+
+            rolesDiv.appendChild(roleDiv);
+        });
+
+        detailDiv.appendChild(headerDiv);
+        detailDiv.appendChild(regSpan);
+        detailDiv.appendChild(rolesSpan);
+        detailDiv.appendChild(rolesDiv);
+
+        const hr = document.createElement('hr');
+        hr.className = 'no-margin-hr';
+
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'user-modified-at';
+
+        const timeSpan1 = document.createElement('span');
+        timeSpan1.classList.add('label-text', 'fas', 'fa-clock');
+        timeSpan1.innerHTML = '&nbsp;';
+
+        const timeSpan2 = document.createElement('span');
+        timeSpan2.className = 'label-mini-title';
+        timeSpan2.textContent = item.modifiedAt;
+
+        timeDiv.appendChild(timeSpan1);
+        timeDiv.appendChild(timeSpan2);
+
+        infoDiv.appendChild(detailDiv);
+
+        unitDiv.appendChild(infoDiv);
+        unitDiv.appendChild(hr);
+        unitDiv.appendChild(timeDiv);
+
+        grid.appendChild(unitDiv);
+    });
+}
+
+/**
+ * 사용자 정보 저장용 method
+ * @param idx 목록상 사용자 index
+ */
 function saveUser(idx) {
     let roles = [];
 
@@ -679,6 +824,12 @@ function deleteRedisCacheForHashSetField(type, key, field) {
     });
 }
 
+$(function() {
+    $('#header').load('/header.html');
+    $('#footer').load('/footer.html');
+});
+
+refreshUserTab();
 refreshAPITab();
 refreshSeleniumTab();
 refreshRedisTab();

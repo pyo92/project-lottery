@@ -3,6 +3,7 @@ package com.example.projectlottery.dto.response;
 import com.example.projectlottery.domain.User;
 import com.example.projectlottery.domain.UserRole;
 import com.example.projectlottery.domain.type.UserRoleType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,9 @@ import java.util.List;
 public record UserResponse(
         String userId,
         List<UserRoleType> userRoleTypes,
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime createdAt,
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime modifiedAt
 ) {
 
