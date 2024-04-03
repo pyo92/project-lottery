@@ -25,18 +25,6 @@ public class AdminService {
     private final AdminRepositoryCustom adminRepository;
 
     /**
-     * Scrap API 목록(+ 최종 업데이트) 전체 조회
-     * @return Scrap API 목록(+ 최종 업데이트)
-     */
-    @Transactional(readOnly = true)
-    public APIWithRunningInfoResponse getAllAPI() {
-        return new APIWithRunningInfoResponse(
-                adminRepository.getAllAPIModifiedAt(),
-                redisTemplateService.getScrapRunningInfo()
-        );
-    }
-
-    /**
      * 회원 정보 전체 조회
      * @return 회원 목록
      */
@@ -56,6 +44,20 @@ public class AdminService {
                 userRoles.stream()
                         .map(UserRoleType::valueOf)
                         .toList()
+        );
+
+
+    }
+
+    /**
+     * Scrap API 목록(+ 최종 업데이트) 전체 조회
+     * @return Scrap API 목록(+ 최종 업데이트)
+     */
+    @Transactional(readOnly = true)
+    public APIWithRunningInfoResponse getAllAPI() {
+        return new APIWithRunningInfoResponse(
+                adminRepository.getAllAPIModifiedAt(),
+                redisTemplateService.getScrapRunningInfo()
         );
     }
 

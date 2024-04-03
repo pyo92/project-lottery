@@ -5,7 +5,10 @@ import com.example.projectlottery.api.service.SeleniumScrapService;
 import com.example.projectlottery.domain.type.UserRoleType;
 import com.example.projectlottery.dto.request.AdminRedisRequest;
 import com.example.projectlottery.dto.request.AdminUserRequest;
-import com.example.projectlottery.dto.response.*;
+import com.example.projectlottery.dto.response.APIWithRunningInfoResponse;
+import com.example.projectlottery.dto.response.RedisResponse;
+import com.example.projectlottery.dto.response.SeleniumResponse;
+import com.example.projectlottery.dto.response.UserResponse;
 import com.example.projectlottery.service.AdminService;
 import com.example.projectlottery.service.RedisTemplateService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -38,6 +40,29 @@ public class AdminController {
         map.addAttribute("userRoleTypes", UserRoleType.values());
 
         return "user/admin";
+    }
+
+    /**
+     * 사용자 탭 새로고침용 GET method
+     * @return 사용자 정보를 포함한 Response entity 객체
+     */
+    @ResponseBody
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser() {
+        try {
+            //서비스에서 사용하는 모든 권한 목록도 함께 내려줘야 해서 map 으로 전달
+            Map<String, Object> response = new HashMap<>();
+            response.put("users", adminService.getAllUserList());
+            response.put("roles",
+                    Arrays.stream(UserRoleType.values())
+                    .sorted(Comparator.comparingInt(Enum::ordinal)) //항상 ordinal 순서와 일치하도록 정렬
+                    .toList());
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     /**
