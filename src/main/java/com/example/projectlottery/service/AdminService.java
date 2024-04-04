@@ -1,5 +1,6 @@
 package com.example.projectlottery.service;
 
+import com.example.projectlottery.config.handler.UserRoleChangeEvent;
 import com.example.projectlottery.domain.type.UserRoleType;
 import com.example.projectlottery.dto.response.APIWithRunningInfoResponse;
 import com.example.projectlottery.dto.response.SeleniumResponse;
@@ -7,6 +8,7 @@ import com.example.projectlottery.dto.response.UserResponse;
 import com.example.projectlottery.repository.querydsl.AdminRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,8 @@ public class AdminService {
     private final RedisTemplateService redisTemplateService;
 
     private final AdminRepositoryCustom adminRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * 회원 정보 전체 조회
@@ -46,7 +50,10 @@ public class AdminService {
                         .toList()
         );
 
-
+        //event 발행
+        eventPublisher.publishEvent(
+                new UserRoleChangeEvent(this, userId)
+        );
     }
 
     /**
