@@ -47,7 +47,7 @@ public class SecurityConfig {
                                 auth
                                         //static resources 에 대한 접근 허용
                                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                        .requestMatchers("/favicon.ico", "/css/**", "/js/**", "/img/**").permitAll()
+                                        .requestMatchers("/favicon.ico", "/css/**", "/js/**", "/img/**", "/error").permitAll()
                                         //루트, 보안 페이지에 대한 접근 허용
                                         .requestMatchers("/", "/security/auth", "/security/denied").permitAll()
                                         //간편 로그인 페이지에 대한 접근 허용
@@ -72,6 +72,8 @@ public class SecurityConfig {
                                         .and()
                                         //oAuth login 핸들러 등록
                                         .oauth2Login(oAuth -> oAuth
+                                                //status=999 오류 발생을 대비해, 로그인 성공 시 무조건 루트 페이지로 보낸다.
+                                                .defaultSuccessUrl("/", true)
                                                 .userInfoEndpoint(userInfo -> userInfo
                                                         .userService(oAuth2UserService)));
                             } catch (Exception e) {
@@ -101,10 +103,19 @@ public class SecurityConfig {
             List<UserRoleType> userRoleTypes = new ArrayList<>();
             if (oAuth2User.getName().equals("2811950709")) {
                 //관리자는 당연히 모든 권한을 제공한다.
-                userRoleTypes.addAll(Arrays.stream(UserRoleType.values()).toList());
+                userRoleTypes.addAll(
+                        Arrays.stream(UserRoleType.values()).toList()
+                );
             } else {
                 //사용자는 기본적으로 추첨결과, 판매점, 명당 페이지 접근 권한을 제공한다.
-                userRoleTypes.addAll(List.of(UserRoleType.ROLE_USER, UserRoleType.ROLE_WIN, UserRoleType.ROLE_SHOP, UserRoleType.ROLE_RANKING));
+                userRoleTypes.addAll(
+                        List.of(
+                                UserRoleType.ROLE_USER,
+                                UserRoleType.ROLE_WIN,
+                                UserRoleType.ROLE_SHOP,
+                                UserRoleType.ROLE_RANKING
+                        )
+                );
             }
 
             //Kakao OAuth 로그인 결과가 존재하지 않으면 회원가입 처리
