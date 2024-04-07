@@ -18,6 +18,10 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
@@ -48,8 +52,15 @@ public class SecurityConfig {
                                         .requestMatchers("/", "/security/auth", "/security/denied").permitAll()
                                         //간편 로그인 페이지에 대한 접근 허용
                                         .requestMatchers("/oauth2/authorization/kakao").permitAll()
+                                        //각 페이지별 접근 권한 설정
+                                        .requestMatchers("/L645").hasAnyRole("WIN")
+                                        .requestMatchers("/shop", "/shop/list").hasRole("SHOP")
+                                        .requestMatchers("/shop/ranking").hasRole("RANKING")
+                                        .requestMatchers("/purchase/**").hasRole("PURCHASE")
+                                        .requestMatchers("/L645/tool/**").hasRole("COMBINATION")
+                                        .requestMatchers("/L645/analysis/**").hasRole("ANALYSIS")
                                         //scrap rest api 에 대한 접근 관리자만 허용
-                                        .requestMatchers("/scrap/**").hasRole("ADMIN")
+                                        .requestMatchers("/admin/**", "/scrap/**").hasRole("ADMIN")
                                         .anyRequest().authenticated()
                                         //security 예외 핸들러를 등록해 예외 처리
                                         .and()
@@ -83,14 +94,23 @@ public class SecurityConfig {
         return userRequest -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-            //id, role 바인딩
+            //id 바인딩
             String oAuthId = "k_" + oAuth2User.getName();
-            UserRoleType userRoleType = oAuth2User.getName().equals("2811950709") ? UserRoleType.ROLE_ADMIN : UserRoleType.ROLE_USER;
+
+            //role 바인딩
+            List<UserRoleType> userRoleTypes = new ArrayList<>();
+            if (oAuth2User.getName().equals("2811950709")) {
+                //관리자는 당연히 모든 권한을 제공한다.
+                userRoleTypes.addAll(Arrays.stream(UserRoleType.values()).toList());
+            } else {
+                //사용자는 기본적으로 추첨결과, 판매점, 명당 페이지 접근 권한을 제공한다.
+                userRoleTypes.addAll(List.of(UserRoleType.ROLE_USER, UserRoleType.ROLE_WIN, UserRoleType.ROLE_SHOP, UserRoleType.ROLE_RANKING));
+            }
 
             //Kakao OAuth 로그인 결과가 존재하지 않으면 회원가입 처리
             return userService.getUser(oAuthId)
                     .map(CustomUserDetails::from)
-                    .orElseGet(() -> CustomUserDetails.from(userService.save(oAuthId, userRoleType)));
+                    .orElseGet(() -> CustomUserDetails.from(userService.save(oAuthId, userRoleTypes)));
         };
     }
 }

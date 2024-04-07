@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.11.6-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19  Distrib 10.11.2-MariaDB, for debian-linux-gnu (aarch64)
 --
 -- Host: localhost    Database: lottery
 -- ------------------------------------------------------
--- Server version	10.11.6-MariaDB-1:10.11.6+maria~ubu2204
+-- Server version	10.11.2-MariaDB-1:10.11.2+maria~ubu2204
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,36 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `purchase`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `purchase`;
+DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `purchase` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(6) NOT NULL,
-  `modified_at` datetime(6) NOT NULL,
-  `draw_no` bigint(20) DEFAULT NULL,
-  `number1` int(11) DEFAULT NULL,
-  `number2` int(11) DEFAULT NULL,
-  `number3` int(11) DEFAULT NULL,
-  `number4` int(11) DEFAULT NULL,
-  `number5` int(11) DEFAULT NULL,
-  `number6` int(11) DEFAULT NULL,
-  `user_dh_lottery_id` varchar(255) DEFAULT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `user_role` (
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `ord` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `purchase`
+-- Dumping data for table `user_role`
 --
 
-LOCK TABLES `purchase` WRITE;
-/*!40000 ALTER TABLE `purchase` DISABLE KEYS */;
-/*!40000 ALTER TABLE `purchase` ENABLE KEYS */;
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` VALUES
+('ROLE_ADMIN','관리자',0),
+('ROLE_ANALYSIS','로또분석',7),
+('ROLE_COMBINATION','로또조합',6),
+('ROLE_PURCHASE','로또구매',5),
+('ROLE_RANKING','로또명당',4),
+('ROLE_SHOP','로또판매점',3),
+('ROLE_USER','사용자',1),
+('ROLE_WIN','로또추첨결과',2);
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-21 10:54:20
+-- Dump completed on 2024-03-15 17:17:33

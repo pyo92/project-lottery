@@ -5,7 +5,11 @@ import com.example.projectlottery.domain.type.UserRoleType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ToString(callSuper = true)
 @Getter
@@ -17,12 +21,22 @@ public class User extends AuditingFields {
     @Id
     private String userId;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private UserRoleType userRoleType;
+    @OrderBy(value = "ord")
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
+    private Set<UserRole> userRoles = new LinkedHashSet<>();
 
-    public static User of(String userId, UserRoleType userRoleType) {
-        return new User(userId, userRoleType);
+    public static User of(String userId, List<UserRoleType> userRoleTypes) {
+        return new User(
+                userId,
+                userRoleTypes.stream()
+                        .map(UserRole::from)
+                        .collect(Collectors.toUnmodifiableSet())
+        );
     }
 
     @Override

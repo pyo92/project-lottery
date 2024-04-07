@@ -1,7 +1,9 @@
 package com.example.projectlottery.service;
 
 import com.example.projectlottery.dto.request.DhLoginRequest;
+import com.example.projectlottery.dto.response.APIRunningInfoResponse;
 import com.example.projectlottery.dto.response.LottoResponse;
+import com.example.projectlottery.dto.response.RedisResponse;
 import com.example.projectlottery.dto.response.ShopResponse;
 import com.example.projectlottery.dto.response.querydsl.QShopSummary;
 import com.example.projectlottery.util.EncryptionUtils;
@@ -10,15 +12,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -32,6 +33,12 @@ public class RedisTemplateService {
     private static final String CACHE_SHOP_RECENT_RANKING_KEY = "L645_SHOP_RECENT_RANKING";
 
     private static final String REDIS_KEY_DH_LOGIN_INFO = "DH_LOGIN_INFO";
+
+    private static final String REDIS_KEY_SCRAP_RUNNING_URL = "SCRAP_RUNNING_URL";
+    private static final String REDIS_KEY_SCRAP_RUNNING_PARAM1 = "SCRAP_RUNNING_PARAM1";
+    private static final String REDIS_KEY_SCRAP_RUNNING_PARAM2 = "SCRAP_RUNNING_PARAM2";
+
+    private static final String REDIS_KEY_PURCHASE_WORKER = "PURCHASE_WORKER";
 
     private final EncryptionUtils encryptionUtils;
 
@@ -51,6 +58,184 @@ public class RedisTemplateService {
 
         //동행복권 로그인정보는 30분 뒤에 자동으로 파기된다.
         redisTemplate.expire(REDIS_KEY_DH_LOGIN_INFO, 30, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 관리자용 - redis 에서 캐싱된 모든 key 의 정보를 조회한다.
+     * @return redis 캐싱 정보
+     */
+    public List<RedisResponse> getAllRedisKeyInfo() {
+        List<RedisResponse> results = new ArrayList<>();
+
+        //1. redis 에서 관리되는 모든 key 목록을 조회한다.
+        Set<String> keys = redisTemplate.keys("*");
+
+        keys.forEach(k -> {
+            //2. key 가 사용되는 data type 을 체크한다.
+            DataType type = redisTemplate.type(k);
+
+            //3. data type 별 분기처리를 수행한다.
+            Object value = null;
+            List<Object> fields = null;
+            Long cnt = null;
+
+            if (type.equals(DataType.STRING)) {
+                //3-1. 만약, string 이라면, 실제 값을 조회한다.
+                value = redisTemplate.opsForValue().get(k);
+            } else if (type.equals(DataType.ZSET)) {
+                //3-2. 만약, sorted set 이라면, 내부 항목 개수를 조회한다. (랭킹이므로)
+                cnt = redisTemplate.opsForZSet().zCard(k);
+            } else if (type.equals(DataType.HASH)) {
+                //3-3. 만약, hash set 이라면, 세부 필드 키 목록을 조회한다.
+                fields = redisTemplate.opsForHash()
+                        .keys(k)
+                        .stream()
+                        .sorted(Comparator.comparing(Object::toString))
+                        .toList();
+            }
+
+            results.add(new RedisResponse(
+                    k,
+                    type,
+                    value,
+                    cnt,
+                    fields
+            ));
+        });
+
+        //4. data type 순으로 정렬한다.
+        results.sort(Comparator.comparing(RedisResponse::type));
+
+        return results;
+    }
+
+    /**
+     * 관리자용 - 특정 redis cache 를 삭제한다.
+     * @param type data type
+     * @param key cache key
+     * @param field hash set field name - use only hash set
+     */
+    public void deleteByAdmin(DataType type, String key, Object field) {
+        if (type.equals(DataType.HASH)) {
+            //hash set 의 경우, 아래 두 분기로 처리한다.
+            if (field == null) {
+                //1. hash set 전체를 삭제하는 경우
+                redisTemplate.delete(key);
+            } else {
+                //2. hash set 특정 field 만 삭제하는 경우
+                redisTemplate.opsForHash().delete(key, field);
+            }
+        } else {
+            //그 외의 경우는 redis template 에서 키 자체를 삭제한다.
+            redisTemplate.delete(key);
+        }
+    }
+
+    /**
+     * redis cache save - purchase 작업자
+     * @param worker 작업자
+     */
+    public void savePurchaseWorkerInfo(String worker) {
+        if (Objects.isNull(worker)) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        valueOperations.set(REDIS_KEY_PURCHASE_WORKER, worker);
+        log.info("[RedisTemplateService savePurchaseWorkerInfo() success] worker: {}", worker);
+    }
+
+    /**
+     * redis cache clear - purchase 작업자
+     */
+    public void deletePurchaseWorkerInfo() {
+        try {
+            redisTemplate.delete(REDIS_KEY_PURCHASE_WORKER);
+            log.info("[RedisTemplateService deletePurchaseWorkerInfo() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deletePurchaseWorkerInfo() failed]: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * redis cache hit - purchase 작업자
+     */
+    public Object getPurchaseWorkerInfo() {
+        try {
+            return valueOperations.get(REDIS_KEY_PURCHASE_WORKER);
+
+        } catch (Exception e) {
+            log.error("[RedisTemplateService getPurchaseWorkerInfo() failed]: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * redis cache save - scrap 동작 여부
+     * @param url scrap url
+     * @param param1 scrap query param1
+     */
+    public void saveScrapRunningInfo(String url, Object param1) {
+        //scrap 동작 중일 때, 다른 scrap 동작 수행을 막기 위해 redis 에 저장해두고 판단한다.
+        if (Objects.isNull(url)) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_URL, url);
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_PARAM1, param1);
+        log.info("[RedisTemplateService saveScrapRunningInfo() success] running url: {}, param1: {}", url, param1);
+    }
+
+
+    /**
+     * redis cache save - scrap 동작 여부
+     * @param url scrap url
+     * @param param1 scrap query param1
+     * @param param2 scrap query param1
+     */
+    public void saveScrapRunningInfo(String url, Object param1, Object param2) {
+        //scrap 동작 중일 때, 다른 scrap 동작 수행을 막기 위해 redis 에 저장해두고 판단한다.
+        if (Objects.isNull(url)) {
+            log.error("Required values must not be null");
+            return;
+        }
+
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_URL, url);
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_PARAM1, param1);
+        valueOperations.set(REDIS_KEY_SCRAP_RUNNING_PARAM2, param2);
+        log.info("[RedisTemplateService saveScrapRunningInfo() success] running url: {}, param1: {}, param2: {}", url, param1, param2);
+    }
+
+    /**
+     * redis cache clear - scrap 동작 여부
+     */
+    public void deleteScrapRunningInfo() {
+        try {
+            redisTemplate.delete(REDIS_KEY_SCRAP_RUNNING_URL);
+            redisTemplate.delete(REDIS_KEY_SCRAP_RUNNING_PARAM1);
+            redisTemplate.delete(REDIS_KEY_SCRAP_RUNNING_PARAM2);
+            log.info("[RedisTemplateService deleteScrapRunningInfo() success]");
+        } catch (Exception e) {
+            log.error("[RedisTemplateService deleteScrapRunningInfo() failed]: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * redis cache hit - scrap 동작 여부
+     */
+    public APIRunningInfoResponse getScrapRunningInfo() {
+        try {
+            return new APIRunningInfoResponse(
+                    valueOperations.get(REDIS_KEY_SCRAP_RUNNING_URL),
+                    valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM1),
+                    valueOperations.get(REDIS_KEY_SCRAP_RUNNING_PARAM2)
+            );
+
+        } catch (Exception e) {
+            log.error("[RedisTemplateService getScrapRunningInfo() failed]: {}", e.getMessage());
+            return null;
+        }
     }
 
     /**

@@ -1,0 +1,207 @@
+.nav-link  {
+    color: white;
+}
+
+.tab-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-pane {
+    width: 500px;
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-content-inner {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 10px;
+}
+
+.admin-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.admin-grid-header {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background: #434348;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.admin-grid-header span {
+    color: white;
+}
+
+.admin-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0;
+    gap: 10px;
+}
+
+.api, .user, .selenium, .redis {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border: none;
+}
+
+.user-info-detail, .api-info-detail, .selenium-info-detail, .redis-info-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.user-info-detail-header, .api-info-detail-header, .selenium-info-detail-header, .redis-info-detail-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: 30px;
+}
+
+.user-id, .api-url, .selenium-name, .redis-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.api-params {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.param {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.param input {
+    width: 60px;
+    height: 20px;
+}
+
+.no-margin-hr {
+    margin: 0;
+}
+
+.user-modified-at, .api-time, .api-table-info, .selenium-status, .redis-type {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.user-modified-at, .api-time span, .selenium-status, .redis-type span {
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.label-white {
+    color: white;
+}
+
+.label-special {
+    color: #4caf50;
+}
+
+.label-red {
+    color: red;
+}
+
+.user-roles, .hset-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    justify-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgb(64, 135, 216);
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+}
+
+.user-role, .hset-field {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
+
+.user-role:nth-child(1) label {
+    color: red;
+}
+
+.form-check-input {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+}
+
+.form-check-label {
+    align-items: center;
+    align-content: center;
+}
+
+.header-status {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-refresh, .btn-delete {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-refresh, .btn-delete {
+    margin: 0;
+}
+
+.field-name {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+}

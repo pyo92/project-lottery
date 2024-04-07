@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -22,10 +24,10 @@ public class UserService {
     /**
      * OAuth 인증 정보를 바탕으로 회원 가입 처리
      * @param userId OAuth id
-     * @param userRoleType user role
+     * @param userRoleTypes user role type list
      */
-    public UserResponse save(String userId, UserRoleType userRoleType) {
-        return UserResponse.from(userRepository.save(User.of(userId, userRoleType)));
+    public UserResponse save(String userId, List<UserRoleType> userRoleTypes) {
+        return UserResponse.from(userRepository.save(User.of(userId, userRoleTypes)));
     }
 
     /**
@@ -36,5 +38,18 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<UserResponse> getUser(String userId) {
         return userRepository.findById(userId).map(UserResponse::from);
+    }
+
+    /**
+     * 관리자 페이지용 전체 회원 목록 조회
+     * @return 전체 회원 목록
+     */
+    @Transactional(readOnly = true)
+    public List<UserResponse> getAllUser() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserResponse::from)
+                .sorted(Comparator.comparing(UserResponse::createdAt))
+                .toList();
     }
 }

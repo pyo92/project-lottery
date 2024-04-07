@@ -16,34 +16,58 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `user_roles`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
+CREATE TABLE `user_roles` (
   `user_id` varchar(255) NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `modified_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`user_id`)
+  `role_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_name`),
+  KEY `FKl2h0mdii9w29pub7dhv6qh5rp` (`role_name`),
+  CONSTRAINT `FK55itppkw3i07do3h7qoclqd4k` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `FKl2h0mdii9w29pub7dhv6qh5rp` FOREIGN KEY (`role_name`) REFERENCES `user_role` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `user_roles`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES
-('k_2811950709','2023-06-05 21:57:56.361291','2023-06-05 21:57:56.361291'),
-('k_2821613849','2023-06-06 10:33:42.038335','2023-06-06 10:33:42.038335'),
-('k_2847343728','2023-09-09 05:18:42.724878','2023-09-09 05:18:42.724878'),
-('k_2958199540','2023-09-10 00:51:29.993407','2023-09-10 00:51:29.993407'),
-('k_3049285170','2023-10-04 14:06:37.749865','2023-10-04 14:06:37.749865'),
-('k_3372210200','2024-03-03 16:38:37.537565','2024-03-03 16:38:37.537565');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `user_roles` WRITE;
+/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
+INSERT INTO `user_roles` VALUES
+('k_2811950709','ROLE_ADMIN'),
+('k_2811950709','ROLE_ANALYSIS'),
+('k_2811950709','ROLE_COMBINATION'),
+('k_2811950709','ROLE_PURCHASE'),
+('k_2811950709','ROLE_RANKING'),
+('k_2811950709','ROLE_SHOP'),
+('k_2811950709','ROLE_USER'),
+('k_2811950709','ROLE_WIN'),
+('k_2821613849','ROLE_RANKING'),
+('k_2821613849','ROLE_SHOP'),
+('k_2821613849','ROLE_USER'),
+('k_2821613849','ROLE_WIN'),
+('k_2847343728','ROLE_RANKING'),
+('k_2847343728','ROLE_SHOP'),
+('k_2847343728','ROLE_USER'),
+('k_2847343728','ROLE_WIN'),
+('k_2958199540','ROLE_RANKING'),
+('k_2958199540','ROLE_SHOP'),
+('k_2958199540','ROLE_USER'),
+('k_2958199540','ROLE_WIN'),
+('k_3049285170','ROLE_RANKING'),
+('k_3049285170','ROLE_SHOP'),
+('k_3049285170','ROLE_USER'),
+('k_3049285170','ROLE_WIN'),
+('k_3372210200','ROLE_RANKING'),
+('k_3372210200','ROLE_SHOP'),
+('k_3372210200','ROLE_USER'),
+('k_3372210200','ROLE_WIN');
+/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +79,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-15 16:02:20
+-- Dump completed on 2024-03-15 17:17:37
