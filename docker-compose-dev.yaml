@@ -8,20 +8,6 @@ services:
     image: pyo92/project-lottery-redis
     ports:
       - "6379:6379"
-  project-lottery-database:
-    container_name: project-lottery-database
-    build:
-      dockerfile: Dockerfile
-      context: ./database
-    image: pyo92/project-lottery-database
-    environment:
-      - MARIADB_DATABASE=lottery
-      - MARIADB_ROOT_PASSWORD=${LOCAL_DATASOURCE_PASSWORD}
-    volumes:
-      - ./database/config:/etc/mysql/conf.d
-      - ./database/init:/docker-entrypoint-initdb.d
-    ports:
-      - "3306:3306"
   project-lottery-selenium-for-scrap:
     container_name: project-lottery-selenium-for-scrap
     build:
