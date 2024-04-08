@@ -8,20 +8,6 @@ services:                                                  # 실행하려는 컨
     image: pyo92/project-lottery-redis
     ports:                                                 # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
       - "6379:6379"
-  project-lottery-database:
-    container_name: project-lottery-database
-    build:
-      dockerfile: Dockerfile
-      context: ./database
-    image: pyo92/project-lottery-database
-    environment:
-      - MARIADB_DATABASE=lottery
-      - MARIADB_ROOT_PASSWORD=${DATASOURCE_PASSWORD}
-    volumes:
-      - ./database/config:/etc/mysql/conf.d
-      - ./database/init:/docker-entrypoint-initdb.d
-    ports:
-      - "3306:3306"
   project-lottery-selenium-for-scrap:
     container_name: project-lottery-selenium-for-scrap
     build:
@@ -58,14 +44,16 @@ services:                                                  # 실행하려는 컨
   project-lottery-app:
     container_name: project-lottery-app
     build: .
-    depends_on:                                            # DB, REDIS 컨테이너가 실행된 다음 해당 컨테이너 실행되도록 설정
-      - project-lottery-database
+    depends_on:                                            # 타 컨테이너가 실행된 다음 app 컨테이너 실행되도록 설정
       - project-lottery-redis
       - project-lottery-selenium-for-scrap
       - project-lottery-selenium-for-purchase
     image: pyo92/project-lottery-app
     environment:                                           # env 파일에서 환경변수 주입
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - DATASOURCE_URL=${DATASOURCE_URL}
+      - DATASOURCE_PORT=${DATASOURCE_PORT}
+      - DATASOURCE_SCHEMA=${DATASOURCE_SCHEMA}
       - DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
       - DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
       - KAKAO_REST_API_KEY=${KAKAO_REST_API_KEY}
