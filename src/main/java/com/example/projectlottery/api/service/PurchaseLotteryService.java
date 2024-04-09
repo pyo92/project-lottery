@@ -41,7 +41,7 @@ public class PurchaseLotteryService {
      */
     public DhLoginResponse loginDhLottery(DhLoginRequest request, boolean webDriverClose) {
         seleniumPurchaseService.openWebDriver();
-        seleniumPurchaseService.openUrl(URL_DH_LOGIN, 200);
+        seleniumPurchaseService.openUrl(URL_DH_LOGIN);
 
         String js;
         String css;
@@ -58,7 +58,7 @@ public class PurchaseLotteryService {
 
         //로그인 시도
         js = "check_if_Valid3();";
-        seleniumPurchaseService.procJavaScript(js, 200);
+        seleniumPurchaseService.procJavaScript(js);
 
         //로그인 결과 체크
         String errorMessage = seleniumPurchaseService.checkAlert();
@@ -68,7 +68,7 @@ public class PurchaseLotteryService {
         }
 
         //로그인 성공 시, 메인 화면으로 이동
-        seleniumPurchaseService.openUrl(URL_DH_MAIN, 200);
+        seleniumPurchaseService.openUrl(URL_DH_MAIN);
 
         //이름 스크랩 (2024.01.15 수정)
         css = "body > div:nth-child(1) > header > div.header_con > div.top_menu > form > div > ul.information > li:nth-child(1) > span > strong";
@@ -80,7 +80,7 @@ public class PurchaseLotteryService {
         Long deposit = Long.parseLong(seleniumPurchaseService.getElementByCssSelector(css).getText().replaceAll("[^0-9]", ""));
 
         //마이페이지 - 구매/당첨내역 페이지 이동
-        seleniumPurchaseService.openUrl(URL_PURCHASE_LIST, 200);
+        seleniumPurchaseService.openUrl(URL_PURCHASE_LIST);
         css = "#lottoId";
 
         //검색 단위(로또 6/45) 설정
@@ -89,7 +89,7 @@ public class PurchaseLotteryService {
 
         //검색 단위(1주일) 설정
         js = "changeTerm( 7, '1주일');";
-        seleniumPurchaseService.procJavaScript(js, 200);
+        seleniumPurchaseService.procJavaScript(js);
 
         //검색
         css = "#submit_btn";
@@ -163,7 +163,7 @@ public class PurchaseLotteryService {
         //예치금 신청 및 계좌번호 가져오는 루틴 시작
 
         //로그인이 선행되어서 driver 가 열린 상태이므로 열어줄 필요가 없다.
-        seleniumPurchaseService.openUrl(URL_DH_DEPOSIT, 500);
+        seleniumPurchaseService.openUrl(URL_DH_DEPOSIT);
 
         //고정 가상계좌 입금을 선택한다. (2023.09.02 추가)
         String css = "#boxTabContent > h5.tab_box2 > a";
@@ -175,7 +175,7 @@ public class PurchaseLotteryService {
 
         //예치금 입금 신청
         String js = "nicepayStart();";
-        seleniumPurchaseService.procJavaScript(js, 200);
+        seleniumPurchaseService.procJavaScript(js);
 
         //예치금 충전 정보 테이블을 가져온다.
         css = "#contents > table > tbody > tr";
@@ -227,7 +227,7 @@ public class PurchaseLotteryService {
         //온라인 로또 구매 루틴 시작
 
         //로그인이 선행되어서 driver 가 열린 상태이므로 열어줄 필요가 없다.
-        seleniumPurchaseService.openUrl(URL_PURCHASE_L645, 500);
+        seleniumPurchaseService.openUrl(URL_PURCHASE_L645);
 
         //자동화 툴에 의한 감지로, 비정상 접근 관련 메시지 창을 닫아준다.
         //창이 뜨지 않을 수도 있어서, 예외 처리
@@ -246,27 +246,27 @@ public class PurchaseLotteryService {
                 if (i == null) {
                     //번호가 없다면, 자동 선택이므로, 자동을 선택하고 loop 탈출
                     js = "$('#checkAutoSelect').click();";
-                    seleniumPurchaseService.procJavaScript(js, 200);
+                    seleniumPurchaseService.procJavaScript(js);
                     break;
                 }
 
                 //선택한 번호 클릭
                 js = "$('#check645num" + i + "').click();";
-                seleniumPurchaseService.procJavaScript(js, 200);
+                seleniumPurchaseService.procJavaScript(js);
             }
 
             //게임 추가 버튼 클릭
             js = "$('#btnSelectNum').click();";
-            seleniumPurchaseService.procJavaScript(js, 200);
+            seleniumPurchaseService.procJavaScript(js);
         }
 
         //구매 처리
         js = "$('#btnBuy').click();";
-        seleniumPurchaseService.procJavaScript(js, 200);
+        seleniumPurchaseService.procJavaScript(js);
 
         //"구매하시겠습니까?" 팝업 윈도우에 대한 "확인" 처리
         js = "closepopupLayerConfirm(true);";
-        seleniumPurchaseService.procJavaScript(js, 200);
+        seleniumPurchaseService.procJavaScript(js);
 
         //구매내역 확인 레이어가 출력되어야 정상적으로 구매된 것이므로, 이를 체크
         css = "#report";

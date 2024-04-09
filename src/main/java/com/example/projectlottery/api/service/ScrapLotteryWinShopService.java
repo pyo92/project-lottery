@@ -42,7 +42,7 @@ public class ScrapLotteryWinShopService {
      */
     public void getWinShopL645(long start, long end) {
         seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_SHOP_WINNING_LOTTO, 200);
+        seleniumScrapService.openUrl(URL_SHOP_WINNING_LOTTO);
 
         for (long i = start; i <= end; i++) {
             getWinShopL645_1st(i);
@@ -64,7 +64,7 @@ public class ScrapLotteryWinShopService {
         setSelectDrawNo(drawNo);
 
         String js = "document.getElementById('searchBtn').click();";
-        seleniumScrapService.procJavaScript(js, 200);
+        seleniumScrapService.procJavaScript(js);
 
         //1등 복권 판매점 목록 획득
         String css = "#article > div:nth-child(2) > div > div:nth-child(4) > table > tbody > tr";
@@ -108,7 +108,7 @@ public class ScrapLotteryWinShopService {
 
             if (i > 1) { //2번째 페이지부터 자바스크립트를 실행해 페이지를 이동
                 String js = "selfSubmit(" + i + ");";
-                seleniumScrapService.procJavaScript(js, 200);
+                seleniumScrapService.procJavaScript(js);
             }
 
             css = "#article > div:nth-child(2) > div > div:nth-child(5) > table > tbody > tr";
@@ -146,7 +146,7 @@ public class ScrapLotteryWinShopService {
             WebElement option = seleniumScrapService.getElementByCssSelector(css);
 
             String js = "arguments[0].value=" + drawNo + ";";
-            seleniumScrapService.procJavaScript(js, option, 0);
+            seleniumScrapService.procJavaScript(js, option);
         }
     }
 
