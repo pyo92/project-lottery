@@ -38,7 +38,7 @@ public class ScrapLotteryWinService {
      */
     public void getWinNumbersL645(long start, long end) {
         seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_RESULT_LOTTO, 200);
+        seleniumScrapService.openUrl(URL_RESULT_LOTTO);
 
         for (long i = start; i <= end; i++) {
             getNumbersL645(i);
@@ -72,7 +72,7 @@ public class ScrapLotteryWinService {
      */
     public void getWinPrizesL645(long start, long end) {
         seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_RESULT_LOTTO, 200);
+        seleniumScrapService.openUrl(URL_RESULT_LOTTO);
 
         for (long i = start; i <= end; i++) {
             getPrizesL645(i);
@@ -89,7 +89,7 @@ public class ScrapLotteryWinService {
         select.selectByValue(String.valueOf(drawNo)); //회차 변경
 
         String js = "document.getElementById('searchBtn').click();";
-        seleniumScrapService.procJavaScript(js, 200); //회차 조회
+        seleniumScrapService.procJavaScript(js); //회차 조회
 
         //추첨일
         String css = "#article > div:nth-child(2) > div > div.win_result > p";
@@ -120,7 +120,7 @@ public class ScrapLotteryWinService {
         select.selectByValue(String.valueOf(drawNo)); //회차 변경
 
         String js = "document.getElementById('searchBtn').click();";
-        seleniumScrapService.procJavaScript(js, 200); //회차 조회
+        seleniumScrapService.procJavaScript(js); //회차 조회
 
         for (int i = 1; i <= 5; i++) {
             //등위별 당첨자 수 + 당첨 금액

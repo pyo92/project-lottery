@@ -39,7 +39,7 @@ public class ScrapLotteryShopService {
      */
     public void getShopL645(String state) {
         seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_SHOP_LOTTO, 200);
+        seleniumScrapService.openUrl(URL_SHOP_LOTTO);
 
         ScrapStateType shopScrapStateType = ScrapStateType.valueOf(state);
 
@@ -80,17 +80,17 @@ public class ScrapLotteryShopService {
         if (scrapStateType == ScrapStateType.SEOUL) {
             css = "#mainMenuArea > a:nth-child(2)";
             js = seleniumScrapService.getElementByCssSelector(css).getAttribute("onclick");
-            seleniumScrapService.procJavaScript(js, 200);
+            seleniumScrapService.procJavaScript(js);
         }
 
         //대상 시.도로 이동
         css = "#mainMenuArea > a:nth-child(" + scrapStateType.ordinal() + ")";
         js = seleniumScrapService.getElementByCssSelector(css).getAttribute("onclick");
-        seleniumScrapService.procJavaScript(js, 200);
+        seleniumScrapService.procJavaScript(js);
 
         //항상 1 페이지부터 시작할 수 있도록 설정
         js = "$.selfSubmit(1);";
-        seleniumScrapService.procJavaScript(js, 200);
+        seleniumScrapService.procJavaScript(js);
 
         //현재 pagination view 에 [끝 페이지] 링크가 존재하는지 확인
         css = "#pagingView > a";
@@ -109,7 +109,7 @@ public class ScrapLotteryShopService {
         while (curPageNo <= lastPageNo) {
             //항상 1 페이지부터 시작할 수 있도록 세팅
             js = "$.selfSubmit(" + curPageNo + ");";
-            seleniumScrapService.procJavaScript(js, 200);
+            seleniumScrapService.procJavaScript(js);
 
             css = "#resultTable > tbody > tr";
             List<WebElement> Shops = seleniumScrapService.getElementsByCssSelector(css);
@@ -226,7 +226,7 @@ public class ScrapLotteryShopService {
             latitude = searchAddressResponse.getDocs().get(0).getLatitude();
         } else {
             //차선책으로 동행복권에서 제공하는 위치보기 팝업창에서 위도, 경도를 획득한다.
-            seleniumScrapService.procJavaScript(jsOpenPopWindow, 200);
+            seleniumScrapService.procJavaScript(jsOpenPopWindow);
 
             seleniumScrapService.switchMainWindow(false);
             longitude = Double.parseDouble(
