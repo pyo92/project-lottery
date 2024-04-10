@@ -282,7 +282,7 @@ function makeAPITab(data) {
         param1Input.type = 'text';
         param1Input.id = 'api' + (index + 1) + 'Param1';
         param1Input.classList.add('form-control', 'label-mini-title');
-        if (runningParam1 !== null) {
+        if (runningUrl !== null) {
             param1Input.disabled = true;
 
             if (runningUrl === item.url) {
@@ -305,7 +305,7 @@ function makeAPITab(data) {
         param2Input.type = 'text';
         param2Input.id = 'api' + (index + 2) + 'Param2';
         param2Input.classList.add('form-control', 'label-mini-title');
-        if (runningParam2 !== null) {
+        if (runningUrl !== null) {
             param2Input.disabled = true;
 
             if (runningUrl === item.url) {
