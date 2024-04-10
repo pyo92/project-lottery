@@ -156,16 +156,20 @@ public class SeleniumPurchaseService {
 
     public void procJavaScript(String script) {
         try {
+            //TODO: purchaser 고도화 시, wait 처리 추가 (thread.sleep)
             ((JavascriptExecutor) webDriver).executeScript(script);
         } catch (Exception e) {
+            //TODO: JavascriptException 던지도록 수정할 것
             throw new RuntimeException(e);
         }
     }
 
     public void procJavaScript(String script, Object... args) {
         try {
+            //TODO: purchaser 고도화 시, wait 처리 추가 (thread.sleep)
             ((JavascriptExecutor) webDriver).executeScript(script, args);
         } catch (Exception e) {
+            //TODO: JavascriptException 던지도록 수정할 것
             throw new RuntimeException(e);
         }
     }
