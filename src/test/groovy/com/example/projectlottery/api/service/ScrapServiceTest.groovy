@@ -37,7 +37,7 @@ class ScrapServiceTest extends IntegrationContainerBaseTest {
         when:
         def oldShops = shopRepository.findAll()
 
-        scrapLotteryShopService.getShopL645(state)
+        scrapLotteryShopService.scrapShopL645(state)
 
         def shops = shopRepository.findAll()
 
@@ -103,7 +103,7 @@ class ScrapServiceTest extends IntegrationContainerBaseTest {
         scrapLotteryWinService.getResultsL645(drawNo, drawNo)
 
         when:
-        scrapLotteryWinShopService.getWinShopL645(drawNo, drawNo)
+        scrapLotteryWinShopService.scrapWinShopL645(drawNo, drawNo)
 
         def lottoWinShops = lottoWinShopRepository.findAll()
 
