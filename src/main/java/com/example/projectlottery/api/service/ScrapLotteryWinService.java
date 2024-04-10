@@ -5,11 +5,17 @@ import com.example.projectlottery.dto.LottoPrizeDto;
 import com.example.projectlottery.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,38 +36,73 @@ public class ScrapLotteryWinService {
 
     private final RedisTemplateService redisTemplateService;
 
+    private int retryCount;
+
+    private static final int MAX_RETRY_COUNT = 5;
+    private static final long RETRY_DELAY = 120000; // 2분
+
     /**
      * 로또 6/45 회차별 당첨 번호 스크랩핑
      *
      * @param start 시작 회차
      * @param end   종료 회차
      */
-    public void getWinNumbersL645(long start, long end) {
-        seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_RESULT_LOTTO);
+    @Retryable(
+            retryFor = { NoSuchElementException.class, JavascriptException.class },
+            maxAttempts = MAX_RETRY_COUNT,
+            backoff = @Backoff(delay = RETRY_DELAY),
+            recover = "recoverScrap"
+    )
+    public void scrapWinNumbersL645(Long start, Long end) {
+        log.info("=== Started scrapWinNumberL645() : {}", LocalDateTime.now());
 
-        for (long i = start; i <= end; i++) {
-            getNumbersL645(i);
+        try {
+            //TODO: 추후, scrap 프로젝트도 별도로 분리되면
+            // redis 가 아닌 다른 방법으로 사용중인지 여부를 관리하는 것으로 바꾸도록 하자. (아마 rest api 통신 할 듯?)
+            String url = "/scrap/L645/win/number";
+            redisTemplateService.saveScrapRunningInfo(url, start.toString(), end.toString());
 
-            //당첨번호 scrap 후, 당첨번호를 가져온다. (for 구매내역과 조합내역에 대한 등위 업데이트 처리)
-            LottoDto lotto = lottoService.getLotto(i);
-            List<Integer> winNumber = new ArrayList<>();
-            winNumber.add(lotto.number1());
-            winNumber.add(lotto.number2());
-            winNumber.add(lotto.number3());
-            winNumber.add(lotto.number4());
-            winNumber.add(lotto.number5());
-            winNumber.add(lotto.number6());
+            seleniumScrapService.openWebDriver();
+            seleniumScrapService.openUrl(URL_RESULT_LOTTO);
 
-            //구매내역과 조합내역에 대한 등위 업데이트 처리
-            purchaseResultService.updatePurchasedWin(i, winNumber, lotto.numberB());
-            userCombinationService.updateCombinationWin(i, winNumber, lotto.numberB());
+            for (long i = start; i <= end; i++) {
+                log.info("=== Processing scrapWinNumberL645() - {} : {}", i, LocalDateTime.now());
+                getNumbersL645(i);
+
+                //당첨번호 scrap 후, 당첨번호를 가져온다. (for 구매내역과 조합내역에 대한 등위 업데이트 처리)
+                LottoDto lotto = lottoService.getLotto(i);
+                List<Integer> winNumber = new ArrayList<>();
+                winNumber.add(lotto.number1());
+                winNumber.add(lotto.number2());
+                winNumber.add(lotto.number3());
+                winNumber.add(lotto.number4());
+                winNumber.add(lotto.number5());
+                winNumber.add(lotto.number6());
+
+                //구매내역과 조합내역에 대한 등위 업데이트 처리
+                purchaseResultService.updatePurchasedWin(i, winNumber, lotto.numberB());
+                userCombinationService.updateCombinationWin(i, winNumber, lotto.numberB());
+            }
+
+            //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
+            redisTemplateService.flushAllCache();
+
+            log.info("=== Success scrapWinNumberL645() : {}", LocalDateTime.now());
+
+        } catch (NoSuchElementException e) {
+            log.warn("=== Failed by NoSuchElementException - scrapWinNumberL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } catch (JavascriptException e) {
+            log.warn("=== Failed by JavascriptException - scrapWinNumberL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } finally {
+            redisTemplateService.deleteScrapRunningInfo();
+            seleniumScrapService.closeWebDriver();
         }
-
-        //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
-        redisTemplateService.flushAllCache();
-
-        seleniumScrapService.closeWebDriver();
     }
 
     /**
@@ -70,21 +111,51 @@ public class ScrapLotteryWinService {
      * @param start 시작 회차
      * @param end   종료 회차
      */
-    public void getWinPrizesL645(long start, long end) {
-        seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_RESULT_LOTTO);
+    @Retryable(
+            retryFor = { NoSuchElementException.class, JavascriptException.class },
+            maxAttempts = MAX_RETRY_COUNT,
+            backoff = @Backoff(delay = RETRY_DELAY),
+            recover = "recoverScrap"
+    )
+    public void scrapWinPrizesL645(Long start, Long end) {
+        log.info("=== Started scrapWinPrizesL645() : {}", LocalDateTime.now());
 
-        for (long i = start; i <= end; i++) {
-            getPrizesL645(i);
+        try {
+            //TODO: 추후, scrap 프로젝트도 별도로 분리되면
+            // redis 가 아닌 다른 방법으로 사용중인지 여부를 관리하는 것으로 바꾸도록 하자. (아마 rest api 통신 할 듯?)
+            String url = "/scrap/L645/win/prize";
+            redisTemplateService.saveScrapRunningInfo(url, start.toString(), end.toString());
+
+            seleniumScrapService.openWebDriver();
+            seleniumScrapService.openUrl(URL_RESULT_LOTTO);
+
+            for (long i = start; i <= end; i++) {
+                log.info("=== Processing scrapWinPrizesL645() - {} : {}", i, LocalDateTime.now());
+                getPrizesL645(i);
+            }
+
+            //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
+            redisTemplateService.flushAllCache();
+
+            log.info("=== Success scrapWinPrizesL645() : {}", LocalDateTime.now());
+
+        } catch (NoSuchElementException e) {
+            log.warn("=== Failed by NoSuchElementException - scrapWinPrizesL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } catch (JavascriptException e) {
+            log.warn("=== Failed by JavascriptException - scrapWinPrizesL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } finally {
+            redisTemplateService.deleteScrapRunningInfo();
+            seleniumScrapService.closeWebDriver();
         }
-
-        //스크랩핑을 통해 최신 회차 정보가 변경되었기에 cache clear
-        redisTemplateService.flushAllCache();
-
-        seleniumScrapService.closeWebDriver();
     }
 
-    private void getNumbersL645(long drawNo) {
+    private void getNumbersL645(long drawNo) throws NoSuchElementException, JavascriptException {
         Select select = new Select(seleniumScrapService.getElementById("dwrNoList"));
         select.selectByValue(String.valueOf(drawNo)); //회차 변경
 
@@ -115,7 +186,7 @@ public class ScrapLotteryWinService {
         lottoService.save(dto);
     }
 
-    private void getPrizesL645(long drawNo) {
+    private void getPrizesL645(long drawNo) throws NoSuchElementException, JavascriptException {
         Select select = new Select(seleniumScrapService.getElementById("dwrNoList"));
         select.selectByValue(String.valueOf(drawNo)); //회차 변경
 
@@ -136,5 +207,19 @@ public class ScrapLotteryWinService {
             LottoPrizeDto lottoPrizeDto = LottoPrizeDto.of(lottoDto, rank, amount, winningCount, amountPerGame);
             lottoPrizeService.save(lottoPrizeDto);
         }
+    }
+
+    @Recover
+    private void recoverScrap(NoSuchElementException e, Long start, Long end) {
+        retryCount = 0; //retry count 리셋
+
+        throw e; //예외를 그대로 상위 객체로 던져준다.
+    }
+
+    @Recover
+    private void recoverScrap(JavascriptException e, Long start, Long end) {
+        retryCount = 0; //retry count 리셋
+
+        throw e; //예외를 그대로 상위 객체로 던져준다.
     }
 }
