@@ -5,7 +5,6 @@ import com.example.projectlottery.api.service.ScrapLotteryShopService
 import com.example.projectlottery.repository.ShopRepository
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Pageable
 
 import java.time.LocalDate
 
@@ -31,7 +30,7 @@ class ShopServiceTest extends IntegrationContainerBaseTest {
             isInitialized = true
 
             //test container 는 빈 상태이므로 초기 데이터 세팅
-            scrapLotteryShopService.getShopL645("SEJONG")
+            scrapLotteryShopService.scrapShopL645("SEJONG")
         }
 
         testedCount++

@@ -10,10 +10,16 @@ import com.example.projectlottery.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,39 +38,77 @@ public class ScrapLotteryShopService {
 
     private final RedisTemplateService redisTemplateService;
 
+    private int retryCount;
+
+    private static final int MAX_RETRY_COUNT = 5;
+    private static final long RETRY_DELAY = 120000; // 2분
+
     /**
      * 로또 6/45 판매점 정보 스크랩핑
      *
      * @param state 시.도
      */
-    public void getShopL645(String state) {
-        seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_SHOP_LOTTO);
+    @Retryable(
+            retryFor = { NoSuchElementException.class, JavascriptException.class },
+            maxAttempts = MAX_RETRY_COUNT,
+            backoff = @Backoff(delay = RETRY_DELAY),
+            recover = "recoverScrap"
+    )
+    public void scrapShopL645(String state) {
+        log.info("=== Started scrapShopL645() : {}", LocalDateTime.now());
 
-        ScrapStateType shopScrapStateType = ScrapStateType.valueOf(state);
+        try {
+            //TODO: 추후, scrap 프로젝트도 별도로 분리되면
+            // redis 가 아닌 다른 방법으로 사용중인지 여부를 관리하는 것으로 바꾸도록 하자. (아마 rest api 통신 할 듯?)
+            String url = "/scrap/L645/shop";
+            redisTemplateService.saveScrapRunningInfo(url, state);
 
-        if (shopScrapStateType == ScrapStateType.ALL) {
-            Arrays.stream(ScrapStateType.values())
-                    .filter(scrapStateType -> scrapStateType.ordinal() > 0)
-                    .toList()
-                    .forEach(this::scrapShopL645ByState);
+            seleniumScrapService.openWebDriver();
+            seleniumScrapService.openUrl(URL_SHOP_LOTTO);
 
-            //스크랩핑 완료 후, 판매 중단 대상 판매점 처리
-            //전국(ALL) 으로 스크랩핑 한 경우, 나머지 모든 ScrapStateType 대해 처리한다.
-            Arrays.stream(ScrapStateType.values())
-                    .filter(scrapStateType -> scrapStateType.ordinal() > 0)
-                    .toList()
-                    .forEach(this::setShopWithdrawL645);
+            ScrapStateType shopScrapStateType = ScrapStateType.valueOf(state);
 
-        } else {
-            scrapShopL645ByState(shopScrapStateType);
-            setShopWithdrawL645(shopScrapStateType);
+            log.info("=== Processing scrapShopL645() - {} : {}", state, LocalDateTime.now());
+
+            if (shopScrapStateType == ScrapStateType.ALL) {
+                Arrays.stream(ScrapStateType.values())
+                        .filter(scrapStateType -> scrapStateType.ordinal() > 0)
+                        .toList()
+                        .forEach(this::scrapShopL645ByState);
+
+                //스크랩핑 완료 후, 판매 중단 대상 판매점 처리
+                //전국(ALL) 으로 스크랩핑 한 경우, 나머지 모든 ScrapStateType 대해 처리한다.
+                Arrays.stream(ScrapStateType.values())
+                        .filter(scrapStateType -> scrapStateType.ordinal() > 0)
+                        .toList()
+                        .forEach(this::setShopWithdrawL645);
+
+            } else {
+                scrapShopL645ByState(shopScrapStateType);
+                setShopWithdrawL645(shopScrapStateType);
+            }
+
+            //스크랩핑을 통해 판매점에 대한 정보가 변경되었기에 cache clear
+            redisTemplateService.flushAllCache();
+
+            log.info("=== Success scrapShopL645() : {}", LocalDateTime.now());
+
+        } catch (NoSuchElementException e) {
+            log.warn("=== Failed by NoSuchElementException - scrapShopL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } catch (JavascriptException e) {
+            log.warn("=== Failed by JavascriptException - scrapShopL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }finally {
+            redisTemplateService.deleteScrapRunningInfo();
+            seleniumScrapService.closeWebDriver();
         }
-
-        //스크랩핑을 통해 판매점에 대한 정보가 변경되었기에 cache clear
-        redisTemplateService.flushAllCache();
-
-        seleniumScrapService.closeWebDriver();
     }
 
     /**
@@ -72,7 +116,7 @@ public class ScrapLotteryShopService {
      *
      * @param scrapStateType 시.도 Enum
      */
-    private void scrapShopL645ByState(ScrapStateType scrapStateType) {
+    private void scrapShopL645ByState(ScrapStateType scrapStateType) throws NoSuchElementException, JavascriptException {
         String css;
         String js;
 
@@ -84,8 +128,7 @@ public class ScrapLotteryShopService {
         }
 
         //대상 시.도로 이동
-        css = "#mainMenuArea > a:nth-child(" + scrapStateType.ordinal() + ")";
-        js = seleniumScrapService.getElementByCssSelector(css).getAttribute("onclick");
+        js = "$.searchData('" + scrapStateType.getDescription() + "', '')";
         seleniumScrapService.procJavaScript(js);
 
         //항상 1 페이지부터 시작할 수 있도록 설정
@@ -214,7 +257,7 @@ public class ScrapLotteryShopService {
      * @param jsOpenPopWindow 동행복권 위치보기 팝업 js
      * @return 위도, 경도
      */
-    public double[] getGeoCoordinateByAddress(String address, String jsOpenPopWindow) {
+    public double[] getGeoCoordinateByAddress(String address, String jsOpenPopWindow) throws NoSuchElementException, JavascriptException {
         double longitude;
         double latitude;
 
@@ -268,5 +311,19 @@ public class ScrapLotteryShopService {
         }
 
         return new String[]{state1, state2, state3};
+    }
+
+    @Recover
+    private void recoverScrap(NoSuchElementException e, String state) {
+        retryCount = 0; //retry count 리셋
+
+        throw e; //예외를 그대로 상위 객체로 던져준다.
+    }
+
+    @Recover
+    private void recoverScrap(JavascriptException e, String state) {
+        retryCount = 0; //retry count 리셋
+
+        throw e; //예외를 그대로 상위 객체로 던져준다.
     }
 }

@@ -157,16 +157,22 @@ public class SeleniumScrapService {
     public void procJavaScript(String script) {
         try {
             ((JavascriptExecutor) webDriver).executeScript(script);
+            //javascript executor 는 적절한 wait 옵션이 없어서, 기존처럼 thread sleep 처리
+            Thread.sleep(100);
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new JavascriptException("=== Javascript `" + script + "` execute fail.");
         }
     }
 
     public void procJavaScript(String script, Object... args) {
         try {
             ((JavascriptExecutor) webDriver).executeScript(script, args);
+            //javascript executor 는 적절한 wait 옵션이 없어서, 기존처럼 thread sleep 처리
+            Thread.sleep(100);
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new JavascriptException("=== Javascript `" + script + "` execute fail.");
         }
     }
 }

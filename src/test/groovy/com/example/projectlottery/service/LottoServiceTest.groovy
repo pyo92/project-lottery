@@ -41,7 +41,7 @@ class LottoServiceTest extends IntegrationContainerBaseTest {
         if (!isInitialized) {
             //test container 는 빈 상태이므로 초기 데이터 세팅
             scrapLotteryWinService.getResultsL645(1L, 1L)
-            scrapLotteryWinShopService.getWinShopL645(1L, 1L)
+            scrapLotteryWinShopService.scrapWinShopL645(1L, 1L)
         }
 
         testedCount++
@@ -170,7 +170,7 @@ class LottoServiceTest extends IntegrationContainerBaseTest {
         given:
         //262회 이후 당첨 판매점이 정상적으로 제공되는지 확인하기 위해 새로운 회차 스크랩핑
         scrapLotteryWinService.getResultsL645(1059L, 1059L)
-        scrapLotteryWinShopService.getWinShopL645(1059L, 1059L)
+        scrapLotteryWinShopService.scrapWinShopL645(1059L, 1059L)
 
         when:
         def lotto1 = lottoService.getLottoResponse(1L)
