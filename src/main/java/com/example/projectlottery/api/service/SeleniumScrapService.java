@@ -29,11 +29,15 @@ public class SeleniumScrapService {
     public void openWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
-        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--window-size=1024,768");
         options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
         options.addArguments("--disable-gpu");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--blink-settings=imagesEnabled=false");
+        options.addArguments("--disable-blink-features=AutomationControlled"); //web driver detect prevent
+        options.setPageLoadStrategy(PageLoadStrategy.EAGER); //access DOM elements before fully loading
 
         try {
             webDriver = new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);

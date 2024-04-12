@@ -18,8 +18,9 @@ services:                                                  # 실행하려는 컨
       - /dev/shm:/dev/shm
     shm_size: 256mb
     environment:
-      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_WIDTH=1024
       - SE_SCREEN_HEIGHT=768
+      - SE_NODE_MAX_SESSIONS=1
     ports:
       - "4444:4444"
       - "5900:5900"
@@ -34,9 +35,10 @@ services:                                                  # 실행하려는 컨
       - /dev/shm:/dev/shm
     shm_size: 256mb
     environment:
-      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_WIDTH=1024
       - SE_SCREEN_HEIGHT=768
-      - SE_NODE_SESSION_TIMEOUT=30
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_SESSION_TIMEOUT=60
     ports:
       - "4445:4444"
       - "5901:5900"

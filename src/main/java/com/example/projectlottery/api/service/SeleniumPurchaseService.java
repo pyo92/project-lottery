@@ -29,11 +29,15 @@ public class SeleniumPurchaseService {
     public void openWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
-        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--window-size=1024,768");
         options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
         options.addArguments("--disable-gpu");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--blink-settings=imagesEnabled=false");
+        options.addArguments("--disable-blink-features=AutomationControlled"); //web driver detect prevent
+        options.setPageLoadStrategy(PageLoadStrategy.EAGER); //access DOM elements before fully loading
 
         try {
             webDriver = new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
@@ -156,21 +160,21 @@ public class SeleniumPurchaseService {
 
     public void procJavaScript(String script) {
         try {
-            //TODO: purchaser 고도화 시, wait 처리 추가 (thread.sleep)
             ((JavascriptExecutor) webDriver).executeScript(script);
+            //javascript executor 는 적절한 wait 옵션이 없어서, 기존처럼 thread sleep 처리
+            Thread.sleep(100);
         } catch (Exception e) {
-            //TODO: JavascriptException 던지도록 수정할 것
-            throw new RuntimeException(e);
+            throw new JavascriptException("=== Javascript `" + script + "` execute fail.");
         }
     }
 
     public void procJavaScript(String script, Object... args) {
         try {
-            //TODO: purchaser 고도화 시, wait 처리 추가 (thread.sleep)
             ((JavascriptExecutor) webDriver).executeScript(script, args);
+            //javascript executor 는 적절한 wait 옵션이 없어서, 기존처럼 thread sleep 처리
+            Thread.sleep(100);
         } catch (Exception e) {
-            //TODO: JavascriptException 던지도록 수정할 것
-            throw new RuntimeException(e);
+            throw new JavascriptException("=== Javascript `" + script + "` execute fail.");
         }
     }
 
@@ -182,7 +186,7 @@ public class SeleniumPurchaseService {
             result = alert.getText();
             alert.accept();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            //로그인 성공 시, alert 가 없어서 exception 발생하므로, 아무 로그도 찍지 않는다.
         }
 
         return result;
