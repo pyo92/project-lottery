@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -27,19 +25,13 @@ public class ScrapScheduler {
      */
     @Scheduled(cron = "0 0 3 * * SAT", zone = "Asia/Seoul")
     public void scrapShopL645() {
-        log.info("=== Started scrapShopL645() : {}", LocalDateTime.now());
-
         try {
             String scrapState = "ALL";
-            scrapLotteryShopService.getShopL645(scrapState);
-        } catch (Exception e) {
-            log.error("=== Failed scrapShopL645() : {}", LocalDateTime.now());
-            log.error(e.getMessage());
-            log.error("=== Failed scrapShopL645() END");
-            return;
-        }
+            scrapLotteryShopService.scrapShopL645(scrapState);
 
-        log.info("=== Success scrapShopL645() : {}", LocalDateTime.now());
+        } catch (Exception e) {
+            //
+        }
     }
 
     /**
@@ -47,19 +39,13 @@ public class ScrapScheduler {
      */
     @Scheduled(cron = "0 45 20 * * SAT", zone = "Asia/Seoul")
     public void scrapWinNumberL645() {
-        log.info("=== Started scrapWinNumberL645() : {}", LocalDateTime.now());
-
         try {
             long drawNo = lottoService.getLatestDrawNo() + 1;
-            scrapLotteryWinService.getWinNumbersL645(drawNo, drawNo);
-        } catch (Exception e) {
-            log.error("=== Failed scrapWinNumberL645() : {}", LocalDateTime.now());
-            log.error(e.getMessage());
-            log.error("=== Failed scrapWinNumberL645() END");
-            return;
-        }
+            scrapLotteryWinService.scrapWinNumbersL645(drawNo, drawNo);
 
-        log.info("=== Success scrapWinNumberL645() : {}", LocalDateTime.now());
+        } catch (Exception e) {
+            //
+        }
     }
 
     /**
@@ -67,19 +53,13 @@ public class ScrapScheduler {
      */
     @Scheduled(cron = "0 0 21 * * SAT", zone = "Asia/Seoul")
     public void scrapWinPrizeL645() {
-        log.info("=== Started scrapWinPrizeL645() : {}", LocalDateTime.now());
-
         try {
             Long drawNo = lottoService.getLatestDrawNo();
-            scrapLotteryWinService.getWinPrizesL645(drawNo, drawNo);
-        } catch (Exception e) {
-            log.error("=== Failed scrapWinPrizeL645() : {}", LocalDateTime.now());
-            log.error(e.getMessage());
-            log.error("=== Failed scrapWinPrizeL645() END");
-            return;
-        }
+            scrapLotteryWinService.scrapWinPrizesL645(drawNo, drawNo);
 
-        log.info("=== Success scrapWinPrizeL645() : {}", LocalDateTime.now());
+        } catch (Exception e) {
+            //
+        }
     }
 
     /**
@@ -87,18 +67,13 @@ public class ScrapScheduler {
      */
     @Scheduled(cron = "0 15 21 * * SAT", zone = "Asia/Seoul")
     public void scrapWinL645Shop() {
-        log.info("=== Started scrapWinL645Shop() : {}", LocalDateTime.now());
-
         try {
             Long drawNo = lottoService.getLatestDrawNo();
-            scrapLotteryWinShopService.getWinShopL645(drawNo, drawNo);
-        } catch (Exception e) {
-            log.error("=== Failed scrapWinL645Shop() : {}", LocalDateTime.now());
-            log.error(e.getMessage());
-            log.error("=== Failed scrapWinL645Shop() END");
-            return;
-        }
+            scrapLotteryWinShopService.scrapWinShopL645(drawNo, drawNo);
 
-        log.info("=== Success scrapWinL645Shop() : {}", LocalDateTime.now());
+
+        } catch (Exception e) {
+            //
+        }
     }
 }

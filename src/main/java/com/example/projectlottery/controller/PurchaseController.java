@@ -61,7 +61,7 @@ public class PurchaseController {
 
         try {
             //동행복권 로그인 처리
-            DhLoginResponse response = purchaseLotteryService.loginDhLottery(request, true);
+            DhLoginResponse response = purchaseLotteryService.loginDhLottery(request);
 
             //response dto 를 session attribute binding
             session.setAttribute("dhLoginResponse", response);
@@ -271,7 +271,7 @@ public class PurchaseController {
         }
 
         //로그인 루틴에서 반환되는 DhLoginResponse 안에 예치금, 구매가능 게임이 들어있으므로, 이를 반환해주면 된다.
-        DhLoginResponse response = purchaseLotteryService.loginDhLottery(request, true);
+        DhLoginResponse response = purchaseLotteryService.loginDhLottery(request);
         session.setAttribute("dhLoginResponse", response);
 
         return ResponseEntity.ok().body(response);

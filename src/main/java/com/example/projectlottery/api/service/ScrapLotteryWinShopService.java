@@ -11,11 +11,17 @@ import com.example.projectlottery.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -33,6 +39,11 @@ public class ScrapLotteryWinShopService {
 
     private final RedisTemplateService redisTemplateService;
 
+    private int retryCount;
+
+    private static final int MAX_RETRY_COUNT = 5;
+    private static final long RETRY_DELAY = 120000; // 2분
+
 
     /**
      * 로또 6/45 당첨 판매점 정보 스크랩핑
@@ -40,19 +51,48 @@ public class ScrapLotteryWinShopService {
      * @param start 시작 회차
      * @param end   종료 회차
      */
-    public void getWinShopL645(long start, long end) {
-        seleniumScrapService.openWebDriver();
-        seleniumScrapService.openUrl(URL_SHOP_WINNING_LOTTO, 200);
+    @Retryable(
+            retryFor = { NoSuchElementException.class, JavascriptException.class },
+            maxAttempts = MAX_RETRY_COUNT,
+            backoff = @Backoff(delay = RETRY_DELAY),
+            recover = "recoverScrap"
+    )
+    public void scrapWinShopL645(Long start, Long end) {
+        log.info("=== Started scrapWinShopL645() : {}", LocalDateTime.now());
 
-        for (long i = start; i <= end; i++) {
-            getWinShopL645_1st(i);
-            getWinShopL645_2nd(i);
+        try {
+            //TODO: 추후, scrap 프로젝트도 별도로 분리되면
+            // redis 가 아닌 다른 방법으로 사용중인지 여부를 관리하는 것으로 바꾸도록 하자. (아마 rest api 통신 할 듯?)
+            String url = "/scrap/L645/win/shop";
+            redisTemplateService.saveScrapRunningInfo(url, start.toString(), end.toString());
+
+            seleniumScrapService.openWebDriver();
+            seleniumScrapService.openUrl(URL_SHOP_WINNING_LOTTO);
+
+            for (long i = start; i <= end; i++) {
+                log.info("=== Processing scrapWinShopL645() 1st - {} : {}", i, LocalDateTime.now());
+                getWinShopL645_1st(i);
+                log.info("=== Processing scrapWinShopL645() 2nd - {} : {}", i, LocalDateTime.now());
+                getWinShopL645_2nd(i);
+            }
+
+            //스크랩핑을 통해 최신 회차 정보가 반영되었기에 cache clear
+            redisTemplateService.flushAllCache();
+
+        } catch (NoSuchElementException e) {
+            log.warn("=== Failed by NoSuchElementException - scrapWinShopL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } catch (JavascriptException e) {
+            log.warn("=== Failed by JavascriptException - scrapWinShopL645(), retry 2 min later... ({}/{})", ++retryCount, MAX_RETRY_COUNT);
+
+            throw e;
+
+        } finally {
+            redisTemplateService.deleteScrapRunningInfo();
+            seleniumScrapService.closeWebDriver();
         }
-
-        //스크랩핑을 통해 최신 회차 정보가 반영되었기에 cache clear
-        redisTemplateService.flushAllCache();
-
-        seleniumScrapService.closeWebDriver();
     }
 
     /**
@@ -60,11 +100,11 @@ public class ScrapLotteryWinShopService {
      *
      * @param drawNo 회차
      */
-    private void getWinShopL645_1st(long drawNo) {
+    private void getWinShopL645_1st(long drawNo) throws NoSuchElementException, JavascriptException {
         setSelectDrawNo(drawNo);
 
         String js = "document.getElementById('searchBtn').click();";
-        seleniumScrapService.procJavaScript(js, 200);
+        seleniumScrapService.procJavaScript(js);
 
         //1등 복권 판매점 목록 획득
         String css = "#article > div:nth-child(2) > div > div:nth-child(4) > table > tbody > tr";
@@ -89,7 +129,7 @@ public class ScrapLotteryWinShopService {
      *
      * @param drawNo 회차
      */
-    private void getWinShopL645_2nd(long drawNo) {
+    private void getWinShopL645_2nd(long drawNo) throws NoSuchElementException, JavascriptException {
         String css = "#page_box > a";
 
         int pageCount = seleniumScrapService.getElementsByCssSelector(css).size();
@@ -108,7 +148,7 @@ public class ScrapLotteryWinShopService {
 
             if (i > 1) { //2번째 페이지부터 자바스크립트를 실행해 페이지를 이동
                 String js = "selfSubmit(" + i + ");";
-                seleniumScrapService.procJavaScript(js, 200);
+                seleniumScrapService.procJavaScript(js);
             }
 
             css = "#article > div:nth-child(2) > div > div:nth-child(5) > table > tbody > tr";
@@ -129,7 +169,7 @@ public class ScrapLotteryWinShopService {
      *
      * @param drawNo 회차
      */
-    private void setSelectDrawNo(long drawNo) {
+    private void setSelectDrawNo(long drawNo) throws NoSuchElementException, JavascriptException {
         String css = "#drwNo";
         Select select = new Select(seleniumScrapService.getElementByCssSelector(css));
 
@@ -146,7 +186,7 @@ public class ScrapLotteryWinShopService {
             WebElement option = seleniumScrapService.getElementByCssSelector(css);
 
             String js = "arguments[0].value=" + drawNo + ";";
-            seleniumScrapService.procJavaScript(js, option, 0);
+            seleniumScrapService.procJavaScript(js, option);
         }
     }
 
@@ -157,7 +197,7 @@ public class ScrapLotteryWinShopService {
      * @param r         등위
      * @param shopInfos 당첨 판매점 정보 table (WebElement list)
      */
-    private void saveWinShopL645(long drawNo, int r, List<WebElement> shopInfos) {
+    private void saveWinShopL645(long drawNo, int r, List<WebElement> shopInfos) throws NoSuchElementException {
         //당첨 정보 바인딩
         LottoDto lottoDto = lottoService.getLotto(drawNo);
         Integer rank = r;
@@ -225,5 +265,19 @@ public class ScrapLotteryWinShopService {
         );
 
         lottoWinShopService.save(lottoWinShopDto);
+    }
+
+    @Recover
+    private void recoverScrap(NoSuchElementException e, Long start, Long end) {
+        retryCount = 0; //retry count 리셋
+
+        throw e; //예외를 그대로 상위 객체로 던져준다.
+    }
+
+    @Recover
+    private void recoverScrap(JavascriptException e, Long start, Long end) {
+        retryCount = 0; //retry count 리셋
+
+        throw e; //예외를 그대로 상위 객체로 던져준다.
     }
 }
