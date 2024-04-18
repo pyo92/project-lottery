@@ -20,7 +20,7 @@ Spring boot 복권 서비스 (Monolithic)
 
 ## 2. 데모 페이지
 
-### http://52.79.127.104/
+### http://52.79.186.212/
 
 <table>
   <tr>
