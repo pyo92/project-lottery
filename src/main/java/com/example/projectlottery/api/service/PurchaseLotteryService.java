@@ -151,7 +151,7 @@ public class PurchaseLotteryService {
             int purchasableCnt = 5; //온라인은 회차당 5매 제한이 있어서 구매 내역에서 조회된 매수만큼 빼줘야 한다.
 
             //최근 7일간 구매내역 확인창 오픈
-            MessageFormat iframeURL = new MessageFormat("https://dhlottery.co.kr/myPage.do?method=lottoBuyList&searchStartDate={0}&searchEndDate={1}&lottoId=LO40&nowPage=1");
+            MessageFormat iframeURL = new MessageFormat("https://dhlottery.co.kr/myPage.do?method=lottoBuyList&searchStartDate={0}&searchEndDate={1}&lottoId=LO40&winGrade=2");
             String startDt = getPreviousSunday();
             String endDt = getNextSaturday();
             seleniumPurchaseService.openUrl(iframeURL.format(new Object[] {startDt, endDt}));
