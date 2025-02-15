@@ -211,7 +211,7 @@ public class PurchaseController {
             //최신 회차면, 발표 전이므로 오류 방지를 위해 1~45 모든 번호를 List 에 담아서 return
             //그 외에는 해당 회차 당첨 번호를 List 에 담아서 return
             List<Integer> winNumbers = null;
-            if (lottoService.getLatestDrawNo().equals(drawNo)) {
+            if (lottoService.getLatestDrawNo() < drawNo) {
                 winNumbers = List.of(
                         1,2,3,4,5,6,7,8,9,10,
                         11,12,13,14,15,16,17,18,19,20,
