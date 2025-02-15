@@ -208,9 +208,29 @@ public class PurchaseController {
             //구매 게임 내역 model binding
             map.addAttribute("purchaseResult", purchaseResult);
 
+            //최신 회차면, 발표 전이므로 오류 방지를 위해 1~45 모든 번호를 List 에 담아서 return
+            //그 외에는 해당 회차 당첨 번호를 List 에 담아서 return
+            List<Integer> winNumbers = null;
+            if (lottoService.getLatestDrawNo().equals(drawNo)) {
+                winNumbers = List.of(
+                        1,2,3,4,5,6,7,8,9,10,
+                        11,12,13,14,15,16,17,18,19,20,
+                        21,22,23,24,25,26,27,28,29,30,
+                        31,32,33,34,35,36,37,38,39,40,
+                        41,42,43,44,45
+                );
+            } else {
+                LottoDto lotto = lottoService.getLotto(drawNo);
+                winNumbers = List.of(
+                        lotto.number1(),
+                        lotto.number2(),
+                        lotto.number3(),
+                        lotto.number4(),
+                        lotto.number5(),
+                        lotto.number6()
+                );
+            }
             //당첨번호와 일치하면 색상을 표시하기 위한 회차별 당첨번호 내역 model binding
-            LottoDto lotto = lottoService.getLotto(drawNo);
-            List<Integer> winNumbers = List.of(lotto.number1(), lotto.number2(), lotto.number3(), lotto.number4(), lotto.number5(), lotto.number6());
             map.addAttribute("winNumbers", winNumbers);
         }
 
