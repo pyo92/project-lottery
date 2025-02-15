@@ -1,12 +1,11 @@
 package com.example.projectlottery.controller;
 
 import com.example.projectlottery.api.service.PurchaseLotteryService;
+import com.example.projectlottery.dto.LottoDto;
 import com.example.projectlottery.dto.request.DhLoginRequest;
 import com.example.projectlottery.dto.request.DhLottoPurchaseRequest;
-import com.example.projectlottery.dto.response.DhDepositResponse;
-import com.example.projectlottery.dto.response.DhLoginResponse;
-import com.example.projectlottery.dto.response.DhLottoPurchaseResponse;
-import com.example.projectlottery.dto.response.PurchaseResultResponse;
+import com.example.projectlottery.dto.response.*;
+import com.example.projectlottery.service.LottoService;
 import com.example.projectlottery.service.PurchaseResultService;
 import com.example.projectlottery.service.RedisTemplateService;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +28,8 @@ public class PurchaseController {
     private final PurchaseLotteryService purchaseLotteryService;
     private final PurchaseResultService purchaseResultService;
     private final RedisTemplateService redisTemplateService;
+
+    private final LottoService lottoService;
 
     /**
      * 동행복권 로그인 view
@@ -206,6 +207,11 @@ public class PurchaseController {
 
             //구매 게임 내역 model binding
             map.addAttribute("purchaseResult", purchaseResult);
+
+            //당첨번호와 일치하면 색상을 표시하기 위한 회차별 당첨번호 내역 model binding
+            LottoDto lotto = lottoService.getLotto(drawNo);
+            List<Integer> winNumbers = List.of(lotto.number1(), lotto.number2(), lotto.number3(), lotto.number4(), lotto.number5(), lotto.number6());
+            map.addAttribute("winNumbers", winNumbers);
         }
 
         return "purchase/purchaseLottoResult";

@@ -64,7 +64,8 @@ body {
 }
 
 .ball.na {
-    background-color: #333333;
+    background-color: #ffffff;
+    color: #eeeeee
 }
 
 .ico {
