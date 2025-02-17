@@ -213,7 +213,7 @@ public class PurchaseLotteryService {
         amountSelect.selectByValue("5000"); //회차당 구매가능 게임이 5게임이므로 5000원으로 고정한다.
 
         //예치금 입금 신청
-        String js = "nicepayStart();";
+        String js = "kbankMobileStart();";
         seleniumPurchaseService.procJavaScript(js);
 
         //예치금 충전 정보 테이블을 가져온다.
