@@ -42,42 +42,42 @@
                                                                                 : (game.number1 <= 20 ? 'n1'
                                                                                 : (game.number1 <= 30 ? 'n2'
                                                                                 : (game.number1 <= 40 ? 'n3' : 'n4'))))
-                                                                                : 'na'}"/>
+                                                                                : 'ne'}"/>
             <attr sel="span[1]"
                   th:text="${game.number2}"
                   th:classappend="${#lists.contains(winNumbers, game.number2) ? (game.number2 <= 10 ? 'n0'
                                                                                 : (game.number2 <= 20 ? 'n1'
                                                                                 : (game.number2 <= 30 ? 'n2'
                                                                                 : (game.number2 <= 40 ? 'n3' : 'n4'))))
-                                                                                : 'na'}"/>
+                                                                                : 'ne'}"/>
             <attr sel="span[2]"
                   th:text="${game.number3}"
                   th:classappend="${#lists.contains(winNumbers, game.number3) ? (game.number3 <= 10 ? 'n0'
                                                                                 : (game.number3 <= 20 ? 'n1'
                                                                                 : (game.number3 <= 30 ? 'n2'
                                                                                 : (game.number3 <= 40 ? 'n3' : 'n4'))))
-                                                                                : 'na'}"/>
+                                                                                : 'ne'}"/>
             <attr sel="span[3]"
                   th:text="${game.number4}"
                   th:classappend="${#lists.contains(winNumbers, game.number4) ? (game.number4 <= 10 ? 'n0'
                                                                                 : (game.number4 <= 20 ? 'n1'
                                                                                 : (game.number4 <= 30 ? 'n2'
                                                                                 : (game.number4 <= 40 ? 'n3' : 'n4'))))
-                                                                                : 'na'}"/>
+                                                                                : 'ne'}"/>
             <attr sel="span[4]"
                   th:text="${game.number5}"
                   th:classappend="${#lists.contains(winNumbers, game.number5) ? (game.number5 <= 10 ? 'n0'
                                                                                 : (game.number5 <= 20 ? 'n1'
                                                                                 : (game.number5 <= 30 ? 'n2'
                                                                                 : (game.number5 <= 40 ? 'n3' : 'n4'))))
-                                                                                : 'na'}"/>
+                                                                                : 'ne'}"/>
             <attr sel="span[5]"
                   th:text="${game.number6}"
                   th:classappend="${#lists.contains(winNumbers, game.number6) ? (game.number6 <= 10 ? 'n0'
                                                                                 : (game.number6 <= 20 ? 'n1'
                                                                                 : (game.number6 <= 30 ? 'n2'
                                                                                 : (game.number6 <= 40 ? 'n3' : 'n4'))))
-                                                                                : 'na'}"/>
+                                                                                : 'ne'}"/>
         </attr>
         <attr sel=".game-time">
             <attr sel="span[1]" th:text="${game.toStringPurchasedAt}"/>

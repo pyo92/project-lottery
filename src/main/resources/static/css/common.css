@@ -64,6 +64,10 @@ body {
 }
 
 .ball.na {
+    background-color: #333333;
+}
+
+.ball.ne {
     background-color: #ffffff;
     color: #eeeeee
 }
