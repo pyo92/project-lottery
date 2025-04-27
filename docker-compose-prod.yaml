@@ -69,4 +69,6 @@ services:                                                  # 실행하려는 컨
     ports:
       - "80:8080"  # HTTP
       - "443:443"  # HTTPS
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
     restart: always                                        # 컨테이너 실행 실패하는 경우 재시작할 수 있도록 설정
