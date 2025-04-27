@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -121,6 +122,10 @@ public class PurchaseLotteryService {
     private String getPreviousSunday() {
         LocalDate today = LocalDate.now();
 
+        if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            return today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        }
+
         //오늘의 DayOfWeek 더해준다. (오늘을 포함한 과거의 가장 가까운 일요일) - 회차 시작일
         return today.minusDays(today.getDayOfWeek().getValue())
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -129,6 +134,10 @@ public class PurchaseLotteryService {
     //TODO: util 클래스로 분리해준다. (재사용 가능성 O)
     private String getNextSaturday() {
         LocalDate today = LocalDate.now();
+
+        if (today.getDayOfWeek() == DayOfWeek.SATURDAY) {
+            return today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        }
 
         //토요일이 6 이므로, 오늘의 DayOfWeek 빼준다. (오늘을 포함한 미래의 가장 가까운 토요일) - 회차 종료일
         return today.plusDays(6 - today.getDayOfWeek().getValue())
