@@ -98,3 +98,11 @@ spring:
   sql:
     init:
       mode: never
+
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: /etc/letsencrypt/live/gp-lottery.shop/keystore.p12
+    key-store-password: dlfekd!100
