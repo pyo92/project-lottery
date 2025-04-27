@@ -156,6 +156,8 @@ public class PurchaseLotteryService {
             String endDt = getNextSaturday();
             seleniumPurchaseService.openUrl(iframeURL.format(new Object[] {startDt, endDt}));
 
+            System.out.println(startDt + ", " + endDt);
+
             //구매내역 tr 을 찾는다.
             css = "body > table > tbody > tr";
             List<WebElement> purchaseElements = seleniumPurchaseService.getElementsByCssSelector(css);
@@ -164,6 +166,9 @@ public class PurchaseLotteryService {
 
                 String gameResult = e.findElement(By.cssSelector("td:nth-child(6)")).getText(); //당첨결과 column
                 int purchaseCnt = Integer.parseInt(e.findElement(By.cssSelector("td:nth-child(5)")).getText()); //구입매수 column
+
+
+                System.out.println(gameResult + ", " + purchaseCnt);
 
                 //미추첨인 구매 내역은 금번 회차 구매 내역이므로 잔여 구매가능 매수에서 차감한다.
                 if (gameResult.equals("미추첨")) {
