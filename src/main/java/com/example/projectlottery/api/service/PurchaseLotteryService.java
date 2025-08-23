@@ -159,10 +159,10 @@ public class PurchaseLotteryService {
             System.out.println(startDt + ", " + endDt);
 
             //구매내역 tr 을 찾는다.
-            css = "body > table > tbody > tr";
+            css = "body > table:nth-child(1) > tbody > tr";
             List<WebElement> purchaseElements = seleniumPurchaseService.getElementsByCssSelector(css);
             for (WebElement e : purchaseElements) {
-                if (e.getText().equals("조회 결과가 없습니다.")) break; //구매 내역이 전혀 없다면, loop exit
+                if (e.getText().startsWith("조회 결과가 없습니다.")) break; //구매 내역이 전혀 없다면, loop exit
 
                 String gameResult = e.findElement(By.cssSelector("td:nth-child(6)")).getText(); //당첨결과 column
                 int purchaseCnt = Integer.parseInt(e.findElement(By.cssSelector("td:nth-child(5)")).getText()); //구입매수 column
