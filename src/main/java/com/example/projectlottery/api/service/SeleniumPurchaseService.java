@@ -29,14 +29,14 @@ public class SeleniumPurchaseService {
     public void openWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
-        options.addArguments("--window-size=1024,768");
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-popup-blocking");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--blink-settings=imagesEnabled=false");
-        options.addArguments("--disable-blink-features=AutomationControlled"); //web driver detect prevent
+//        options.addArguments("--window-size=1024,768");
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--disable-dev-shm-usage");
+//        options.addArguments("--disable-popup-blocking");
+//        options.addArguments("--disable-extensions");
+//        options.addArguments("--blink-settings=imagesEnabled=false");
+//        options.addArguments("--disable-blink-features=AutomationControlled"); //web driver detect prevent
         options.setPageLoadStrategy(PageLoadStrategy.EAGER); //access DOM elements before fully loading
 
         try {
