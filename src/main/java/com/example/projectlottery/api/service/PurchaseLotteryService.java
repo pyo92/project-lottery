@@ -35,8 +35,8 @@ public class PurchaseLotteryService {
      */
 
     //로그인 직후 returnUrl 을 마이 페이지로 하여 최적화 시도
-    private static final String URL_DH_LOGIN = "https://m.dhlottery.co.kr/user.do?method=loginm&returnUrl=https%3A%2F%2Fm.dhlottery.co.kr%2FuserSsl.do%3Fmethod%3DmyPage";
-    private static final String URL_DH_DEPOSIT = "https://m.dhlottery.co.kr/payment.do?method=payment";
+    private static final String URL_DH_LOGIN = "https://m.dhlottery.co.kr/login";
+    private static final String URL_DH_DEPOSIT = "https://m.dhlottery.co.kr/mypage/mndpChrg";
     private static final String URL_PURCHASE_L645 = "https://ol.dhlottery.co.kr/olotto/game/game645.do";
 
     private final SeleniumPurchaseService seleniumPurchaseService;
@@ -86,17 +86,17 @@ public class PurchaseLotteryService {
             String css;
 
             //아이디 입력
-            css = "#userId";
+            css = "#inpUserId";
             WebElement idElement = seleniumPurchaseService.getElementByCssSelector(css);
             idElement.sendKeys(request.id());
 
             //비밀번호 입력
-            css = "#password";
+            css = "#inpUserPswdEncn";
             WebElement passwordElement = seleniumPurchaseService.getElementByCssSelector(css);
             passwordElement.sendKeys(request.password());
 
             //로그인 시도
-            js = "check_if_Valid3();";
+            js = "login();";
             seleniumPurchaseService.procJavaScript(js);
 
             //로그인 결과 체크
@@ -210,22 +210,22 @@ public class PurchaseLotteryService {
         seleniumPurchaseService.openUrl(URL_DH_DEPOSIT);
 
         //고정 가상계좌 입금을 선택한다. (2023.09.02 추가)
-        String css = "#container > div > div.tab_ec > a:nth-child(2)";
+        String css = "#tab2 > button";
         seleniumPurchaseService.getElementByCssSelector(css).click();
 
-        css = "#Amt";
+        css = "#VcAmt";
         Select amountSelect = new Select(seleniumPurchaseService.getElementByCssSelector(css));
         amountSelect.selectByValue("5000"); //회차당 구매가능 게임이 5게임이므로 5000원으로 고정한다.
 
         //예치금 입금 신청
-        String js = "kbankMobileStart();";
-        seleniumPurchaseService.procJavaScript(js);
+        css = "#btnChrg";
+        seleniumPurchaseService.getElementByCssSelector(css).click();
 
-        //예치금 충전 정보 테이블을 가져온다.
-        css = "#container > div > div.complete_content > div > table > tbody > tr";
-        List<WebElement> depositInfo = seleniumPurchaseService.getElementsByCssSelector(css);
-        String accountName = depositInfo.get(2).findElement(By.cssSelector("td")).getText();
-        String accountNumber = depositInfo.get(3).findElement(By.cssSelector("td > span")).getText();
+        //예치금 충전 정보를 가져온다.
+        css = "#charge_mallUserID";
+        String accountName = seleniumPurchaseService.getElementByCssSelector(css).getText();
+        css = "#charge_vbankNumInfo";
+        String accountNumber = seleniumPurchaseService.getElementByCssSelector(css).getText();
         Long depositAmount = 5000L; //5000원으로 고정했다.
 
         seleniumPurchaseService.closeWebDriver();
