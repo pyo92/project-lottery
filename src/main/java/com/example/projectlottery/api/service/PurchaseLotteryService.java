@@ -140,40 +140,48 @@ public class PurchaseLotteryService {
         try {
             String css;
 
-            css = "#header > div > ul > li > a:nth-child(1) > span > strong";
+            css = "#tooltipUserNm";
             String name = seleniumPurchaseService.getElementByCssSelector(css).getText();
-            name = name.substring(0, name.length() - 1); //`님` 제거
 
             //예치금 스크랩
-            css = "#container > div > div.myinfo_content.account > div.deposit > span > strong";
+            css = "#tooltipTotalAmt";
             Long deposit = Long.parseLong(seleniumPurchaseService.getElementByCssSelector(css).getText().replaceAll("[^0-9]", ""));
 
             int purchasableCnt = 5; //온라인은 회차당 5매 제한이 있어서 구매 내역에서 조회된 매수만큼 빼줘야 한다.
 
-            //최근 7일간 구매내역 확인창 오픈
-            MessageFormat iframeURL = new MessageFormat("https://dhlottery.co.kr/myPage.do?method=lottoBuyList&searchStartDate={0}&searchEndDate={1}&lottoId=LO40&winGrade=2");
-            String startDt = getPreviousSunday();
-            String endDt = getNextSaturday();
-            seleniumPurchaseService.openUrl(iframeURL.format(new Object[] {startDt, endDt}));
+            //구매내역 확인창 오픈
+            seleniumPurchaseService.openUrl("https://m.dhlottery.co.kr/mypage/mylotteryledger");
 
-            System.out.println(startDt + ", " + endDt);
+            //구매내역 조회
 
-            //구매내역 tr 을 찾는다.
-            css = "body > table:nth-child(1) > tbody > tr";
+            //(1) 복권상품 - 로또6/45 설정
+            css = "#ltGdsSelect";
+            Select ltGdsSelect = new Select(seleniumPurchaseService.getElementByCssSelector(css));
+            ltGdsSelect.selectByValue("LO40");
+
+            //(2) 당/낙첨여부 - 미확인 설정
+            css = "#ltWnResultSelect";
+            Select ltWnResultSelect = new Select(seleniumPurchaseService.getElementByCssSelector(css));
+            ltGdsSelect.selectByValue("N");
+
+            //(3) 조회기간 - 최근 1주일 설정
+            css = "#containerBox > div.content-box-wrap > div > div > div > form > div.search-wrap.graybox.toggle-content > div > div:nth-child(2) > div > div.col-td > div.btn-wrap > button:nth-child(2)";
+            seleniumPurchaseService.getElementByCssSelector(css).click();
+
+            css = "#btnSrch";
+            seleniumPurchaseService.getElementByCssSelector(css).click();
+
+            css = "#winning-history-list > ul.whl-body";
             List<WebElement> purchaseElements = seleniumPurchaseService.getElementsByCssSelector(css);
             for (WebElement e : purchaseElements) {
-                if (e.getText().startsWith("조회 결과가 없습니다.")) break; //구매 내역이 전혀 없다면, loop exit
+                if (e.getText().startsWith("조회된 내역이 없습니다.")) break; //구매 내역이 전혀 없다면, loop exit
 
-                String gameResult = e.findElement(By.cssSelector("td:nth-child(6)")).getText(); //당첨결과 column
-                int purchaseCnt = Integer.parseInt(e.findElement(By.cssSelector("td:nth-child(5)")).getText()); //구입매수 column
+                int purchaseCnt = Integer.parseInt(e.findElement(By.cssSelector("div.whl-col.col-ea > span.whl-txt")).getText()); //구입매수 column
 
-
-                System.out.println(gameResult + ", " + purchaseCnt);
+                System.out.println("[purchaseCnt] ==== " + purchaseCnt);
 
                 //미추첨인 구매 내역은 금번 회차 구매 내역이므로 잔여 구매가능 매수에서 차감한다.
-                if (gameResult.equals("미추첨")) {
-                    purchasableCnt -= purchaseCnt;
-                }
+                purchasableCnt -= purchaseCnt;
             }
 
             return DhUserInfo.of(id, name, deposit, purchasableCnt);
