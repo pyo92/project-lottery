@@ -96,8 +96,8 @@ public class PurchaseLotteryService {
             passwordElement.sendKeys(request.password());
 
             //로그인 시도
-            js = "login();";
-            seleniumPurchaseService.procJavaScript(js);
+            css = "#btnLogin";
+            seleniumPurchaseService.getElementByCssSelector(css).click();
 
             //로그인 결과 체크
             String errorMessage = seleniumPurchaseService.checkAlert();
@@ -105,6 +105,8 @@ public class PurchaseLotteryService {
                 seleniumPurchaseService.closeWebDriver(); //web driver 를 종료하고 반환한다.
                 return DhLotteryLoginResult.of(false, errorMessage);
             }
+
+            System.out.println("====== dh login ok");
 
             //로그인 성공 시, redis 에 동행복권 로그인 정보를 저장한다.
             redisTemplateService.saveDhLoginInfo(request);
@@ -211,6 +213,8 @@ public class PurchaseLotteryService {
 
         //로그인 처리 + 로그인 후에 입금신청 진행해야 하므로 web driver 를 닫지 않는다.
         procLoginDhLottery(dhLoginRequest);
+
+        System.out.println("procLoginDhLottery()  ok");
 
         //예치금 신청 및 계좌번호 가져오는 루틴 시작
 
